@@ -4165,8 +4165,8 @@ let tkFilterStatus = 'all';          // admin: all | open | done
    │  Leave them blank and the app behaves exactly as before           │
    │  (tasks stay on this browser only).                               │
    └──────────────────────────────────────────────────────────────────┘ */
-const TK_SB_URL  = 'https://zozpomjvvrhjgqbazmrd.supabase.co';   // e.g. 'https://zozpomjvvrhjgqbazmrd.supabase.co'
-const TK_SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpvenBvbWp2dnJoamdxYmF6bXJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5MDE0NDgsImV4cCI6MjA5NTQ3NzQ0OH0.TJmx6C3VfnXlMNS6Ss-5iYwgtkhc2ryoaLggOmV_At8';   // e.g. 'eyJhbGciOi...'  (anon public key)
+const TK_SB_URL  = '';   // e.g. 'https://zozpomjvvrhjgqbazmrd.supabase.co'
+const TK_SB_ANON = '';   // e.g. 'eyJhbGciOi...'  (anon public key)
 const TK_TABLE   = 'hrhub_tasks';
 
 /* ── local cache (instant render) + sync bookkeeping ── */
@@ -4804,18 +4804,24 @@ function dashRecRender(){
 
 
 /* ══════════════ INIT ══════════════ */
-(function init(){
+function hubBoot(){
   // restore session if already signed in this tab
   const existing = sessionStorage.getItem(SESSION_KEY);
   const u = existing ? findUserByEmail(existing) : null;
   if(u){ enterApp(u); }
-  else { setTimeout(()=>document.getElementById('login-email').focus(), 200); }
+  else { setTimeout(()=>{ const el=document.getElementById('login-email'); if(el) el.focus(); }, 200); }
 
   // dashboard date
   const d = new Date();
-  document.getElementById('hero-date').textContent =
-    d.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-})();
+  const hd=document.getElementById('hero-date');
+  if(hd) hd.textContent = d.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+}
+/* Run boot only after the entire script has parsed, so every const/let declared
+   further down (PTO_KEY, PTO, …) is initialized before enterApp() reads it.
+   Running it inline caused a refresh-time "Cannot access 'PTO_KEY' before
+   initialization" error that aborted the rest of boot — blank greeting/cards. */
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', hubBoot);
+else setTimeout(hubBoot, 0);
 
 /* ══════════════ OVERTIME BY DEPARTMENT ══════════════ */
 const OT_KEY = 'hrhub_ot_2026';
