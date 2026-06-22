@@ -2120,6 +2120,7 @@ function enterApp(user){
     if(typeof setHeroGreeting==='function') setHeroGreeting();
     if(typeof otDashRender==='function') otDashRender();
     if(typeof tasksDashStat==='function') tasksDashStat();
+    if(typeof tkInitSync==='function') tkInitSync();
   },0);
   if(can('settings')) renderSettings();
 }
@@ -2150,7 +2151,7 @@ function nav(id, el){
   if(id==='overtime' && typeof otRender==='function') otRender();
   if(id==='pto' && typeof ptoRender==='function') ptoRender();
   if(id==='timesheet' && typeof tsRender==='function') tsRender();
-  if(id==='tasks' && typeof tasksRender==='function') tasksRender();
+  if(id==='tasks' && typeof tasksRender==='function'){ tasksRender(); if(typeof tkConfigured==='function' && tkConfigured()) tkPull(false); }
   if(id==='settings' && typeof renderSettings==='function') renderSettings();
   window.scrollTo(0,0);
   closeSidebar();
@@ -4157,8 +4158,123 @@ let tkEditId = null;                 // task being edited (admin)
 let tkFilterEmp = 'all';             // admin: filter by assignee id
 let tkFilterStatus = 'all';          // admin: all | open | done
 
-function tkLoad(){ try{ return JSON.parse(localStorage.getItem(TASKS_KEY)||'[]'); }catch(e){ return []; } }
-function tkSave(arr){ try{ localStorage.setItem(TASKS_KEY, JSON.stringify(arr)); }catch(e){} }
+/* ┌──────────────────────────────────────────────────────────────────┐
+   │  CROSS-DEVICE SYNC — fill these two in to turn it on.             │
+   │  1. Paste your Supabase project URL + anon (public) key below.    │
+   │  2. Run the SQL block (see chat) once in the Supabase SQL editor. │
+   │  Leave them blank and the app behaves exactly as before           │
+   │  (tasks stay on this browser only).                               │
+   └──────────────────────────────────────────────────────────────────┘ */
+const TK_SB_URL  = '';   // e.g. 'https://zozpomjvvrhjgqbazmrd.supabase.co'
+const TK_SB_ANON = '';   // e.g. 'eyJhbGciOi...'  (anon public key)
+const TK_TABLE   = 'hrhub_tasks';
+
+/* ── local cache (instant render) + sync bookkeeping ── */
+let tkCache    = null;   // in-memory source of truth for sync rendering
+let tkSynced   = {};     // id -> JSON string last known on the server (diff base)
+let tkSyncStatus = 'off';// off | syncing | ok | err
+let tkSyncErr  = '';
+let _tkSB = null, _tkSub = null, _tkPullTimer = null;
+
+function tkConfigured(){ return !!(TK_SB_URL && TK_SB_ANON); }
+
+function tkLoad(){
+  if(tkCache) return tkCache;
+  try{ tkCache = JSON.parse(localStorage.getItem(TASKS_KEY)||'[]'); }catch(e){ tkCache = []; }
+  return tkCache;
+}
+/* write-through: localStorage immediately, then push changed rows to Supabase */
+function tkSave(arr){
+  tkCache = arr;
+  try{ localStorage.setItem(TASKS_KEY, JSON.stringify(arr)); }catch(e){}
+  if(tkConfigured()) tkPush(arr);
+}
+
+/* lazy-load + memoize the Supabase client (only if configured) */
+async function tkClient(){
+  if(!tkConfigured()) return null;
+  if(_tkSB) return _tkSB;
+  try{
+    await recLoadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2');
+    if(!window.supabase || !window.supabase.createClient) return null;
+    _tkSB = window.supabase.createClient(TK_SB_URL, TK_SB_ANON, { auth:{ persistSession:false } });
+    return _tkSB;
+  }catch(e){ tkSyncState('err', e); return null; }
+}
+
+/* push only rows that actually changed (per-row, so two reps editing
+   different tasks don't clobber each other) + delete removed ids */
+async function tkPush(arr){
+  const sb = await tkClient(); if(!sb) return;
+  const live = new Set(), changed = [];
+  arr.forEach(t=>{ live.add(t.id); const j=JSON.stringify(t); if(tkSynced[t.id]!==j) changed.push(t); });
+  const removed = Object.keys(tkSynced).filter(id=>!live.has(id));
+  if(!changed.length && !removed.length) return;
+  tkSyncState('syncing');
+  try{
+    if(changed.length){
+      const rows = changed.map(t=>({ id:t.id, data:t, updated_at:new Date().toISOString() }));
+      const { error } = await sb.from(TK_TABLE).upsert(rows); if(error) throw error;
+    }
+    if(removed.length){
+      const { error } = await sb.from(TK_TABLE).delete().in('id', removed); if(error) throw error;
+    }
+    tkSynced = {}; arr.forEach(t=>{ tkSynced[t.id]=JSON.stringify(t); });
+    tkSyncState('ok');
+  }catch(e){ tkSyncState('err', e); }
+}
+
+/* pull from server. merge=true (first sync) keeps any local-only tasks and
+   uploads them; merge=false replaces cache with the server copy. */
+async function tkPull(merge){
+  const sb = await tkClient(); if(!sb) return;
+  tkSyncState('syncing');
+  try{
+    const { data, error } = await sb.from(TK_TABLE).select('id,data'); if(error) throw error;
+    const serverArr = (data||[]).map(r=>r.data).filter(Boolean);
+    let next;
+    if(merge){
+      const byId = {}; serverArr.forEach(t=>byId[t.id]=t);
+      const localOnly = (tkCache||tkLoad()).filter(t=>!byId[t.id]);
+      next = serverArr.concat(localOnly);
+    } else {
+      next = serverArr;
+    }
+    tkCache = next;
+    try{ localStorage.setItem(TASKS_KEY, JSON.stringify(next)); }catch(e){}
+    tkSynced = {}; serverArr.forEach(t=>{ tkSynced[t.id]=JSON.stringify(t); });
+    tkSyncState('ok');
+    tasksRender(); if(typeof tasksDashStat==='function') tasksDashStat();
+    if(merge && next.some(t=>!tkSynced[t.id])) tkPush(next); // upload migrated local tasks
+  }catch(e){ tkSyncState('err', e); }
+}
+
+/* realtime: any change by anyone → debounced refresh */
+async function tkSubscribe(){
+  const sb = await tkClient(); if(!sb || _tkSub) return;
+  try{
+    _tkSub = sb.channel('hrhub_tasks_rt')
+      .on('postgres_changes', { event:'*', schema:'public', table:TK_TABLE }, ()=>{
+        clearTimeout(_tkPullTimer);
+        _tkPullTimer = setTimeout(()=>tkPull(false), 400);
+      })
+      .subscribe();
+  }catch(e){}
+}
+
+/* called once after login */
+async function tkInitSync(){
+  if(!tkConfigured()){ tkSyncState('off'); return; }
+  await tkPull(true);
+  tkSubscribe();
+}
+
+/* update the sync banner in place when status changes */
+function tkSyncState(s, e){
+  tkSyncStatus = s; tkSyncErr = e ? (e.message||String(e)) : '';
+  const n = document.getElementById('tk-syncnote');
+  if(n){ const html = tkSyncNote(); n.outerHTML = html || ''; }
+}
 function tkUid(){ return 't_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
 function tkEsc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
@@ -4429,10 +4545,24 @@ function tkToggleDone(id){
   tkSave(arr); tasksRender(); if(typeof tasksDashStat==='function') tasksDashStat();
 }
 
-/* ── note about local storage / cross-device sync (admins only) ── */
+/* ── status banner: local-only vs synced vs error (admins/managers only) ── */
 function tkSyncNote(){
   if(!tkCanManage()) return '';
-  return `<div class="rec-callout" style="margin-top:18px"><i class="ti ti-cloud-off"></i> Tasks are saved to <b>this browser</b>. A rep sees what you assign when they sign in <b>on this same browser</b>. To have assignments sync to each rep's own device, this tab needs a shared backend (e.g. Supabase) — say the word and I can wire that up.</div>`;
+  let icon, txt;
+  if(!tkConfigured()){
+    icon='ti-cloud-off';
+    txt=`Tasks are saved to <b>this browser</b> only. To sync assignments to each rep\u2019s own device, add your Supabase URL + key at the top of the Tasks module and run the one-time SQL.`;
+  } else if(tkSyncStatus==='err'){
+    icon='ti-cloud-x';
+    txt=`Couldn\u2019t reach the server \u2014 changes are saved on this device and will retry. <span style="opacity:.65">${tkEsc(tkSyncErr)}</span>`;
+  } else if(tkSyncStatus==='syncing'){
+    icon='ti-cloud-upload';
+    txt=`Syncing\u2026`;
+  } else {
+    icon='ti-cloud-check';
+    txt=`<b>Synced across devices.</b> Each rep sees and completes their assigned tasks from any device when they sign in.`;
+  }
+  return `<div id="tk-syncnote" class="rec-callout" style="margin-top:18px"><i class="ti ${icon}"></i> ${txt}</div>`;
 }
 
 /* ── dashboard card stat ── */
