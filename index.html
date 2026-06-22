@@ -939,6 +939,32 @@ select.rec-in{appearance:auto;cursor:pointer}
   box-shadow:0 3px 10px rgba(16,40,80,.06)}
 .stat-body>*:last-child{margin-bottom:0}
 
+/* ── Safety Inspections card (live from Safety Inspector) ── */
+.stat-card.safety{background:linear-gradient(160deg,#EEF4FC 0%,#FFFFFF 66%);border-color:#DCE7F6;cursor:pointer}
+.stat-card.safety::before{background:linear-gradient(180deg,#4A8BE6,#1E54C0)}
+.stat-card.safety .stat-eyebrow{color:#1E5BC6}
+.stat-badge.safety{background:linear-gradient(135deg,#4A8BE6,#1E54C0)}
+.sf-sec{font-size:10.5px;font-weight:800;letter-spacing:1.1px;text-transform:uppercase;color:var(--gray-400);margin:1px 0 13px}
+.sf-lanes{display:flex;flex-direction:column;gap:13px}
+.sf-lane{display:grid;grid-template-columns:118px 1fr auto auto;align-items:center;gap:12px}
+.sf-lane-name{font-size:13px;font-weight:700;color:var(--gray-800);white-space:nowrap}
+.sf-lane-track{height:11px;border-radius:20px;background:#EAEEF4;overflow:hidden}
+.sf-lane-fill{display:block;height:100%;border-radius:20px;transition:width .5s ease}
+.sf-lane-pct{font-size:13px;font-weight:800;color:var(--gray-900);text-align:right;min-width:42px}
+.sf-lane-count{font-size:12px;font-weight:600;color:var(--gray-400);text-align:right;min-width:30px}
+.sf-ytd{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  margin-top:16px;padding:12px 15px;background:#fff;border:1px solid #E8EDF3;border-radius:12px;box-shadow:0 2px 8px rgba(16,40,80,.05)}
+.sf-ytd-main{display:flex;align-items:baseline;gap:11px}
+.sf-ytd-label{font-size:10.5px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--gray-400)}
+.sf-ytd-val{font-size:29px;font-weight:800;letter-spacing:-1px;color:var(--gray-900);line-height:1}
+.sf-pills{display:flex;flex-wrap:wrap;gap:7px}
+.sf-pill{font-size:11.5px;font-weight:600;color:var(--gray-400);background:#F7F9FC;border:1px solid #E6EBF2;border-radius:20px;padding:5px 11px;white-space:nowrap}
+.sf-pill b{color:var(--gray-800);margin-right:4px}
+.sf-foot{display:flex;justify-content:space-between;align-items:center;margin-top:13px;padding-top:11px;
+  border-top:1px solid #EEF2F6;font-size:11.5px;font-weight:600;color:var(--gray-400)}
+.sf-foot b{color:var(--gray-600)}
+@media(max-width:520px){.sf-lane{grid-template-columns:auto 1fr auto auto;gap:9px}.sf-lane-name{font-size:12px}}
+
 /* ── Overtime mini-card bars ── */
 .otm-rows{display:flex;flex-direction:column;gap:9px;margin-top:4px}
 .otm-row{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:10px}
@@ -1599,18 +1625,8 @@ select.rec-in{appearance:auto;cursor:pointer}
           <!-- RECRUITING · time to fill (rendered by dashRecRender) -->
           <div class="stat-card recruiting" id="dash-rec-card"></div>
 
-          <!-- COMPLIANCE · completion by year -->
-          <div class="stat-card compliance">
-            <div class="stat-head">
-              <div class="stat-badge compliance"><i class="ti ti-checklist"></i></div>
-              <div class="stat-titles">
-                <div class="stat-eyebrow">Compliance</div>
-                <div class="stat-title">Completion by Year</div>
-                <div class="stat-sub">% of tracked yearly tasks completed</div>
-              </div>
-            </div>
-            <div class="stat-body"><div id="dash-chart"></div></div>
-          </div>
+          <!-- SAFETY · inspections this month (live from Safety Inspector) -->
+          <div class="stat-card safety" id="dash-safety-card"></div>
         </div>
 
         <div class="card-grid">
@@ -2121,6 +2137,7 @@ function enterApp(user){
     if(typeof otDashRender==='function') otDashRender();
     if(typeof tasksDashStat==='function') tasksDashStat();
     if(typeof tkInitSync==='function') tkInitSync();
+    if(typeof renderSafetyDash==='function'){ renderSafetyDash(); safetyLoadLive(); }
   },0);
   if(can('settings')) renderSettings();
 }
@@ -2145,7 +2162,7 @@ function nav(id, el){
   if(el) el.classList.add('active');
   const ct=document.querySelector('.content'); if(ct) ct.classList.toggle('wide', id==='recruiting');
   const pt=document.getElementById('page-title'); if(pt) pt.textContent = pageTitles[id] || 'HR Hub';
-  if(id==='dashboard' && typeof renderDashChart==='function'){ renderDashChart(); renderNotifications(); renderDashTurnover(); if(typeof dashRecRender==='function') dashRecRender(); if(typeof otDashRender==='function') otDashRender(); if(typeof tasksDashStat==='function') tasksDashStat(); }
+  if(id==='dashboard'){ renderNotifications(); renderDashTurnover(); if(typeof dashRecRender==='function') dashRecRender(); if(typeof otDashRender==='function') otDashRender(); if(typeof tasksDashStat==='function') tasksDashStat(); if(typeof renderSafetyDash==='function'){ renderSafetyDash(); safetyLoadLive(); } }
   if(id==='turnover' && typeof trRender==='function') trRender();
   if(id==='recruiting' && typeof recRender==='function') recRender();
   if(id==='overtime' && typeof otRender==='function') otRender();
@@ -2559,6 +2576,118 @@ function renderDashChart(){
   });
   if(!data.length){ host.innerHTML=''; return; }
   host.innerHTML = barChartSVG(data, {maxValue:100, unit:'%', highlightColor:'var(--blue-800)', ariaLabel:'Task completion percentage by year'});
+}
+
+/* ───────────── Dashboard: Safety Inspections (live from the Safety Inspector app) ───────────── */
+const SAFETY = {
+  // Safety Inspector backend (same Supabase project as the safety-inspector app).
+  url: 'https://zozpomjvvrhjgqbazmrd.supabase.co',
+  anonKey: 'sb_publishable_sKcs24iSLfda4g7gvXJcAw_HlmuLsdf',  // Safety Inspector publishable (read) key
+  table: 'tasks',                                         // Safety Inspector tasks table (dept-keyed inspections)
+  stateOrder: ['CA','PA','MX'],
+  appUrl: 'https://joseh-ctrl.github.io/safety-inspector/',
+  laneColor: {                                            // bar color by state
+    CA:'linear-gradient(90deg,#3B82F6,#2563EB)',
+    PA:'linear-gradient(90deg,#8B5CF6,#6D28D9)',
+    MX:'linear-gradient(90deg,#14B8A6,#0D9488)'
+  }
+};
+
+/* Seed snapshot — matches your screenshot. Shown instantly, then replaced by live Supabase data. */
+let safetyData = {
+  period: '2026-06',
+  lanes: [
+    { state:'CA', label:'CA – Warehouse',  done:7, required:7 },
+    { state:'CA', label:'CA – Printing',   done:0, required:3 },
+    { state:'PA', label:'PA – Production', done:0, required:1 },
+    { state:'PA', label:'PA – Warehouse',  done:0, required:1 },
+    { state:'PA', label:'PA – Printing',   done:1, required:1 }
+  ],
+  ytdAvg: 81.1,
+  states: [ {code:'CA',pct:83}, {code:'PA',pct:33}, {code:'MX',pct:87} ],
+  tasks: 53
+};
+
+function safetyPct(l){ return (l && l.required>0) ? Math.round((l.done/l.required)*100) : 0; }
+
+function renderSafetyDash(){
+  const host=document.getElementById('dash-safety-card'); if(!host) return;
+  const d=safetyData;
+  const lanes=(d.lanes||[]).map(l=>{
+    const pct=safetyPct(l);
+    const col=SAFETY.laneColor[l.state]||SAFETY.laneColor.CA;
+    return `<div class="sf-lane">
+      <span class="sf-lane-name">${recEsc(l.label)}</span>
+      <span class="sf-lane-track"><span class="sf-lane-fill" style="width:${pct}%;background:${pct>0?col:'transparent'}"></span></span>
+      <span class="sf-lane-pct">${pct}%</span>
+      <span class="sf-lane-count">${l.done}/${l.required}</span>
+    </div>`;
+  }).join('');
+  const totDone=(d.lanes||[]).reduce((a,l)=>a+(+l.done||0),0);
+  const totReq=(d.lanes||[]).reduce((a,l)=>a+(+l.required||0),0);
+  const monthAvg=totReq>0?Math.round((totDone/totReq)*100):0;
+  const pills=[
+    ...(d.states||[]).map(s=>`<span class="sf-pill"><b>${recEsc(s.code)}</b> ${Math.round(s.pct)}%</span>`),
+    `<span class="sf-pill"><b>Tasks</b> ${d.tasks}</span>`
+  ].join('');
+  host.title='Open the Safety Inspector app';
+  host.onclick=()=>window.open(SAFETY.appUrl,'_blank','noopener');
+  host.innerHTML =
+    `<div class="stat-head">
+       <div class="stat-badge safety"><i class="ti ti-shield-check"></i></div>
+       <div class="stat-titles">
+         <div class="stat-eyebrow">Safety</div>
+         <div class="stat-title">Safety Inspections</div>
+         <div class="stat-sub">Live · Safety Inspector · ${recEsc(d.period)}</div>
+       </div>
+     </div>
+     <div class="stat-body">
+       <div class="sf-sec">This Month</div>
+       <div class="sf-lanes">${lanes}</div>
+       <div class="sf-ytd">
+         <div class="sf-ytd-main"><span class="sf-ytd-label">YTD Average</span><span class="sf-ytd-val">${(+d.ytdAvg).toFixed(1)}%</span></div>
+         <div class="sf-pills">${pills}</div>
+       </div>
+       <div class="sf-foot"><span>Month avg: <b>${monthAvg}%</b></span><span>${recEsc(d.period)}</span></div>
+     </div>`;
+}
+
+/* Live loader — fetches Safety Inspector tasks and mirrors that app's own dashboard math:
+   completion = completed / total. "This Month" lanes group the current month's tasks by department;
+   YTD pills are per-state completion across all loaded tasks; Tasks = total task count. */
+function safetyDeptLabel(id){ return String(id||'').replace('-',' – '); }
+function safetyAggregate(rows){
+  if(!Array.isArray(rows)) return safetyData;
+  const now=new Date();
+  const ym=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');   // 'YYYY-MM'
+  const laneMap={}, byState={}; let totDone=0, totAll=0;
+  rows.forEach(r=>{
+    const dept=r.dept||'', state=dept.split('-')[0], done=(r.status==='completed');
+    // YTD (all loaded tasks)
+    if(!byState[state]) byState[state]={done:0,all:0};
+    byState[state].all++; totAll++; if(done){ byState[state].done++; totDone++; }
+    // This month (group by department, by log date)
+    if((r.date||'').slice(0,7)===ym){
+      if(!laneMap[dept]) laneMap[dept]={state, label:safetyDeptLabel(dept), done:0, required:0};
+      laneMap[dept].required++; if(done) laneMap[dept].done++;
+    }
+  });
+  const ord=SAFETY.stateOrder;
+  const lanes=Object.values(laneMap).sort((a,b)=>
+    (ord.indexOf(a.state)-ord.indexOf(b.state)) || (b.required-a.required) || a.label.localeCompare(b.label));
+  const states=ord.filter(s=>byState[s]).map(s=>({code:s, pct: byState[s].all?Math.round(byState[s].done/byState[s].all*100):0}));
+  return { period:ym, lanes, ytdAvg: totAll?+(totDone/totAll*100).toFixed(1):0, states, tasks: rows.length };
+}
+async function safetyLoadLive(){
+  if(!SAFETY.anonKey || !SAFETY.table) return;            // not wired yet — using seed snapshot
+  try{
+    const res = await fetch(`${SAFETY.url}/rest/v1/${SAFETY.table}?select=dept,status,date`,
+      { headers:{ apikey:SAFETY.anonKey, Authorization:'Bearer '+SAFETY.anonKey } });
+    if(!res.ok) return;
+    const rows = await res.json();
+    const next = safetyAggregate(rows);
+    if(next){ safetyData = next; renderSafetyDash(); }
+  }catch(e){ /* keep the seed snapshot on any error */ }
 }
 
 /* ── Dashboard: employee turnover (company-wide, monthly, voluntary/involuntary) ── */
