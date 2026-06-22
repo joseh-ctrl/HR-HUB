@@ -2632,7 +2632,7 @@ function trLoad(){
   let raw=null; try{ raw=JSON.parse(localStorage.getItem(trKey(trYear))||'null'); }catch(e){}
   trData = raw || {};
 }
-function trSave(){ try{ localStorage.setItem(trKey(trYear), JSON.stringify(trData)); }catch(e){} }
+function trSave(){ try{ localStorage.setItem(trKey(trYear), JSON.stringify(trData)); }catch(e){} if(typeof hubPushTurnover==='function') hubPushTurnover(); }
 function trDataForYear(y){
   if(y===trYear) return trData;
   let raw=null; try{ raw=JSON.parse(localStorage.getItem(trKey(y))||'null'); }catch(e){}
@@ -3228,7 +3228,7 @@ function recLoadLog(){
   else recLog = (recYear===2026 ? REC_SEED_2026 : []).map(x=>Object.assign({},x));
   if(recBackfillLogger(recLog)) recSaveLog();
 }
-function recSaveLog(){ if(recIsLocked(recYear)) return; try{ localStorage.setItem(REC_LOG_KEY(recYear), JSON.stringify(recLog)); }catch(e){} }
+function recSaveLog(){ if(recIsLocked(recYear)) return; try{ localStorage.setItem(REC_LOG_KEY(recYear), JSON.stringify(recLog)); }catch(e){} if(typeof hubPushRecruiting==='function') hubPushRecruiting(); }
 function recRecordsForYear(y){
   if(recIsLocked(y)) return REC_HIST[y]||[];
   if(y===recYear) return recLog;
@@ -4838,7 +4838,7 @@ function otLoad(){
   if(!Array.isArray(otData)) otData = [];
   otLoaded = true;
 }
-function otSave(){ try{ localStorage.setItem(OT_KEY, JSON.stringify(otData)); }catch(e){} }
+function otSave(){ try{ localStorage.setItem(OT_KEY, JSON.stringify(otData)); }catch(e){} if(typeof hubPushOT==='function') hubPushOT(); }
 
 /* formatting */
 function otHn(n){ return (n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
@@ -6223,5 +6223,89 @@ spawnWaves(document.getElementById('hero-waves'), {
 });
 
 </script>
+<script>
+/* ════════════════════════════════════════════════════════════════════════
+   Leadership Resource Center sync
+   Pushes the three shared dashboard metrics — turnover, overtime, and
+   recruiting time-to-fill — to Supabase whenever they're saved here, so the
+   Leadership Resource Center can read the same numbers on ANY device.
+   Aggregate metrics only: no candidate or manager names ever leave this app.
+   Writes are gated by role (matches who can edit each section in the Hub).
+   ════════════════════════════════════════════════════════════════════════ */
+(function(){
+  const LRC_SB_URL  = 'https://zozpomjvvrhjgqbazmrd.supabase.co';
+  const LRC_SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpvenBvbWp2dnJoamdxYmF6bXJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5MDE0NDgsImV4cCI6MjA5NTQ3NzQ0OH0.TJmx6C3VfnXlMNS6Ss-5iYwgtkhc2ryoaLggOmV_At8';
+  const LRC_TABLE   = 'lrc_dashboard';
+
+  function lrcYear(){ const y=new Date().getFullYear(); return (y>=2025 && y<=2027)?y:2026; }
+
+  function lrcPush(key, payload){
+    if(!LRC_SB_URL || !LRC_SB_ANON) return;
+    try{
+      fetch(LRC_SB_URL + '/rest/v1/' + LRC_TABLE + '?on_conflict=key', {
+        method:'POST',
+        headers:{
+          'apikey': LRC_SB_ANON,
+          'Authorization': 'Bearer ' + LRC_SB_ANON,
+          'Content-Type': 'application/json',
+          'Prefer': 'resolution=merge-duplicates,return=minimal'
+        },
+        body: JSON.stringify({ key:key, payload:payload, updated_at:new Date().toISOString() })
+      }).catch(function(){});
+    }catch(e){}
+  }
+
+  /* ── builders: read live in-memory state, shaped small ── */
+  function lrcNum(v){ if(v===''||v==null) return null; var n=Number(v); return isFinite(n)?n:null; }
+
+  function buildTurnover(){
+    if(typeof trLoad==='function'){ try{ trLoad(); }catch(e){} }
+    if(typeof trData!=='object' || !trData || !Object.keys(trData).length) return null; // never overwrite cloud with an empty set
+    return { year:(typeof trYear!=='undefined'?trYear:lrcYear()), data:trData };
+  }
+  function buildOT(){
+    if(typeof otLoad==='function'){ try{ otLoad(); }catch(e){} }
+    if(!Array.isArray(otData) || !otData.length) return null;
+    return { data: otData };
+  }
+  function buildRecruiting(){
+    if(typeof recLoadLog==='function'){ try{ recLoadLog(); }catch(e){} }
+    if(!Array.isArray(recLog) || !recLog.length) return null;
+    var recs = recLog.map(function(r){
+      var status = (typeof recDeriveStatus==='function') ? recDeriveStatus(r) : (r.filled?'filled':'open');
+      var days   = (typeof recRecordDays==='function')   ? recRecordDays(r)   : null;
+      return { position:(r.position||''), location:(r.location||'').toUpperCase(), status:status, days:(days==null?null:days) };
+    }).filter(function(r){ return r.position && r.status!=='cancelled' && r.status!=='closed'; });
+    if(!recs.length) return null;
+    return { year:(typeof recYear!=='undefined'?recYear:lrcYear()), records:recs };
+  }
+
+  /* ── push helpers (called from save fns + one-time sync); gated by role ── */
+  window.hubPushTurnover = function(){
+    if(!(typeof can==='function' && can('editTurnover'))) return;
+    var p=buildTurnover(); if(p) lrcPush('turnover_'+p.year, p);
+  };
+  window.hubPushOT = function(){
+    if(!(typeof isAdmin==='function' && isAdmin())) return; // overtime is admin-edited in the Hub
+    var p=buildOT(); if(p) lrcPush('ot_'+lrcYear(), p);
+  };
+  window.hubPushRecruiting = function(){
+    if(!(typeof can==='function' && can('editRecruiting'))) return;
+    var p=buildRecruiting(); if(p) lrcPush('recruiting_'+p.year, p);
+  };
+
+  /* ── one-time sync shortly after load, so the cloud reflects current data
+        even before the next manual edit (each push self-gates by role) ── */
+  function lrcSyncAll(){
+    try{ window.hubPushTurnover(); }catch(e){}
+    try{ window.hubPushOT(); }catch(e){}
+    try{ window.hubPushRecruiting(); }catch(e){}
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded', function(){ setTimeout(lrcSyncAll, 1800); });
+  } else { setTimeout(lrcSyncAll, 1800); }
+})();
+</script>
+
 </body>
 </html>
