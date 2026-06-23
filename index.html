@@ -1289,6 +1289,17 @@ select.rec-in{appearance:auto;cursor:pointer}
 .tk-chip{border:1px solid var(--gray-200);background:#fff;color:var(--gray-600);font-size:12.5px;font-weight:600;font-family:inherit;padding:6px 13px;border-radius:18px;cursor:pointer;transition:all .14s}
 .tk-chip:hover{border-color:var(--blue-200);color:var(--blue-800)}
 .tk-chip.on{background:var(--blue-600);border-color:var(--blue-600);color:#fff}
+/* modern filter toolbar (replaces chip bubbles) */
+.tk-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:8px 0 16px}
+.tk-toolbar .tk-group-h{margin:0}
+.tk-tools{display:flex;gap:10px;flex-wrap:wrap}
+.tk-select{position:relative;display:inline-flex;align-items:center}
+.tk-select>i:first-child{position:absolute;left:12px;font-size:15px;color:var(--gray-500);pointer-events:none}
+.tk-select select{appearance:none;-webkit-appearance:none;-moz-appearance:none;font-family:inherit;font-size:13px;font-weight:600;color:var(--gray-700);background:#fff;border:1px solid var(--gray-200);border-radius:12px;padding:9px 34px 9px 35px;cursor:pointer;transition:border-color .14s,box-shadow .14s}
+.tk-select select:hover{border-color:var(--blue-200)}
+.tk-select select:focus{outline:none;border-color:var(--blue-600);box-shadow:0 0 0 3px rgba(12,68,124,.12)}
+.tk-select .tk-caret{position:absolute;right:12px;font-size:15px;color:var(--gray-400);pointer-events:none}
+@media(max-width:560px){.tk-toolbar{flex-direction:column;align-items:stretch}.tk-tools{width:100%}.tk-select{flex:1}.tk-select select{width:100%}}
 .tk-emp-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--gray-100)}
 .tk-emp-row:last-child{border-bottom:none}
 .tk-emp-av{width:34px;height:34px;border-radius:50%;background:var(--g-brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;flex-shrink:0}
@@ -3196,6 +3207,7 @@ function notifDismissVisible(){
   const s=notifDismissedSet();
   notifCollect(notifMode).forEach(it=>s.add(it.dkey));
   if(typeof celebCollect==='function'){ celebCollect().forEach(c=>s.add(c.dkey)); }
+  if(typeof tkNotifCollect==='function'){ tkNotifCollect(notifMode).forEach(it=>s.add(it.dkey)); }
   try{ localStorage.setItem(NOTIF_DISMISS_KEY, JSON.stringify([...s])); }catch(e){}
   notifSyncAfterDismiss();
 }
@@ -3230,7 +3242,8 @@ function renderNotifications(){
   if(!can('settings')) notifMode='mine';
   const items = notifCollect(notifMode);
   const celebs = (typeof celebCollect==='function') ? celebCollect() : [];
-  const total = items.length + celebs.length;
+  const tkItems = (typeof tkNotifCollect==='function') ? tkNotifCollect(notifMode) : [];
+  const total = items.length + celebs.length + tkItems.length;
   const cnt = document.getElementById('dn-count'); if(cnt) cnt.textContent = total;
   const hint = document.getElementById('nt-hint');
   if(hint) hint.textContent = total ? `${total} update${total===1?'':'s'} · tap to view` : "You're all caught up.";
@@ -3244,11 +3257,34 @@ function renderNotifModal(){
   const body=document.getElementById('nm-body'); const sub=document.getElementById('nm-sub'); if(!body) return;
   const items=notifCollect(notifMode);
   const celebs = (typeof celebCollect==='function') ? celebCollect() : [];
-  const total = items.length+celebs.length;
+  const tkItems = (typeof tkNotifCollect==='function') ? tkNotifCollect(notifMode) : [];
+  const total = items.length+celebs.length+tkItems.length;
   if(sub) sub.textContent = total+' update'+(total===1?'':'s')+' · '+(notifMode==='mine'?'your tasks & celebrations':'all tasks & celebrations');
   if(!total){ body.innerHTML='<div class="nm-empty"><i class="ti ti-circle-check"></i>You\u2019re all caught up — no new updates.</div>'; return; }
   const clearBar = `<div class="nm-clear"><button onclick="notifDismissVisible()"><i class="ti ti-checks"></i> Clear all</button></div>`;
   let html = clearBar;
+  // ✅ Assigned tasks (from My Tasks)
+  if(tkItems.length){
+    html += `<div class="nm-group"><span class="nm-grp-emoji">\u2705</span> ${notifMode==='mine'?'Assigned to you':'Assigned tasks'}</div>`;
+    html += tkItems.map(it=>{
+      const who = (notifMode==='mine' || !it.assigneeName) ? '' : ytEsc(it.assigneeName)+' · ';
+      const dueLbl = it.due==='overdue' ? '<span class="dn-status dn-failed">Overdue</span>'
+                   : it.due==='duesoon' ? '<span class="dn-status dn-pending">Due soon</span>'
+                   : (it.deadline ? 'Due '+ytEsc(tkFmtDate(it.deadline)) : 'No deadline');
+      return `
+    <div class="nm-item">
+      <span class="nm-ic2"><i class="ti ti-clipboard-check"></i></span>
+      <div class="nm-info">
+        <div class="nm-name">${ytEsc(it.title)}</div>
+        <div class="nm-meta">${who}${dueLbl}</div>
+      </div>
+      <div class="nm-actions">
+        <button class="nm-open" onclick="tkOpenFromNotif()">Open</button>
+        <button class="nm-del" title="Dismiss" aria-label="Dismiss" onclick="notifDismiss('${it.dkey}')"><i class="ti ti-x"></i></button>
+      </div>
+    </div>`;
+    }).join('');
+  }
   // 🎉 Celebrations this week (birthdays & work anniversaries)
   if(celebs.length){
     html += `<div class="nm-group"><span class="nm-grp-emoji">\uD83C\uDF89</span> Celebrations this week</div>`;
@@ -4527,6 +4563,7 @@ function tkSave(arr){
   tkCache = arr;
   try{ localStorage.setItem(TASKS_KEY, JSON.stringify(arr)); }catch(e){}
   if(tkConfigured()) tkPush(arr);
+  if(typeof renderNotifications==='function') renderNotifications();
 }
 
 /* lazy-load + memoize the Supabase client (only if configured) */
@@ -4682,16 +4719,17 @@ function tkRenderAdmin(){
 
   // assignee options
   const editing = tkEditId ? all.find(t=>t.id===tkEditId) : null;
-  const optHtml = users.map(u=>`<option value="${u.id}" ${editing&&editing.assigneeId===u.id?'selected':''}>${tkEsc(u.name||u.email)}${u.role==='admin'?' (admin)':''}</option>`).join('');
+  const optHtml = `<option value="" disabled${editing?'':' selected'}>Select…</option>` +
+    users.map(u=>`<option value="${u.id}" ${editing&&editing.assigneeId===u.id?'selected':''}>${tkEsc(u.name||u.email)}${u.role==='admin'?' (admin)':''}</option>`).join('');
 
   // assign / edit form
   const form=`<div class="tk-card">
     <div class="tk-card-h"><i class="ti ti-${editing?'edit':'plus'}"></i> ${editing?'Edit task':'Assign a new task'}</div>
     <div class="tk-form">
-      <div class="sf-field tk-wide"><label>Task</label><input id="tk-f-title" placeholder="e.g. Submit Q3 EEO-1 report" value="${editing?tkEsc(editing.title):''}"></div>
+      <div class="sf-field tk-wide"><label>Task</label><input id="tk-f-title" value="${editing?tkEsc(editing.title):''}"></div>
       <div class="sf-field"><label>Assign to</label><select id="tk-f-assignee">${optHtml}</select></div>
       <div class="sf-field"><label>Deadline</label><input id="tk-f-deadline" type="date" value="${editing?tkEsc(editing.deadline||''):''}"></div>
-      <div class="sf-field tk-wide"><label>Notes / instructions (optional)</label><input id="tk-f-desc" placeholder="Context, links, or what 'done' looks like…" value="${editing?tkEsc(editing.desc||''):''}"></div>
+      <div class="sf-field tk-wide"><label>Notes / instructions (optional)</label><input id="tk-f-desc" value="${editing?tkEsc(editing.desc||''):''}"></div>
     </div>
     <div class="tk-form-actions">
       <button class="rec-add" onclick="tkSubmit()"><i class="ti ti-${editing?'device-floppy':'send'}"></i> ${editing?'Save changes':'Assign task'}</button>
@@ -4721,13 +4759,17 @@ function tkRenderAdmin(){
   }).join('');
   const breakdown=`<div class="tk-card"><div class="tk-card-h"><i class="ti ti-users"></i> By employee · overall</div>${empRows}</div>`;
 
-  // filters
-  const empChips=[`<button class="tk-chip ${tkFilterEmp==='all'?'on':''}" onclick="tkSetEmp('all')">Everyone</button>`]
-    .concat(users.map(u=>`<button class="tk-chip ${tkFilterEmp===u.id?'on':''}" onclick="tkSetEmp('${u.id}')">${tkEsc((u.name||u.email).split(' ')[0])}</button>`)).join('');
-  const statusChips=['all','open','done'].map(k=>`<button class="tk-chip ${tkFilterStatus===k?'on':''}" onclick="tkSetStatus('${k}')">${k==='all'?'All':k==='open'?'Open':'Done'}</button>`).join('');
-  const filters=`<div class="tk-group-h" style="margin-top:6px"><i class="ti ti-list-details"></i> All tasks</div>
-    <div class="tk-filters">${empChips}</div>
-    <div class="tk-filters">${statusChips}</div>`;
+  // filters — modern dropdown toolbar
+  const empOpts=[`<option value="all" ${tkFilterEmp==='all'?'selected':''}>Everyone</option>`]
+    .concat(users.map(u=>`<option value="${u.id}" ${tkFilterEmp===u.id?'selected':''}>${tkEsc(u.name||u.email)}</option>`)).join('');
+  const statusOpts=['all','open','done'].map(k=>`<option value="${k}" ${tkFilterStatus===k?'selected':''}>${k==='all'?'All statuses':k==='open'?'Open':'Done'}</option>`).join('');
+  const filters=`<div class="tk-toolbar">
+      <div class="tk-group-h"><i class="ti ti-list-details"></i> All tasks</div>
+      <div class="tk-tools">
+        <span class="tk-select"><i class="ti ti-user"></i><select aria-label="Filter by person" onchange="tkSetEmp(this.value)">${empOpts}</select><i class="ti ti-chevron-down tk-caret"></i></span>
+        <span class="tk-select"><i class="ti ti-filter"></i><select aria-label="Filter by status" onchange="tkSetStatus(this.value)">${statusOpts}</select><i class="ti ti-chevron-down tk-caret"></i></span>
+      </div>
+    </div>`;
 
   // task list (filtered)
   let list=all.slice();
@@ -4889,8 +4931,13 @@ function tkSyncNote(){
   if(!tkCanManage()) return '';
   let icon, txt;
   if(!tkConfigured()){
-    icon='ti-cloud-off';
-    txt=`Tasks are saved to <b>this browser</b> only. To sync assignments to each rep\u2019s own device, add your Supabase URL + key at the top of the Tasks module and run the one-time SQL.`;
+    if(typeof cloudReady!=='undefined' && cloudReady){
+      icon='ti-cloud-check';
+      txt=`<b>Synced across devices.</b> Tasks ride along with your account through HR Hub\u2019s cloud sync \u2014 each rep sees and completes their assigned tasks from any device when they sign in.`;
+    } else {
+      icon='ti-cloud-off';
+      txt=`Tasks are saved to <b>this browser</b> until you sign in. Sign in to sync them across your devices.`;
+    }
   } else if(tkSyncStatus==='err'){
     icon='ti-cloud-x';
     txt=`Couldn\u2019t reach the server \u2014 changes are saved on this device and will retry. <span style="opacity:.65">${tkEsc(tkSyncErr)}</span>`;
@@ -4902,6 +4949,29 @@ function tkSyncNote(){
     txt=`<b>Synced across devices.</b> Each rep sees and completes their assigned tasks from any device when they sign in.`;
   }
   return `<div id="tk-syncnote" class="rec-callout" style="margin-top:18px"><i class="ti ${icon}"></i> ${txt}</div>`;
+}
+
+/* ── feed My-Tasks assignments into the dashboard notification box ──
+   mode 'mine' = tasks assigned to me; 'all' = every open task (admin toggle). */
+function tkNotifCollect(mode){
+  if(!CURRENT) return [];
+  let list = tkLoad().filter(t=>t && t.status!=='done');
+  if(mode==='mine') list = list.filter(t=>t.assigneeId===CURRENT.id);
+  const dismissed = (typeof notifDismissedSet==='function') ? notifDismissedSet() : new Set();
+  return list
+    .map(t=>({ id:t.id, title:t.title||'Untitled task', assigneeName:t.assigneeName||'',
+               due:tkDueState(t), deadline:t.deadline||'', dkey:'tk:'+t.id }))
+    .filter(it=>!dismissed.has(it.dkey))
+    .sort((a,b)=>{
+      const rank=s=>s==='overdue'?0:s==='duesoon'?1:2;
+      const r=rank(a.due)-rank(b.due); if(r) return r;
+      return (a.deadline||'~').localeCompare(b.deadline||'~');
+    });
+}
+function tkOpenFromNotif(){
+  if(typeof closeNotifModal==='function') closeNotifModal();
+  const navEl=document.querySelector('.nav-item[onclick*="tasks"]');
+  if(typeof nav==='function') nav('tasks', navEl);
 }
 
 /* ── dashboard card stat ── */
