@@ -433,6 +433,19 @@ a{color:inherit;text-decoration:none}
 .tr-tile-val{font-size:26px;font-weight:700;color:var(--gray-900);line-height:1}
 .tr-tile-val.accent{color:var(--blue-800)}
 .tr-tile-sub{font-size:11.5px;color:var(--gray-400);margin-top:5px}
+.tr-tile-click{cursor:pointer;transition:box-shadow .15s,border-color .15s,transform .05s}
+.tr-tile-click:hover{border-color:#e7b27a;box-shadow:0 6px 18px rgba(192,57,43,.12)}
+.tr-tile-click:active{transform:translateY(1px)}
+.tr-tile-click .tr-tile-sub{color:#c0392b;font-weight:600}
+.tr-tile-more{font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#c0392b;margin-top:6px;display:inline-flex;align-items:center;gap:4px}
+.pf-intro{font-size:12.5px;color:var(--gray-600);line-height:1.5;margin-bottom:14px}
+.pf-wrap{overflow-x:auto}
+.pf-tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.pf-tbl th{text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--gray-500);padding:8px 10px;border-bottom:2px solid var(--gray-200);white-space:nowrap}
+.pf-tbl td{padding:9px 10px;border-bottom:1px solid var(--gray-100);color:var(--gray-800);white-space:nowrap}
+.pf-tbl tbody tr:hover{background:var(--gray-50,#f8f9fb)}
+.pf-tbl tfoot td{border-top:2px solid var(--gray-200);border-bottom:none;padding-top:11px}
+.pf-lead{font-size:9px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;padding:1px 6px;border-radius:9px;background:#EEF3FB;color:var(--blue-800);vertical-align:middle}
 @media(max-width:820px){ .tr-summary{grid-template-columns:repeat(2,1fr)} }
 @media(max-width:480px){ .tr-summary{grid-template-columns:1fr} }
 
@@ -1075,6 +1088,26 @@ select.rec-in{appearance:auto;cursor:pointer}
 
 /* ══════════════ PTO TRACKER ══════════════ */
 .pto-toolbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+/* export bar (above the employee list) */
+.pto-exportbar{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;background:#fff;border:var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow);padding:13px 16px;margin-bottom:14px}
+.pxb-label{display:flex;flex-direction:column;gap:2px;min-width:0}
+.pxb-label .pxb-t{font-size:13.5px;font-weight:800;color:var(--gray-800);display:flex;align-items:center;gap:7px}
+.pxb-label .pxb-t i{font-size:17px;color:var(--blue-600)}
+.pxb-label small{font-size:11.5px;color:var(--gray-500)}
+.pxb-actions{display:flex;gap:9px;flex-shrink:0}
+.pxb-btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--gray-200);background:#fff;color:var(--gray-700);border-radius:10px;padding:9px 16px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;transition:border-color .15s,background .15s,color .15s,transform .05s}
+.pxb-btn i{font-size:16px}
+.pxb-btn.csv i{color:#1a7f4b}
+.pxb-btn.pdf i{color:#c0392b}
+.pxb-btn:hover{border-color:var(--blue-400);background:var(--blue-50);color:var(--blue-800)}
+.pxb-btn:active{transform:translateY(1px)}
+@media(max-width:560px){ .pto-exportbar{align-items:stretch} .pxb-actions{width:100%} .pxb-btn{flex:1;justify-content:center} }
+/* bottom admin/config bar */
+.pto-admin-bar{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-top:20px;padding-top:14px;border-top:1px dashed var(--gray-200)}
+.pto-admin-btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--gray-200);background:#fff;color:var(--gray-600);border-radius:9px;padding:8px 14px;font-size:12.5px;font-weight:700;font-family:inherit;cursor:pointer;transition:all .15s}
+.pto-admin-btn:hover{border-color:var(--gray-300);background:var(--gray-50,#f8f9fb);color:var(--gray-800)}
+.pto-admin-btn.danger{color:#b23b34;border-color:#ecc9c6}
+.pto-admin-btn.danger:hover{background:#fdf1f0;border-color:#e0a59f;color:#a02e28}
 .pto-search{position:relative;display:flex;align-items:center;flex:1;min-width:200px;max-width:320px}
 .pto-search > i{position:absolute;left:12px;color:var(--gray-400);font-size:16px;pointer-events:none}
 .pto-search input{width:100%;border:1px solid var(--gray-200);border-radius:var(--radius);padding:9px 30px 9px 34px;font-size:13px;font-family:inherit;background:var(--gray-50);color:var(--gray-900);outline:none}
@@ -1117,6 +1150,11 @@ select.rec-in{appearance:auto;cursor:pointer}
 .pa-act:hover{filter:brightness(1.08)}.pa-act:active{transform:scale(.98)}
 .pa-act.ghost{background:none;color:var(--gray-500);border:1px solid var(--gray-200)}
 .pa-act.ghost:hover{filter:none;border-color:var(--blue-400);color:var(--blue-800);background:var(--blue-50)}
+.pa-del{flex-shrink:0;width:30px;height:30px;border-radius:50%;border:1px solid var(--gray-200);background:#fff;color:var(--gray-400);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;transition:all .15s}
+.pa-del:hover{border-color:#f1b0b0;color:#d2554f;background:#fdf0f0}
+.pa-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0 4px;flex-wrap:wrap}
+.pa-clear button{border:none;background:none;color:var(--gray-500);font-size:12.5px;font-weight:700;font-family:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:8px 4px;border-radius:8px;transition:color .15s}
+.pa-clear button:hover{color:#d2554f}
 
 /* roster table */
 .pto-tbl-wrap{background:#fff;border:1px solid #E6EBF1;border-radius:12px;box-shadow:var(--shadow-card);overflow:auto;margin-bottom:18px}
@@ -1278,6 +1316,32 @@ select.rec-in{appearance:auto;cursor:pointer}
 .tk-bar > span{display:block;height:100%;border-radius:6px;background:var(--g-recruiting);transition:width .35s}
 .tk-stat.accent .tk-bar{background:rgba(255,255,255,.28)}
 .tk-stat.accent .tk-bar > span{background:#fff}
+/* dashboard task scorecard */
+.tk-score-wrap{margin-bottom:22px}
+.tk-score-head{display:flex;align-items:center;gap:8px;margin:0 2px 12px;font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--blue-600)}
+.tk-score-head i{font-size:15px}
+.tk-score-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.tk-score-card{position:relative;overflow:hidden;background:#fff;border:var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow);padding:16px 18px 15px 22px;cursor:pointer;transition:transform .12s,box-shadow .12s,border-color .12s}
+.tk-score-card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.09);border-color:var(--blue-200)}
+.tk-score-card:focus-visible{outline:none;border-color:var(--blue-400);box-shadow:0 0 0 3px rgba(55,138,221,.18)}
+.tk-score-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--g-brand)}
+.tk-score-top{display:flex;align-items:center;gap:11px;margin-bottom:14px}
+.tk-score-av{width:38px;height:38px;border-radius:50%;background:var(--g-brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.tk-score-name{font-size:15px;font-weight:700;color:var(--gray-900);line-height:1.15}
+.tk-score-name small{display:block;font-size:10.5px;font-weight:600;color:var(--gray-400);letter-spacing:.3px;text-transform:uppercase;margin-top:2px}
+.tk-score-nums{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.tk-score-cell{text-align:center;padding:10px 4px;border-radius:10px;background:var(--gray-50)}
+.tk-score-cell .n{font-size:23px;font-weight:800;line-height:1;color:var(--gray-900)}
+.tk-score-cell .l{display:block;font-size:9.5px;font-weight:700;letter-spacing:.2px;text-transform:uppercase;color:var(--gray-500);margin-top:6px;line-height:1.2}
+.tk-score-cell.done .n{color:var(--green-pop-deep)}
+.tk-score-cell.over .n{color:var(--red-600)}
+.tk-score-go{display:flex;align-items:center;gap:5px;margin-top:13px;font-size:12px;font-weight:600;color:var(--blue-600)}
+.tk-score-go i{font-size:14px}
+.tk-score-pcts{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.tk-score-pct-top{display:flex;justify-content:space-between;align-items:baseline;font-size:10.5px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;color:var(--gray-500)}
+.tk-score-pct-top b{font-size:14px;color:var(--gray-900)}
+.tk-score-pct .tk-bar{margin-top:6px}
+.tk-score-pct-sub{font-size:10.5px;color:var(--gray-400);margin-top:5px}
 .tk-card{background:#fff;border:var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-card);padding:18px;margin-bottom:18px}
 .tk-card-h{font-size:13px;font-weight:700;color:var(--gray-800);display:flex;align-items:center;gap:8px;margin-bottom:14px}
 .tk-card-h i{color:var(--blue-600);font-size:16px}
@@ -1561,6 +1625,18 @@ select.rec-in{appearance:auto;cursor:pointer}
       </div>
     </div>
 
+    <!-- PTO forfeit-risk detail modal -->
+    <div class="pto-modal" id="pto-forfeit-modal" onclick="if(event.target===this)ptoCloseForfeit()">
+      <div class="pm-card" style="max-width:760px">
+        <div class="pm-head">
+          <span class="pm-ic" style="background:linear-gradient(135deg,#e08a2b,#c0392b)"><i class="ti ti-alert-triangle"></i></span>
+          <div><h3>PTO forfeit risk</h3><div class="pm-sub" id="pto-forfeit-sub">Projected to exceed the cap at Jan 1</div></div>
+          <button class="pm-close" aria-label="Close" onclick="ptoCloseForfeit()"><i class="ti ti-x"></i></button>
+        </div>
+        <div class="pm-body" id="pto-forfeit-body"></div>
+      </div>
+    </div>
+
     <!-- PTO settings modal -->
     <div class="pto-modal" id="pto-settings-modal" onclick="if(event.target===this)ptoCloseSettings()">
       <div class="pm-card" style="max-width:480px">
@@ -1648,32 +1724,8 @@ select.rec-in{appearance:auto;cursor:pointer}
           <div class="stat-card safety" id="dash-safety-card"></div>
         </div>
 
-        <div class="card-grid">
-          <div class="hub-card" onclick="nav('tasks',document.querySelector('.nav-item[onclick*=\'tasks\']'))">
-            <div class="hub-card-icon" style="background:var(--g-labor)"><i class="ti ti-checklist"></i></div>
-            <h3>My Tasks</h3><p id="dash-tasks-stat">Assigned tasks, deadlines and completion tracking.</p>
-          </div>
-          <div class="hub-card" onclick="nav('yearly',document.querySelector('.nav-item[onclick*=yearly]'))">
-            <div class="hub-card-icon" style="background:var(--g-compliance)"><i class="ti ti-calendar-stats"></i></div>
-            <h3>Yearly Tasks</h3><p id="dash-yearly-stat">Annual compliance checklist — track audits, inspections, and training.</p>
-          </div>
-          <div class="hub-card" onclick="nav('turnover',document.querySelector('.nav-item[onclick*=turnover]'))">
-            <div class="hub-card-icon" style="background:var(--g-workforce)"><i class="ti ti-arrows-exchange"></i></div>
-            <h3>Turnover Rates</h3><p id="dash-turn-stat">Log monthly headcount and separations to track employee turnover.</p>
-          </div>
-          <div class="hub-card" onclick="nav('recruiting',document.querySelector('.nav-item[onclick*=recruiting]'))">
-            <div class="hub-card-icon" style="background:var(--g-recruiting)"><i class="ti ti-user-search"></i></div>
-            <h3>Recruiting</h3><p>Time-to-fill, the hiring process, requisition and rejection logs.</p>
-          </div>
-          <div class="hub-card" onclick="nav('overtime',document.querySelector('.nav-item[onclick*=overtime]'))">
-            <div class="hub-card-icon" style="background:var(--g-labor)"><i class="ti ti-clock-dollar"></i></div>
-            <h3>Overtime by Department</h3><p>CA &amp; PA overtime totals by department, with monthly uploads.</p>
-          </div>
-          <div class="hub-card" onclick="nav('pto',document.querySelector('.nav-item[onclick*=pto]'))">
-            <div class="hub-card-icon" style="background:var(--g-recruiting)"><i class="ti ti-beach"></i></div>
-            <h3>PTO Tracker</h3><p id="dash-pto-stat">Tenure-based PTO &amp; sick leave, with anniversary and accrual alerts.</p>
-          </div>
-        </div>
+        <!-- TASK SCORECARD (rendered by tasksScoreRender) -->
+        <div class="tk-score-wrap" id="dash-tasks-score"></div>
       </div>
 
       <!-- YEARLY TASKS -->
@@ -1889,8 +1941,6 @@ select.rec-in{appearance:auto;cursor:pointer}
             <button class="pto-search-clear" id="pto-search-clear" onclick="ptoClearSearch()" aria-label="Clear search">&times;</button>
           </div>
           <button class="rec-add" id="pto-add-btn" onclick="ptoOpenModal()"><i class="ti ti-user-plus"></i> Add employee</button>
-          <button class="yt-reset" id="pto-settings-btn" onclick="ptoOpenSettings()"><i class="ti ti-settings"></i> Settings</button>
-          <button class="yt-reset" id="pto-reseed-btn" onclick="ptoReseed()" style="display:none"><i class="ti ti-database-import"></i> Load 2026 roster</button>
           <span class="tr-readonly-note" id="pto-readonly" style="display:none"><i class="ti ti-eye"></i> View only · ask HR to edit</span>
         </div>
 
@@ -1908,6 +1958,17 @@ select.rec-in{appearance:auto;cursor:pointer}
         </div>
 
         <div class="tr-summary" id="pto-summary"></div>
+
+        <div class="pto-exportbar">
+          <div class="pxb-label">
+            <span class="pxb-t"><i class="ti ti-users-group"></i> Employee list</span>
+            <small>Download a snapshot of everyone's PTO &amp; sick balances as of today</small>
+          </div>
+          <div class="pxb-actions">
+            <button class="pxb-btn csv" id="pto-export-csv-btn" onclick="ptoExportCSV()"><i class="ti ti-file-spreadsheet"></i> Download CSV</button>
+            <button class="pxb-btn pdf" id="pto-export-pdf-btn" onclick="ptoExportPDF()"><i class="ti ti-file-type-pdf"></i> Download PDF</button>
+          </div>
+        </div>
 
         <div class="pto-tbl-wrap" id="pto-table"></div>
         <div id="pto-table-more"></div>
@@ -1969,6 +2030,10 @@ select.rec-in{appearance:auto;cursor:pointer}
             <div class="pto-note" id="pto-policy-note"><b>How this tracker works:</b> you enter only name, dates, and PTO/sick hours <i>used</i>. New hires get the base hire grant for their chart (3 days standard, 10 days leadership). Then there are two automatic grants: on <b>January 1</b> the full annual lump sum for the employee's tenure is frontloaded on top of whatever rolled over (capped at the accrual cap, and PTO used resets to zero); and on each <b>hire-date anniversary</b> only the <i>increase</i> over the prior year is added (so years 2, 4, 6, 8 — and 16+ — add nothing). Sick leave is frontloaded each year and <b>resets Dec 31</b> by default, since unused sick doesn't carry over. The starting bank for a new employee is estimated from tenure assuming no prior shortfall — use <i>Advanced → adjust starting PTO bank</i> if your records differ. Updates apply whenever you open the page. Hours use <span id="pto-note-hpd">8</span> hours = 1 day.</div>
           </div>
         </details>
+
+        <div class="pto-admin-bar" id="pto-admin-bar">
+          <button class="pto-admin-btn" id="pto-settings-btn" onclick="ptoOpenSettings()"><i class="ti ti-settings"></i> PTO settings</button>
+        </div>
       </div>
 
       <!-- RESOURCE ONE -->
@@ -2188,7 +2253,7 @@ const SEED_USERS = [
   { id:'u_anahi', name:'Anahi Torres', email:'anahi@wsdisplay.com',
     passHash:'0c9dbda57c1c3d9f4c5ff7ad78af8751337e6d4a4f0e8a3b4e2fbc68e402176e',
     role:'member', access:{yearly:true,turnover:true,recruiting:true,overtime:true,pto:true}, caps:{editTasks:true,editRecruiting:true,editPto:true} },
-  { id:'u_steph', name:'Stephanie Bryant', email:'stephanie.b@wsdisplay.com',
+  { id:'u_steph', name:'Stephanie Bryan', email:'stephanie.b@wsdisplay.com',
     passHash:'0c9dbda57c1c3d9f4c5ff7ad78af8751337e6d4a4f0e8a3b4e2fbc68e402176e',
     role:'member', access:{yearly:true,turnover:true,recruiting:true,overtime:true,pto:true}, caps:{editTasks:true,editRecruiting:true,editPto:true} }
 ];
@@ -2221,6 +2286,27 @@ function migrateUserEmails(){
     if(fixed && !arr.some(o=>o!==u && o.email===fixed)){ u.email=fixed; changed=true; }
   });
   if(changed) saveUsers(arr);   // persists locally and (when cloudReady) syncs the corrected list up
+}
+/* One-time name correction: an earlier build seeded Stephanie's last name as
+   "Bryant" — it's "Bryan". Fix the stored user record and any denormalized task
+   name snapshots. Idempotent: a no-op once corrected, safe to remove later. */
+function migrateStephanieName(){
+  const OLD='Stephanie Bryant', NEW='Stephanie Bryan';
+  try{
+    let arr=JSON.parse(localStorage.getItem(USERS_KEY)||'[]');
+    if(Array.isArray(arr)){
+      let ch=false; arr.forEach(u=>{ if(u && u.name===OLD){ u.name=NEW; ch=true; } });
+      if(ch) saveUsers(arr);
+    }
+  }catch(e){}
+  try{
+    let t=JSON.parse(localStorage.getItem(TASKS_KEY)||'[]');
+    if(Array.isArray(t)){
+      let ch=false;
+      t.forEach(x=>{ if(x){ if(x.assigneeName===OLD){ x.assigneeName=NEW; ch=true; } if(x.assignedByName===OLD){ x.assignedByName=NEW; ch=true; } } });
+      if(ch){ if(typeof tkCache!=='undefined') tkCache=t; localStorage.setItem(TASKS_KEY, JSON.stringify(t)); }
+    }
+  }catch(e){}
 }
 function findUserByEmail(email){ return loadUsers().find(u=>u.email===(email||'').toLowerCase()); }
 function findUserById(id){ return loadUsers().find(u=>u.id===id); }
@@ -2255,6 +2341,7 @@ async function attemptLogin(){
   await cloudHydrate();
   cloudReady = true;
   migrateUserEmails();
+  migrateStephanieName();
   await cloudBridgeFromLRC();
   const u = findUserByEmail(email);
   btn.disabled = false; btn.textContent = 'Sign in';
@@ -3442,7 +3529,7 @@ function recEsc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&am
 
 const REC_YEARS  = [2024,2025,2026,2027];
 const REC_LOCKED = [2024,2025];           // permanent records — read-only
-const REC_DEFAULT_LOGGER = 'Stephanie Bryant';   // pre-fills the "Logged by" field
+const REC_DEFAULT_LOGGER = 'Stephanie Bryan';   // pre-fills the "Logged by" field
 let   recYear    = 2026;
 let   recView    = 'all';                 // all | CA | PA | Remote
 function recIsLocked(y){ return REC_LOCKED.indexOf(y)!==-1; }
@@ -4061,7 +4148,7 @@ const REC_REJECT_SEED = [
 ];
 
 const REC_OPTS_DEFAULT = {
-  people:['Stephanie Bryant','Anahi Torres','Jose Hernandez'],
+  people:['Stephanie Bryan','Anahi Torres','Jose Hernandez'],
   locations:['CA','PA','Remote'],
   positions:['Warehouse Associate','Quality Assurance Assistant','Inventory Associate','Production Associate','Sewing Machine Operator','Zund Operator','Print Operator Assistant (2nd Shift)','Banner Installer','Print Operator','Graphic Installer','Fabric Cutter/Folder','Machine Operator','BD Representative','MODCO Project Development Rep.','Other'],
   stages:['Resume Screening','Interview','Reference Check','Background Check','Offer Letter Sent'],
@@ -4975,20 +5062,57 @@ function tkOpenFromNotif(){
 }
 
 /* ── dashboard card stat ── */
-function tasksDashStat(){
-  const el=document.getElementById('dash-tasks-stat'); if(!el || !CURRENT) return;
+/* ── Dashboard task scorecard ──
+   Admin (Jose) sees one card per team member (Anahi, Stephanie). Reps see only
+   their own card. Each card: Assigned · Completed · Open · Not completed (overdue).
+   Clicking a card opens My Tasks — for admins, pre-filtered to that person. */
+function tasksScoreRender(){
+  const host=document.getElementById('dash-tasks-score'); if(!host || !CURRENT) return;
   const all=tkLoad();
-  if(tkCanManage()){
-    const s=tkStats(all);
-    el.textContent = all.length ? `${s.open} open · ${s.overdue} overdue · ${s.pct}% complete overall.`
-      : 'Assign tasks to the HR team with deadlines and completion tracking.';
-  } else {
-    const mine=all.filter(t=>t.assigneeId===CURRENT.id);
+  const manage=tkCanManage();
+  const people = manage ? loadUsers().filter(u=>u && u.role!=='admin')
+                        : loadUsers().filter(u=>u && u.id===CURRENT.id);
+  const heading = manage ? 'Task tracker · team' : 'My task tracker';
+  const cards = people.map(u=>{
+    const mine=all.filter(t=>t.assigneeId===u.id);
     const s=tkStats(mine);
-    el.textContent = mine.length ? `${s.open} open${s.overdue?` · ${s.overdue} overdue`:''} · ${s.pct}% complete.`
-      : 'No tasks assigned to you right now.';
-  }
+    const go = manage ? `tasksScoreGo('${u.id}')` : `tasksScoreGo('')`;
+    return `<div class="tk-score-card" role="button" tabindex="0" onclick="${go}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();${go}}">
+      <div class="tk-score-top">
+        <span class="tk-score-av">${userInitials(u)}</span>
+        <div class="tk-score-name">${tkEsc(u.name||u.email)}<small>Tasks assigned</small></div>
+      </div>
+      <div class="tk-score-nums">
+        <div class="tk-score-cell"><span class="n">${s.total}</span><span class="l">Assigned</span></div>
+        <div class="tk-score-cell done"><span class="n">${s.done}</span><span class="l">Completed</span></div>
+        <div class="tk-score-cell"><span class="n">${s.open}</span><span class="l">Open</span></div>
+        <div class="tk-score-cell over"><span class="n">${s.overdue}</span><span class="l">Not completed</span></div>
+      </div>
+      <div class="tk-score-pcts">
+        <div class="tk-score-pct">
+          <div class="tk-score-pct-top"><span>This month</span><b>${s.mPct}%</b></div>
+          <div class="tk-bar"><span style="width:${s.mPct}%"></span></div>
+          <div class="tk-score-pct-sub">${s.mDone} of ${s.mTotal} done</div>
+        </div>
+        <div class="tk-score-pct">
+          <div class="tk-score-pct-top"><span>Overall</span><b>${s.pct}%</b></div>
+          <div class="tk-bar"><span style="width:${s.pct}%"></span></div>
+          <div class="tk-score-pct-sub">${s.done} of ${s.total} done</div>
+        </div>
+      </div>
+      <div class="tk-score-go"><i class="ti ti-arrow-right"></i> View tasks</div>
+    </div>`;
+  }).join('');
+  host.innerHTML = `<div class="tk-score-head"><i class="ti ti-checklist"></i> ${tkEsc(heading)}</div>
+    <div class="tk-score-grid">${cards}</div>`;
 }
+/* admin: jump to My Tasks pre-filtered to a person; rep: just open My Tasks */
+function tasksScoreGo(uid){
+  if(uid && typeof tkFilterEmp!=='undefined') tkFilterEmp=uid;
+  nav('tasks', document.querySelector(".nav-item[onclick*='tasks']"));
+}
+/* back-compat: existing call sites still call tasksDashStat() */
+function tasksDashStat(){ tasksScoreRender(); }
 
 async function recExtractFile(file, targetId){
   const out=document.getElementById(targetId); if(!out) return;
@@ -5229,6 +5353,7 @@ async function hubBoot(){
         try{ await cloudHydrate(); }catch(e){}
         cloudReady = true;
         migrateUserEmails();
+        migrateStephanieName();
         try{ await cloudBridgeFromLRC(); }catch(e){}
         const u = findUserByEmail(session.user.email.toLowerCase());
         if(u){ enterApp(u); return; }
@@ -6103,8 +6228,8 @@ function ptoCollectAlerts(asOfISO){
         title:`Auto-added ${ptoH(c.recentApplied.added)} (${c.recentApplied.days} days)`,
         desc:`Anniversary on <b>${ptoFmt(c.recentApplied.dateISO)}</b> — bank rolled to <b>${ptoH(c.recentApplied.bank)}</b> for year <b>${c.recentApplied.years}</b>.`});
     }
-    // upcoming Jan 1 lump-sum frontload
-    if(c.soonJan1){
+    // upcoming Jan 1 lump-sum frontload (PTO-eligible only — no frontload for part-time/ineligible)
+    if(c.soonJan1 && c.eligible){
       out.push({empId:emp.id, name:emp.name, type:'soon', due:false, date:ptoISO(c.soonJan1),
         title:`Jan 1 lump sum: +${ptoH(c.lumpNextHours)} (${c.lumpNextDays} days) in ${c.soonJan1Days} day${c.soonJan1Days===1?'':'s'}`,
         desc:`On <b>${ptoFmt(c.soonJan1)}</b> the full annual PTO is frontloaded — bank goes to <b>${ptoH(c.nextJan1Balance)}</b> after rollover.`+
@@ -6119,11 +6244,14 @@ function ptoCollectAlerts(asOfISO){
         desc: inc ? `On <b>${ptoFmt(c.soonAnniv)}</b> the tier step-up adds <b>${ptoH(c.nextGrant)}</b> to the bank.`
                   : `On <b>${ptoFmt(c.soonAnniv)}</b> reaches <b>${c.nextYears} years</b>; this tier adds no extra PTO.`});
     }
-    // 90-day reached recently
+    // 90-day reached recently — note the PTO hours now usable for eligible employees
     if(c.ninetyRecent){
+      const ptoNow = c.eligible ? (c.ptoAvailable>0 ? c.ptoAvailable : c.grantHours) : 0;
       out.push({empId:emp.id, name:emp.name, type:'ninety', due:false, date:ptoISO(c.ninetyDate),
-        title:`90-day mark reached — PTO & ${ptoH(c.sickFront)} sick now usable`,
-        desc:`Hit 90 days on <b>${ptoFmt(c.ninetyDate)}</b>.`});
+        title: c.eligible
+          ? `90-day mark reached — ${ptoH(ptoNow)} (${ptoHd(ptoNow)}) PTO & ${ptoH(c.sickFront)} sick now usable`
+          : `90-day mark reached — ${ptoH(c.sickFront)} sick now usable`,
+        desc:`Hit 90 days on <b>${ptoFmt(c.ninetyDate)}</b>.${c.eligible?'':' Part-time — not PTO eligible.'}`});
     }
   });
   out.sort((a,b)=> (a.date<b.date?1:-1) );  // most recent / soonest first
@@ -6210,23 +6338,26 @@ function ptoApplyReadonly(){
   const ro=document.getElementById('pto-readonly'); if(ro) ro.style.display = ed?'none':'inline-flex';
   const ab=document.getElementById('pto-add-btn'); if(ab) ab.style.display = ed?'inline-flex':'none';
   const sb=document.getElementById('pto-settings-btn'); if(sb) sb.style.display = ed?'inline-flex':'none';
-  const rs=document.getElementById('pto-reseed-btn'); if(rs) rs.style.display = (typeof isAdmin==='function'&&isAdmin())?'inline-flex':'none';
-}
-/* Force-load the built-in 2026 active-employee roster (admin only). Replaces the current PTO list. */
-function ptoReseed(){
-  if(typeof isAdmin!=='function' || !isAdmin()) return;
-  if(typeof PTO_SEED==='undefined'){ alert('Roster seed not found in this file.'); return; }
-  if(!confirm('Load the built-in 2026 employee roster ('+PTO_SEED.length+' active employees)? This replaces the current PTO list.')) return;
-  PTO.employees = PTO_SEED.map(x=>Object.assign({}, x));
-  try{ localStorage.setItem(PTO_KEY+'_seeded','1'); }catch(e){}
-  if(!PTO.settings) PTO.settings = ptoDefault().settings;
-  ptoMigrate(); ptoAdvanceAll(true); ptoSave(); ptoRenderAll();
+  const adminBar=document.getElementById('pto-admin-bar'); if(adminBar){ adminBar.style.display = ed?'flex':'none'; }
 }
 
 function ptoToggleAlerts(){ ptoAlertsOpen=!ptoAlertsOpen; ptoRenderAlerts(); }
+/* dismissal key for a PTO alert — shared with the dashboard notification bell so
+   clearing in one place clears it in both. Dismissals are per-device (local). */
+function ptoAlertKey(a){ return 'p:'+a.empId+':'+a.type+':'+a.date; }
+function ptoDismissAlert(key){ if(typeof notifDismiss==='function') notifDismiss(key); ptoRenderAlerts(); }
+function ptoClearAlerts(){
+  if(typeof notifDismissedSet!=='function'){ return; }
+  const s=notifDismissedSet();
+  ptoCollectAlerts(ptoAsOf).forEach(a=>s.add(ptoAlertKey(a)));
+  try{ localStorage.setItem(NOTIF_DISMISS_KEY, JSON.stringify([...s])); }catch(e){}
+  if(typeof notifSyncAfterDismiss==='function') notifSyncAfterDismiss();
+  ptoRenderAlerts();
+}
 function ptoRenderAlerts(){
   const host=document.getElementById('pto-alerts-body'); if(!host) return;
-  const alerts=ptoCollectAlerts(ptoAsOf);
+  let alerts=ptoCollectAlerts(ptoAsOf);
+  if(typeof notifDismissedSet==='function'){ const d=notifDismissedSet(); alerts=alerts.filter(a=>!d.has(ptoAlertKey(a))); }
   const cnt=document.getElementById('pto-alerts-count'); if(cnt) cnt.textContent=alerts.length;
   const sub=document.getElementById('pto-alerts-sub');
   if(sub) sub.textContent = alerts.length? `${alerts.length} update${alerts.length===1?'':'s'} · as of ${ptoFmt(ptoAsOf)}` : `Upcoming anniversaries and recent auto-updates`;
@@ -6243,28 +6374,126 @@ function ptoRenderAlerts(){
         <div class="pa-desc">${a.title} — ${a.desc}</div>
       </div>
       <button class="pa-act ghost" onclick="ptoOpenModal('${a.empId}')">Open</button>
+      <button class="pa-del" title="Dismiss this update" aria-label="Dismiss" onclick="ptoDismissAlert('${ptoAlertKey(a)}')"><i class="ti ti-x"></i></button>
     </div>`;
   }).join('');
-  let more='';
+  let moreBtn='';
   if(alerts.length > PTO_ALERTS_PREVIEW){
-    more = ptoAlertsOpen
-      ? `<div class="pa-more"><button onclick="ptoToggleAlerts()"><i class="ti ti-chevron-up"></i> Show less</button></div>`
-      : `<div class="pa-more"><button onclick="ptoToggleAlerts()"><i class="ti ti-chevron-down"></i> Show ${alerts.length-PTO_ALERTS_PREVIEW} more</button></div>`;
+    moreBtn = ptoAlertsOpen
+      ? `<button onclick="ptoToggleAlerts()"><i class="ti ti-chevron-up"></i> Show less</button>`
+      : `<button onclick="ptoToggleAlerts()"><i class="ti ti-chevron-down"></i> Show ${alerts.length-PTO_ALERTS_PREVIEW} more</button>`;
   }
-  host.innerHTML = rows + more;
+  const foot = `<div class="pa-foot">
+    <span class="pa-more" style="padding:0;justify-content:flex-start">${moreBtn}</span>
+    <span class="pa-clear"><button onclick="ptoClearAlerts()"><i class="ti ti-checks"></i> Clear all</button></span>
+  </div>`;
+  host.innerHTML = rows + foot;
 }
 
 function ptoRenderSummary(){
   const host=document.getElementById('pto-summary'); if(!host) return;
   const emps=PTO.employees;
-  let ptoHrs=0, sickHrs=0, soon=0, applied=0;
-  emps.forEach(e=>{ const c=ptoCompute(e,ptoAsOf); ptoHrs+=c.ptoAvailable; sickHrs+=c.sickAvailable; if(c.soonAnniv) soon++; if(c.recentApplied&&c.recentApplied.added) applied++; });
+  let sickHrs=0, soon=0, applied=0, forfeitCnt=0, forfeitHrs=0;
+  emps.forEach(e=>{ const c=ptoCompute(e,ptoAsOf); sickHrs+=c.sickAvailable; if(c.soonAnniv) soon++; if(c.recentApplied&&c.recentApplied.added) applied++; if(c.eligible && c.forfeitAtJan1>0.1){ forfeitCnt++; forfeitHrs+=c.forfeitAtJan1; } });
   const tile=(lbl,ic,val,sub,accent)=>`<div class="tr-tile"><div class="tr-tile-label"><i class="ti ${ic}"></i> ${lbl}</div><div class="tr-tile-val ${accent?'accent':''}">${val}</div><div class="tr-tile-sub">${sub}</div></div>`;
+  const forfeitTile = forfeitCnt
+    ? `<div class="tr-tile tr-tile-click" onclick="ptoForfeitModal()" title="Click to see who's affected"><div class="tr-tile-label"><i class="ti ti-alert-triangle"></i> Forfeit risk</div><div class="tr-tile-val">${forfeitCnt}</div><div class="tr-tile-sub">At risk of forfeiting PTO hours on Jan 1</div><div class="tr-tile-more"><i class="ti ti-list-search"></i> View employees</div></div>`
+    : tile('Forfeit risk','ti-alert-triangle',0,'No one over the cap');
   host.innerHTML =
     tile('Employees','ti-users',emps.length, emps.length? 'On the PTO roster':'Add your first employee', true) +
-    tile('PTO available','ti-beach',ptoH(ptoHrs), emps.length?`${ptoHd(ptoHrs)} across the team`:'—') +
+    forfeitTile +
     tile('Upcoming (45 days)','ti-clock',soon, soon?'Anniversaries auto-applying soon':'None in the next 45 days') +
     tile('Recently applied','ti-gift',applied, applied?'Auto-grants in the last 30 days':'No recent auto-grants');
+}
+
+/* ── forfeit-risk detail modal ── */
+function ptoForfeitModal(){
+  const list=[]; let total=0;
+  ((PTO&&PTO.employees)||[]).forEach(e=>{
+    const c=ptoCompute(e,ptoAsOf);
+    if(c.eligible && c.forfeitAtJan1>0.1){ list.push({e,c}); total+=c.forfeitAtJan1; }
+  });
+  list.sort((a,b)=> b.c.forfeitAtJan1 - a.c.forfeitAtJan1);
+  const body=document.getElementById('pto-forfeit-body');
+  const sub=document.getElementById('pto-forfeit-sub');
+  if(sub) sub.textContent = list.length? `${list.length} employee${list.length===1?'':'s'} · ${ptoH(total)} (${ptoHd(total)}) projected to be lost` : 'No one over the cap';
+  if(body){
+    if(!list.length){
+      body.innerHTML = `<div class="pa-empty"><i class="ti ti-circle-check"></i>No one is projected over the cap right now.</div>`;
+    } else {
+      const tr = list.map(({e,c})=>{
+        const cap = c.capHours!=null ? ptoH(c.capHours) : '—';
+        return `<tr>
+          <td><b>${ptoEsc(e.name||'—')}</b>${e.leadership?' <span class="pf-lead">Lead</span>':''}</td>
+          <td>${ptoEsc(e.location||'—')}</td>
+          <td>${ptoEsc(e.notes||'—')}</td>
+          <td>${c.yearsWhole}y</td>
+          <td style="text-align:right">${ptoH(c.ptoAvailable)}</td>
+          <td style="text-align:right">${ptoH(c.nextJan1Balance)}</td>
+          <td style="text-align:right">${cap}</td>
+          <td style="text-align:right;color:#c0392b;font-weight:800">${ptoH(c.forfeitAtJan1)}</td>
+        </tr>`;
+      }).join('');
+      body.innerHTML = `
+        <p class="pf-intro">These employees are projected to go over their PTO cap when the full annual amount is frontloaded on <b>Jan 1</b>. Hours above the cap don't roll over and are lost — a good prompt to encourage them to schedule time off before year-end.</p>
+        <div class="pf-wrap"><table class="pf-tbl">
+          <thead><tr><th>Employee</th><th>Loc</th><th>Department</th><th>Tenure</th><th style="text-align:right">Avail now</th><th style="text-align:right">Proj. Jan 1</th><th style="text-align:right">Cap</th><th style="text-align:right">Forfeits</th></tr></thead>
+          <tbody>${tr}</tbody>
+          <tfoot><tr><td colspan="7" style="text-align:right;font-weight:700">Total at risk</td><td style="text-align:right;color:#c0392b;font-weight:800">${ptoH(total)} (${ptoHd(total)})</td></tr></tfoot>
+        </table></div>`;
+    }
+  }
+  const m=document.getElementById('pto-forfeit-modal'); if(m) m.classList.add('open');
+}
+function ptoCloseForfeit(){ const m=document.getElementById('pto-forfeit-modal'); if(m) m.classList.remove('open'); }
+
+/* ── employee-list export (snapshot of PTO state at download time) ── */
+function ptoExportRows(){
+  const head=['Name','Location','Department','Eligible','Hire date','Tenure','PTO avail (h)','PTO avail (d)','Sick avail (h)','PTO usable','Next anniversary','Forfeit Jan 1 (h)'];
+  const hpd=ptoHPD();
+  const r1=v=>Math.round((+v||0)*10)/10;
+  const rows=((PTO&&PTO.employees)||[]).slice()
+    .sort((a,b)=>String(a.name||'').localeCompare(String(b.name||'')))
+    .map(e=>{
+      const c=ptoCompute(e,ptoAsOf);
+      const elig = e.partTime ? 'No (part-time)' : (c.eligible?'Yes':'No');
+      const tenure = c.asd ? `${c.yearsWhole}y ${c.monthsDisp}m` : '—';
+      const usable = c.ptoUsable ? 'Yes' : (c.ninetyDate? ('on '+ptoFmt(c.ninetyDate)) : '—');
+      const nextA = c.nextAnniv ? ptoFmt(c.nextAnniv) : '—';
+      const forf = (c.eligible && c.forfeitAtJan1>0.1) ? r1(c.forfeitAtJan1) : 0;
+      return [e.name||'—', e.location||'—', e.notes||'—', elig, e.hireDate||'—', tenure,
+              r1(c.ptoAvailable), r1(c.ptoAvailable/hpd), r1(c.sickAvailable), usable, nextA, forf];
+    });
+  const today=new Date();
+  return {head, rows, title:'PTO Snapshot — '+today.toLocaleDateString(), file:'PTO_Snapshot_'+today.toISOString().slice(0,10)};
+}
+function ptoExportCSV(){
+  const {head,rows,file}=ptoExportRows();
+  const cell = (typeof recCSVCell==='function') ? recCSVCell : (v=>{ v=String(v==null?'':v); return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; });
+  const csv=[head].concat(rows).map(r=>r.map(cell).join(',')).join('\r\n');
+  const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});
+  if(typeof recDownload==='function'){ recDownload(blob, file+'.csv'); return; }
+  const url=URL.createObjectURL(blob), a=document.createElement('a');
+  a.href=url; a.download=file+'.csv'; document.body.appendChild(a); a.click();
+  setTimeout(()=>{ document.body.removeChild(a); URL.revokeObjectURL(url); },1000);
+}
+async function ptoExportPDF(){
+  const {head,rows,title,file}=ptoExportRows();
+  try{
+    await recLoadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+    await recLoadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js');
+    const JS = window.jspdf && window.jspdf.jsPDF; if(!JS) throw new Error('no jsPDF');
+    const doc=new JS({orientation:'landscape', unit:'pt', format:'letter'});
+    doc.setFontSize(14); doc.setTextColor(12,68,124); doc.text(title, 30, 38);
+    doc.setFontSize(9); doc.setTextColor(130,130,130);
+    doc.text('Generated '+new Date().toLocaleString()+' · '+rows.length+' employees · Confidential', 30, 52);
+    doc.autoTable({ head:[head], body:rows, startY:64, styles:{fontSize:7.5, cellPadding:3, overflow:'linebreak'},
+      headStyles:{fillColor:[24,95,165], textColor:255}, alternateRowStyles:{fillColor:[245,247,250]}, margin:{left:30,right:30} });
+    doc.save(file+'.pdf');
+  }catch(e){
+    if(typeof recPrintFallback==='function') recPrintFallback(title, head, rows);
+    else alert('PDF export needs an internet connection for the PDF library — use CSV instead.');
+  }
 }
 
 function ptoRowSort(a,b){
