@@ -204,6 +204,9 @@ a{color:inherit;text-decoration:none}
 .yt-progress-fill{height:100%;background:linear-gradient(90deg,var(--blue-400),var(--blue-800));border-radius:20px;transition:width .4s ease;width:0}
 .yt-reset{margin-left:auto;border:1px solid var(--gray-200);background:none;border-radius:20px;padding:7px 13px;font-size:12px;font-weight:600;color:var(--gray-500);cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px;transition:all .15s}
 .yt-reset:hover{border-color:var(--red-600);color:var(--red-600);background:#FCEBEB}
+.tr-restore-btn{border:1px solid var(--gray-200);background:none;border-radius:20px;padding:7px 13px;font-size:12px;font-weight:600;color:var(--blue-600);cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:5px;transition:all .15s}
+.tr-restore-btn:hover{border-color:var(--blue-600);background:var(--blue-50)}
+.tr-restore-btn:disabled{opacity:.7;cursor:default}
 
 .yt-legend{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:18px;font-size:11.5px;color:var(--gray-500)}
 .yt-legend span{display:inline-flex;align-items:center;gap:6px}
@@ -1036,6 +1039,11 @@ select.rec-in{appearance:auto;cursor:pointer}
 .nm-item:first-child{border-top:none}
 .nm-ic2{width:34px;height:34px;border-radius:9px;background:var(--blue-50);color:var(--blue-600);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;flex-shrink:0}
 .nm-ic2.all{background:#EEEBFC;color:#5B4FCF}
+.nm-ic2.celeb{background:#FFF4E2;border:1px solid #F6E2BE}
+.nm-emoji{font-size:18px;line-height:1}
+.nm-group{display:flex;align-items:center;gap:7px;font-size:11.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--gray-500);padding:12px 0 5px;margin-top:4px}
+.nm-group:first-of-type{margin-top:0}
+.nm-grp-emoji{font-size:14px}
 .nm-info{flex:1;min-width:0}
 .nm-name{font-size:13.5px;font-weight:600;color:var(--gray-900)}
 .nm-meta{font-size:11.5px;color:var(--gray-500);margin-top:1px}
@@ -1721,6 +1729,7 @@ select.rec-in{appearance:auto;cursor:pointer}
             <div class="yt-year-seg" id="tr-state-seg"></div>
           </div>
           <button class="yt-reset" id="tr-reset" onclick="trResetYear()"><i class="ti ti-rotate"></i> Reset year</button>
+          <button class="tr-restore-btn" id="tr-restore" onclick="trRestoreFromCloud()" title="Pull this year's turnover from the Leadership cloud copy back into this device"><i class="ti ti-cloud-download"></i> Restore from cloud</button>
           <span class="tr-readonly-note" id="tr-readonly" style="display:none"><i class="ti ti-eye"></i> View only · ask HR to edit</span>
         </div>
 
@@ -2016,6 +2025,97 @@ async function sha256(str){
 /* ── Users + permissions ── */
 const USERS_KEY = 'hrhub_users';
 const SESSION_KEY = 'hrhub_session';
+
+/* ══════════════════════════════════════════════════════════════════════════
+   CLOUD SYNC + SUPABASE AUTH  (Phase 1)
+   ──────────────────────────────────────────────────────────────────────────
+   Every "hrhub_*" data blob is mirrored to a single Supabase table
+   (hrhub_store: key → jsonb), behind real login. On sign-in we pull the cloud
+   copy down into localStorage (cloud wins on conflicts) and seed the cloud from
+   any local-only keys, so no existing data is lost at cutover. After that, any
+   save to localStorage is debounce-pushed up. Identity + passwords are handled
+   by Supabase Auth, so the same account works on any device/browser.
+   Per-device/ephemeral keys are never synced.
+   ══════════════════════════════════════════════════════════════════════════ */
+const CLOUD_URL  = 'https://zozpomjvvrhjgqbazmrd.supabase.co';
+const CLOUD_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpvenBvbWp2dnJoamdxYmF6bXJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5MDE0NDgsImV4cCI6MjA5NTQ3NzQ0OH0.TJmx6C3VfnXlMNS6Ss-5iYwgtkhc2ryoaLggOmV_At8';
+const CLOUD_TABLE = 'hrhub_store';
+const CLOUD_SYNC_EXCLUDE = new Set(['hrhub_session','hrhub_rec_key','hrhub_notif_dismissed']);
+let cloudReady = false;                  // true only after a successful sign-in + hydrate
+const _pushQueue = new Map(); let _pushTimer = null;
+let _sb = null, _sbInit = null;
+
+function _syncable(k){ return typeof k==='string' && k.indexOf('hrhub_')===0 && !CLOUD_SYNC_EXCLUDE.has(k); }
+
+function cloudInit(){
+  if(_sb) return Promise.resolve(_sb);
+  if(_sbInit) return _sbInit;
+  _sbInit = (async function(){
+    try{
+      if(typeof recLoadScript!=='function') return null;
+      await recLoadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2');
+      if(!window.supabase || !window.supabase.createClient) return null;
+      _sb = window.supabase.createClient(CLOUD_URL, CLOUD_ANON, { auth:{ persistSession:true, autoRefreshToken:true } });
+      return _sb;
+    }catch(e){ console.warn('cloudInit failed', e); return null; }
+  })();
+  return _sbInit;
+}
+
+/* pull cloud → local (cloud wins), then seed cloud from local-only keys */
+async function cloudHydrate(){
+  const sb = await cloudInit(); if(!sb) return false;
+  let rows = [];
+  try{ const { data, error } = await sb.from(CLOUD_TABLE).select('key,value'); if(error) throw error; rows = data||[]; }
+  catch(e){ console.warn('cloud hydrate (pull) failed', e); return false; }
+  const cloudKeys = new Set();
+  rows.forEach(function(r){
+    if(!r || !r.key) return;
+    cloudKeys.add(r.key);
+    if(!_syncable(r.key)) return;
+    let s; try{ s = (typeof r.value==='string') ? r.value : JSON.stringify(r.value); }catch(e){ s=null; }
+    if(s!=null){ try{ window.localStorage.setItem(r.key, s); }catch(e){} }   // cloudReady still false → no echo push
+  });
+  // first-migration seed: push up any local-only syncable keys (preserves this device's existing data)
+  const toSeed = [];
+  try{
+    for(let i=0;i<window.localStorage.length;i++){
+      const k = window.localStorage.key(i);
+      if(_syncable(k) && !cloudKeys.has(k)){
+        const v = window.localStorage.getItem(k); let val; try{ val=JSON.parse(v); }catch(e){ val=v; }
+        toSeed.push({ key:k, value:val, updated_at:new Date().toISOString() });
+      }
+    }
+  }catch(e){}
+  if(toSeed.length){ try{ await sb.from(CLOUD_TABLE).upsert(toSeed,{ onConflict:'key' }); }catch(e){ console.warn('cloud seed failed', e); } }
+  return true;
+}
+
+async function _cloudFlush(){
+  _pushTimer = null;
+  if(!cloudReady) return;
+  const sb = await cloudInit(); if(!sb) return;
+  const entries = [..._pushQueue.entries()]; _pushQueue.clear();
+  const sets = [], dels = [];
+  entries.forEach(function(pair){
+    const k=pair[0], v=pair[1];
+    if(v===null){ dels.push(k); }
+    else { let val; try{ val=JSON.parse(v); }catch(e){ val=v; } sets.push({ key:k, value:val, updated_at:new Date().toISOString() }); }
+  });
+  try{ if(sets.length) await sb.from(CLOUD_TABLE).upsert(sets,{ onConflict:'key' }); }catch(e){ console.warn('cloud push failed', e); }
+  try{ for(const k of dels) await sb.from(CLOUD_TABLE).delete().eq('key', k); }catch(e){ console.warn('cloud delete failed', e); }
+}
+function _cloudSchedule(){ if(_pushTimer) return; _pushTimer = setTimeout(_cloudFlush, 700); }
+
+/* intercept localStorage writes so every data save mirrors to the cloud */
+(function installCloudStorageSync(){
+  try{
+    const proto = Storage.prototype;
+    const origSet = proto.setItem, origRemove = proto.removeItem;
+    proto.setItem = function(k,v){ origSet.call(this,k,v); try{ if(this===window.localStorage && cloudReady && _syncable(k)){ _pushQueue.set(k,v); _cloudSchedule(); } }catch(e){} };
+    proto.removeItem = function(k){ origRemove.call(this,k); try{ if(this===window.localStorage && cloudReady && _syncable(k)){ _pushQueue.set(k,null); _cloudSchedule(); } }catch(e){} };
+  }catch(e){ console.warn('storage sync install failed', e); }
+})();
 // Sections that access can be granted to (Dashboard is always available).
 const PERM_SECTIONS = [
   {id:'yearly', label:'Yearly Tasks'},
@@ -2078,17 +2178,23 @@ async function attemptLogin(){
   const email = emailEl.value.trim().toLowerCase();
   const pass  = passEl.value;
   if(!email || !pass){ showLoginError('Enter your email and password.'); return; }
-  btn.disabled = true; btn.textContent = 'Checking…';
-  const hash = await sha256(pass);
-  btn.disabled = false; btn.textContent = 'Sign in';
+  btn.disabled = true; btn.textContent = 'Signing in…';
+  const sb = await cloudInit();
+  if(!sb){ btn.disabled=false; btn.textContent='Sign in'; showLoginError('Couldn\u2019t reach the sign-in service. Check your connection and try again.'); return; }
+  let authErr=null;
+  try{ const { error } = await sb.auth.signInWithPassword({ email, password:pass }); authErr=error; }
+  catch(e){ authErr=e; }
+  if(authErr){ btn.disabled=false; btn.textContent='Sign in'; showLoginError('Incorrect email or password.'); passEl.value=''; passEl.focus(); return; }
+  await cloudHydrate();
+  cloudReady = true;
   const u = findUserByEmail(email);
-  if(u && u.passHash === hash){
-    sessionStorage.setItem(SESSION_KEY, u.email);
-    enterApp(u);
-  } else {
-    showLoginError('Incorrect email or password.');
-    passEl.value = ''; passEl.focus();
+  btn.disabled = false; btn.textContent = 'Sign in';
+  if(!u){
+    showLoginError('This account isn\u2019t set up in the Hub yet — ask an admin to add you.');
+    cloudReady = false; try{ await sb.auth.signOut(); }catch(e){}
+    return;
   }
+  enterApp(u);
 }
 
 function showLoginError(msg){
@@ -2142,9 +2248,11 @@ function enterApp(user){
   if(can('settings')) renderSettings();
 }
 
-function doLogout(){
+async function doLogout(){
   if(typeof recWipeSensitive==='function') recWipeSensitive();
   if(typeof tsWipe==='function') tsWipe();
+  try{ const sb=await cloudInit(); if(sb) await sb.auth.signOut(); }catch(e){}
+  cloudReady = false;
   sessionStorage.removeItem(SESSION_KEY);
   CURRENT = null;
   location.reload();
@@ -2851,6 +2959,7 @@ function trSetView(v){ if(v===trView) return; trView=v; trRender(); }
 function trRenderToolbar(){
   const canEdit=trCanEdit();
   const reset=document.getElementById('tr-reset'); if(reset) reset.style.display=(canEdit && isAdmin())?'':'none';
+  const restore=document.getElementById('tr-restore'); if(restore) restore.style.display=canEdit?'':'none';
   const ro=document.getElementById('tr-readonly');
   if(ro){
     if(!canEdit){ ro.innerHTML='<i class="ti ti-eye"></i> View only · ask HR to edit'; ro.style.display='inline-flex'; }
@@ -2988,6 +3097,33 @@ function trResetYear(){
   trData={}; try{ localStorage.removeItem(trKey(trYear)); }catch(e){}
   trRender(); renderDashTurnover();
 }
+/* Pull this year's turnover from the Leadership cloud copy (Supabase) back into
+   this device. Cloud values win per month; months that exist only on this device
+   are kept, so a restore never deletes local-only data. */
+async function trRestoreFromCloud(){
+  if(!trCanEdit()) return;
+  if(typeof window.hubPullTurnover!=='function'){ alert('Cloud restore isn\u2019t available in this build.'); return; }
+  if(!confirm('Restore '+trYear+' turnover from the Leadership cloud copy?\n\nThis fills this device in from the saved cloud copy. Months that exist only on this device are kept; where both have the same month, the cloud copy wins.')) return;
+  const btn=document.getElementById('tr-restore');
+  if(btn){ btn.disabled=true; btn.innerHTML='<i class="ti ti-loader-2 rec-spin"></i> Restoring\u2026'; }
+  let row=null, errored=false;
+  try{ row = await window.hubPullTurnover(trYear); }
+  catch(e){ errored=true; }
+  if(btn){ btn.disabled=false; btn.innerHTML='<i class="ti ti-cloud-download"></i> Restore from cloud'; }
+  if(errored){ alert('Couldn\u2019t reach the cloud. Check your connection and try again.'); return; }
+  if(!row || !row.data || typeof row.data!=='object' || !Object.keys(row.data).length){
+    alert('No cloud copy was found for '+trYear+'. Nothing to restore.'); return;
+  }
+  const cloud=row.data;
+  const merged=Object.assign({}, trData);
+  Object.keys(cloud).forEach(function(k){ merged[k]=cloud[k]; });
+  trData=merged;
+  trSave();                       // writes localStorage + re-pushes so cloud = local again
+  trRender(); renderDashTurnover();
+  const n=Object.keys(cloud).length;
+  const when=row.updated_at ? new Date(row.updated_at).toLocaleString() : 'an earlier date';
+  alert('Restored '+n+' month'+(n===1?'':'s')+' of '+trYear+' turnover from the cloud (cloud copy saved '+when+').');
+}
 
 /* ══════════════ NOTIFICATIONS (dashboard) ══════════════ */
 let notifYear = 2026;
@@ -3001,7 +3137,7 @@ function notifClearAll(){ try{ localStorage.removeItem(NOTIF_DISMISS_KEY); }catc
 function notifDismissVisible(){
   const s=notifDismissedSet();
   notifCollect(notifMode).forEach(it=>s.add(it.dkey));
-  if(can('pto') && typeof ptoCollectAlerts==='function'){ ptoCollectAlerts(ptoAsOf||ptoTodayISO()).forEach(a=>s.add('p:'+a.empId+':'+a.type+':'+a.date)); }
+  if(typeof celebCollect==='function'){ celebCollect().forEach(c=>s.add(c.dkey)); }
   try{ localStorage.setItem(NOTIF_DISMISS_KEY, JSON.stringify([...s])); }catch(e){}
   notifSyncAfterDismiss();
 }
@@ -3035,11 +3171,11 @@ function renderNotifications(){
   if(toggle) toggle.style.display = can('settings') ? 'inline-flex' : 'none';
   if(!can('settings')) notifMode='mine';
   const items = notifCollect(notifMode);
-  const ptoN = (typeof ptoDashNotifs==='function' && can('pto')) ? ptoDashNotifs() : {html:'',count:0};
-  const total = items.length + ptoN.count;
+  const celebs = (typeof celebCollect==='function') ? celebCollect() : [];
+  const total = items.length + celebs.length;
   const cnt = document.getElementById('dn-count'); if(cnt) cnt.textContent = total;
   const hint = document.getElementById('nt-hint');
-  if(hint) hint.textContent = total ? `${total} open · tap to view${total>0?' & clear':''}` : "You're all caught up.";
+  if(hint) hint.textContent = total ? `${total} update${total===1?'':'s'} · tap to view` : "You're all caught up.";
   const host = document.getElementById('dash-notifs'); // hidden, kept for compatibility
   if(host) host.innerHTML = '';
 }
@@ -3049,12 +3185,31 @@ function dnSetMode(m){ notifMode=m; document.querySelectorAll('.dn-tab').forEach
 function renderNotifModal(){
   const body=document.getElementById('nm-body'); const sub=document.getElementById('nm-sub'); if(!body) return;
   const items=notifCollect(notifMode);
-  const ptoM = (typeof ptoModalNotifs==='function' && can('pto')) ? ptoModalNotifs() : {html:'',count:0};
-  const total = items.length+ptoM.count;
-  if(sub) sub.textContent = (notifMode==='mine'?'Assigned to you or everyone':'All open assignments')+' · '+notifYear+' · '+total+' open';
-  if(!total){ body.innerHTML='<div class="nm-empty"><i class="ti ti-circle-check"></i>You\u2019re all caught up — no open notifications.</div>'; return; }
+  const celebs = (typeof celebCollect==='function') ? celebCollect() : [];
+  const total = items.length+celebs.length;
+  if(sub) sub.textContent = total+' update'+(total===1?'':'s')+' · '+(notifMode==='mine'?'your tasks & celebrations':'all tasks & celebrations');
+  if(!total){ body.innerHTML='<div class="nm-empty"><i class="ti ti-circle-check"></i>You\u2019re all caught up — no new updates.</div>'; return; }
   const clearBar = `<div class="nm-clear"><button onclick="notifDismissVisible()"><i class="ti ti-checks"></i> Clear all</button></div>`;
-  body.innerHTML = clearBar + items.map(it=>`
+  let html = clearBar;
+  // 🎉 Celebrations this week (birthdays & work anniversaries)
+  if(celebs.length){
+    html += `<div class="nm-group"><span class="nm-grp-emoji">\uD83C\uDF89</span> Celebrations this week</div>`;
+    html += celebs.map(c=>`
+    <div class="nm-item">
+      <span class="nm-ic2 celeb"><span class="nm-emoji">${c.emoji}</span></span>
+      <div class="nm-info">
+        <div class="nm-name">${ytEsc(c.name)}</div>
+        <div class="nm-meta">${ytEsc(c.label)} · ${ytEsc(c.when)}</div>
+      </div>
+      <div class="nm-actions">
+        <button class="nm-del" title="Dismiss" aria-label="Dismiss" onclick="notifDismiss('${c.dkey}')"><i class="ti ti-x"></i></button>
+      </div>
+    </div>`).join('');
+  }
+  // 📋 Tasks (assigned from My Tasks)
+  if(items.length){
+    html += `<div class="nm-group"><span class="nm-grp-emoji">\uD83D\uDCCB</span> Tasks</div>`;
+    html += items.map(it=>`
     <div class="nm-item">
       <span class="nm-ic2 ${it.everyone?'all':''}"><i class="ti ${it.everyone?'ti-users':'ti-clipboard-text'}"></i></span>
       <div class="nm-info">
@@ -3065,7 +3220,9 @@ function renderNotifModal(){
         <button class="nm-open" onclick="closeNotifModal();ytOpenTask(${notifYear})">Open</button>
         <button class="nm-del" title="Dismiss" aria-label="Dismiss" onclick="notifDismiss('${it.dkey}')"><i class="ti ti-x"></i></button>
       </div>
-    </div>`).join('') + ptoM.html;
+    </div>`).join('');
+  }
+  body.innerHTML = html;
 }
 function openNotifModal(){ const m=document.getElementById('notif-modal'); if(!m) return; renderNotifModal(); m.classList.add('open'); }
 function closeNotifModal(){ const m=document.getElementById('notif-modal'); if(m) m.classList.remove('open'); }
@@ -3114,7 +3271,7 @@ function renderSettingsForm(){
     <div class="sf-grid">
       <div class="sf-field"><label>Name</label><input id="sf-name" value="${editing?ytEsc(editing.name||''):''}" placeholder="Full name"/></div>
       <div class="sf-field"><label>Email</label><input id="sf-email" type="email" value="${editing?ytEsc(editing.email):''}" placeholder="name@wsdisplay.com" ${editing?'disabled':''}/></div>
-      <div class="sf-field"><label>${editing?'New password (leave blank to keep)':'Password'}</label><input id="sf-pass" type="password" placeholder="${editing?'••••••••':'Set a password'}"/></div>
+      <div class="sf-field"><label>Sign-in &amp; password</label><div class="sf-note" style="font-size:12px;color:var(--gray-500);line-height:1.45;padding:8px 0">Managed in <b>Supabase Auth</b>. Create the account there with this same email; password resets happen in Supabase too.</div></div>
       <div class="sf-field"><label>Role</label>
         <select id="sf-role" onchange="document.getElementById('sf-perms').style.display=this.value==='admin'?'none':'block'">
           <option value="member" ${role==='member'?'selected':''}>Member</option>
@@ -3141,7 +3298,6 @@ async function settingsSave(){
   if(!can('settings')) return;
   const name=document.getElementById('sf-name').value.trim();
   const email=(document.getElementById('sf-email').value||'').trim().toLowerCase();
-  const pass=document.getElementById('sf-pass').value;
   const role=document.getElementById('sf-role').value;
   const users=loadUsers();
   const editing = settingsEditId ? users.find(u=>u.id===settingsEditId) : null;
@@ -3149,7 +3305,6 @@ async function settingsSave(){
   if(!editing){
     if(!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ sfMsg('Enter a valid email.',false); return; }
     if(users.some(u=>u.email===email)){ sfMsg('A user with that email already exists.',false); return; }
-    if(!pass){ sfMsg('Set a password.',false); return; }
   }
   const access={}, caps={};
   if(role!=='admin'){
@@ -3158,13 +3313,12 @@ async function settingsSave(){
   }
   if(editing){
     editing.name=name; editing.role=role; editing.access=access; editing.caps=caps;
-    if(pass){ editing.passHash=await sha256(pass); }
     saveUsers(users);
     if(CURRENT.id===editing.id){ CURRENT=editing; applyPermissions(); const _n=document.getElementById('su-name'); if(_n)_n.textContent=editing.name||editing.email; const _a=document.getElementById('su-avatar'); if(_a)_a.textContent=userInitials(editing); const _r=document.getElementById('su-role'); if(_r)_r.textContent=editing.role==='admin'?'Admin':'Member'; if(typeof setHeroGreeting==='function')setHeroGreeting(); }
     settingsEditId=null; sfMsg('Saved.',true);
   } else {
-    const u={ id:'u_'+Date.now().toString(36)+Math.floor(Math.random()*1000).toString(36), name, email, passHash:await sha256(pass), role, access, caps };
-    users.push(u); saveUsers(users); sfMsg('User added.',true);
+    const u={ id:'u_'+Date.now().toString(36)+Math.floor(Math.random()*1000).toString(36), name, email, role, access, caps };
+    users.push(u); saveUsers(users); sfMsg('Added. Now create their login in Supabase Auth with the same email so they can sign in.',true);
   }
   renderSettings();
   if(typeof ytRenderList==='function' && document.getElementById('screen-yearly').classList.contains('active')) ytRenderList();
@@ -4933,17 +5087,28 @@ function dashRecRender(){
 
 
 /* ══════════════ INIT ══════════════ */
-function hubBoot(){
-  // restore session if already signed in this tab
-  const existing = sessionStorage.getItem(SESSION_KEY);
-  const u = existing ? findUserByEmail(existing) : null;
-  if(u){ enterApp(u); }
-  else { setTimeout(()=>{ const el=document.getElementById('login-email'); if(el) el.focus(); }, 200); }
-
-  // dashboard date
+async function hubBoot(){
+  // dashboard date (do this first so it shows regardless of auth)
   const d = new Date();
   const hd=document.getElementById('hero-date');
   if(hd) hd.textContent = d.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+  // restore a Supabase session if one persists (any device/browser the user signed in on)
+  const sb = await cloudInit();
+  if(sb){
+    try{
+      const res = await sb.auth.getSession();
+      const session = res && res.data ? res.data.session : null;
+      if(session && session.user && session.user.email){
+        try{ await cloudHydrate(); }catch(e){}
+        cloudReady = true;
+        const u = findUserByEmail(session.user.email.toLowerCase());
+        if(u){ enterApp(u); return; }
+        cloudReady = false; try{ await sb.auth.signOut(); }catch(e){}
+      }
+    }catch(e){ console.warn('boot auth check failed', e); }
+  }
+  setTimeout(()=>{ const el=document.getElementById('login-email'); if(el) el.focus(); }, 200);
 }
 /* Run boot only after the entire script has parsed, so every const/let declared
    further down (PTO_KEY, PTO, …) is initialized before enterApp() reads it.
@@ -5820,7 +5985,58 @@ function ptoCollectAlerts(asOfISO){
   return out;
 }
 
-/* state advances automatically on load & render — no manual "apply" needed */
+/* ── celebrations feed (dashboard notifications): birthdays & work anniversaries ──
+   Looks ahead a short window ("this week") from today. Anniversaries come from the
+   employee's adjusted service date (tenure model); birthdays from an optional
+   birthDate (month/day only — year ignored). PTO accrual/hours updates are NOT
+   included here — those apply automatically and live in the PTO tab. */
+const CELEB_WINDOW_DAYS = 7;
+function celebCollect(){
+  if(!PTO || !PTO.employees) return [];
+  const today = ptoParse(ptoTodayISO()); if(!today) return [];
+  const horizon = ptoAddDays(today, CELEB_WINDOW_DAYS);
+  const dismissed = (typeof notifDismissedSet==='function') ? notifDismissedSet() : new Set();
+  const out = [];
+  // next occurrence (today or later) of a month/day, returned as a Date
+  const nextOccur = (mon, day) => {
+    let d = new Date(today.getFullYear(), mon, day);
+    if(d < today) d = new Date(today.getFullYear()+1, mon, day);
+    return d;
+  };
+  PTO.employees.forEach(emp=>{
+    if(!emp || !emp.name) return;
+    // ── work anniversary ──
+    const asd = ptoASD(emp).asd;
+    if(asd){
+      const a = nextOccur(asd.getMonth(), asd.getDate());
+      if(a>=today && a<=horizon){
+        const years = ptoWholeYears(asd, a);
+        if(years>=1){
+          const dkey = 'c:anniv:'+emp.id+':'+a.getFullYear();
+          if(!dismissed.has(dkey)) out.push({type:'anniv', emoji:'\uD83C\uDFC6',
+            name:emp.name, label:`${years}-year anniversary`,
+            when:celebWhen(a), date:ptoISO(a), dkey});
+        }
+      }
+    }
+    // ── birthday (optional birthDate) ──
+    const bd = ptoParse(emp.birthDate);
+    if(bd){
+      const b = nextOccur(bd.getMonth(), bd.getDate());
+      if(b>=today && b<=horizon){
+        const dkey = 'c:bday:'+emp.id+':'+b.getFullYear();
+        if(!dismissed.has(dkey)) out.push({type:'bday', emoji:'\uD83C\uDF82',
+          name:emp.name, label:'Birthday', when:celebWhen(b), date:ptoISO(b), dkey});
+      }
+    }
+  });
+  out.sort((x,y)=> x.date<y.date?-1:(x.date>y.date?1:0)); // soonest first
+  return out;
+}
+function celebWhen(d){
+  try{ return d.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'}); }
+  catch(e){ return ptoFmt(d); }
+}
 function ptoRefresh(){ ptoAdvanceAll(); ptoRenderAll(); if(typeof renderNotifications==='function') renderNotifications(); if(typeof ptoUpdateDashStat==='function') ptoUpdateDashStat(); }
 
 /* ── format hours ── */
@@ -6009,6 +6225,7 @@ function ptoOpenModal(id){
         <label class="pm-check" style="margin-top:8px"><input type="checkbox" id="pm-lead" ${dis} ${e.leadership?'checked':''} onchange="ptoModalRecalc()"> Leadership / salaried <span class="pm-hint" style="display:inline">— uses the Leadership-Salaried PTO chart (10 days from hire, scaling to 15 at 15+ yrs). Leave unchecked for standard hourly staff.</span></label></div>
 
       <div class="pm-section">Service dates</div>
+      <div class="sf-field"><label>Birthday <span class="pm-sec-note">(optional)</span></label><input type="date" id="pm-bday" ${dis} value="${ptoEsc(e.birthDate||'')}"><div class="pm-hint">Month &amp; day power the dashboard's birthday celebrations. Year is ignored.</div></div>
       <div class="sf-field"><label>Original hire date</label><input type="date" id="pm-hire" ${dis} value="${ptoEsc(e.hireDate||'')}" oninput="ptoModalRecalc()"></div>
       <div class="sf-field"><label>&nbsp;</label><label class="pm-check" style="margin-top:8px"><input type="checkbox" id="pm-rehire" ${dis} ${e.rehire?'checked':''} onchange="ptoModalRehireToggle();ptoModalRecalc()"> This is a rehire</label></div>
       <div class="sf-field" id="pm-sep-wrap" style="${e.rehire?'':'display:none'}"><label>Prior separation date</label><input type="date" id="pm-sep" ${dis} value="${ptoEsc(e.priorSepDate||'')}" oninput="ptoModalRecalc()"><div class="pm-hint">When they left the first time — used to bridge prior tenure.</div></div>
@@ -6098,6 +6315,7 @@ function ptoSaveEmp(){
   const draft={name, location:document.getElementById('pm-loc').value,
     ptoEligible:document.getElementById('pm-elig').checked,
     leadership:(document.getElementById('pm-lead')||{}).checked||false,
+    birthDate:(document.getElementById('pm-bday')||{}).value||'',
     hireDate:hire, rehire,
     priorSepDate:rehire?document.getElementById('pm-sep').value:'',
     rehireDate:rehire?document.getElementById('pm-rehdate').value:''};
@@ -6453,6 +6671,25 @@ spawnWaves(document.getElementById('hero-waves'), {
   window.hubPushRecruiting = function(){
     if(!(typeof can==='function' && can('editRecruiting'))) return;
     var p=buildRecruiting(); if(p) lrcPush('recruiting_'+p.year, p);
+  };
+
+  /* ── pull (read-back) from the cloud, used by the Hub's "Restore from cloud" ── */
+  function lrcPull(key){
+    if(!LRC_SB_URL || !LRC_SB_ANON) return Promise.resolve(null);
+    return fetch(LRC_SB_URL + '/rest/v1/' + LRC_TABLE + '?key=eq.' + encodeURIComponent(key) + '&select=payload,updated_at', {
+      headers:{ 'apikey':LRC_SB_ANON, 'Authorization':'Bearer '+LRC_SB_ANON }
+    }).then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+      .then(function(rows){ return (Array.isArray(rows)&&rows.length)?rows[0]:null; });
+  }
+  window.hubPullTurnover = function(year){
+    year = year || lrcYear();
+    return lrcPull('turnover_'+year).then(function(row){
+      if(!row || !row.payload) return null;
+      var p = row.payload;
+      var data = (p && typeof p.data==='object') ? p.data : null;
+      if(!data) return null;
+      return { year:(p.year||year), data:data, updated_at:(row.updated_at||null) };
+    });
   };
 
   /* ── one-time sync shortly after load, so the cloud reflects current data
