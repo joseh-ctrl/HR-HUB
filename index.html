@@ -1375,6 +1375,8 @@ select.rec-in{appearance:auto;cursor:pointer}
 .tk-task.done{border-left-color:var(--green-pop);opacity:.78}
 .tk-task.overdue{border-left-color:var(--red-600)}
 .tk-task.duesoon{border-left-color:var(--amber-800)}
+.tk-task.missed{border-left-color:var(--red-600);background:#FFF8F8}
+.tk-task.missed .tk-task-title{text-decoration:none;color:var(--gray-900)}
 .tk-task-main{flex:1;min-width:0}
 .tk-task-title{font-size:14px;font-weight:700;color:var(--gray-900);line-height:1.35}
 .tk-task.done .tk-task-title{text-decoration:line-through;text-decoration-color:var(--gray-400)}
@@ -1404,6 +1406,7 @@ select.rec-in{appearance:auto;cursor:pointer}
 .tk-status-pill{font-size:10.5px;font-weight:800;letter-spacing:.4px;padding:3px 10px;border-radius:20px;text-transform:uppercase}
 .tk-status-pill.open{background:var(--blue-50);color:var(--blue-800)}
 .tk-status-pill.done{background:var(--green-pop-bg);color:var(--green-pop-deep)}
+.tk-status-pill.missed{background:#F8E4E4;color:var(--red-600)}
 .tk-group-h{font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--gray-500);margin:22px 0 11px;display:flex;align-items:center;gap:8px}
 .tk-group-h .tk-count{background:var(--gray-100);color:var(--gray-600);border-radius:20px;padding:1px 9px;font-size:11px}
 .tk-empty{background:#fff;border:1px dashed var(--gray-200);border-radius:var(--radius-lg);padding:34px 24px;text-align:center;box-shadow:var(--shadow);color:var(--gray-500)}
@@ -2342,6 +2345,7 @@ async function attemptLogin(){
   cloudReady = true;
   migrateUserEmails();
   migrateStephanieName();
+  tkSeed2026();
   await cloudBridgeFromLRC();
   const u = findUserByEmail(email);
   btn.disabled = false; btn.textContent = 'Sign in';
@@ -4653,6 +4657,59 @@ function tkSave(arr){
   if(typeof renderNotifications==='function') renderNotifications();
 }
 
+/* ── One-time import: the 2026 HR Tasks log (HR_Tasks_Duties), so My Tasks and the
+   dashboard percentages reflect real history. Guard-flagged + stable ids → runs once,
+   never duplicates, and rides the universal cloud sync (called when cloudReady is true).
+   Status/missed are derived from due vs. completed dates by tkClass, so the imported
+   rows match the sheet's "Completed on Time" column exactly. Safe to remove later. ── */
+const TK_SEED26_FLAG = 'hrhub_tasks_seed2026_v1';
+const TK_SEED26 = [
+  {id:'seed26_01', who:'u_anahi', t:'Create a procedure to add a new "Namely Time Setup" department on Namely', a:'2025-12-09', d:'2026-01-12', c:'', n:''},
+  {id:'seed26_02', who:'u_anahi', t:'Contact electricians for quotes to replace the parking-light bulbs (obtain at least 2 quotes)', a:'2025-12-04', d:'2026-01-16', c:'', n:'Eric shared a contact who did this work years ago \u2014 worth reaching out: Edward Newell, Design & Specification, Competitive Lighting & Electrical, 1236 Keystone Way, Vista, CA 92081. Direct 760-522-1598 \u00b7 office 760-726-3022 \u00b7 fax 760-414-1614 \u00b7 enewell@competitivelighting.com \u00b7 www.competitivelighting.com. (A revised due date of 1/7/26 was noted on the sheet.)'},
+  {id:'seed26_03', who:'u_anahi', t:'Purchase labor law posters', a:'2026-01-12', d:'2026-01-19', c:'2026-01-26', n:''},
+  {id:'seed26_04', who:'u_anahi', t:'Post Indeed ad for PA Print Operator', a:'2026-01-07', d:'2026-01-13', c:'2026-01-13', n:''},
+  {id:'seed26_05', who:'u_anahi', t:'Create new birthday / gift card log for 2026', a:'2026-01-21', d:'2026-01-26', c:'2026-01-29', n:''},
+  {id:'seed26_06', who:'u_anahi', t:'Post PA and CA labor law posters', a:'2026-01-27', d:'2026-01-30', c:'2026-02-10', n:''},
+  {id:'seed26_07', who:'u_anahi', t:'Complete and post OSHA 300 logs', a:'2026-02-05', d:'2026-02-17', c:'2026-02-12', n:''},
+  {id:'seed26_08', who:'u_anahi', t:'Complete RxDC report', a:'2026-03-01', d:'2026-03-26', c:'2026-03-19', n:''},
+  {id:'seed26_09', who:'u_anahi', t:'Meet with Deysi to go over employment-document questions', a:'2026-03-01', d:'2026-03-02', c:'2026-03-02', n:'Meeting held 03/02/2026.'},
+  {id:'seed26_10', who:'u_anahi', t:'Update Namely: employees over $150k in the prior calendar year must make catch-up contributions on a Roth basis', a:'2026-03-01', d:'2026-03-26', c:'2026-03-18', n:''},
+  {id:'seed26_11', who:'u_anahi', t:'Update 401k contribution limits for 2026 (50+ catch-up and 60\u201363 super catch-up)', a:'2026-03-01', d:'2026-03-26', c:'2026-03-17', n:''},
+  {id:'seed26_12', who:'u_steph', t:"Conduct one-on-one meetings with PA employees (part of Jose's PDCA)", a:'2026-03-31', d:'2026-04-10', c:'2026-04-10', n:''},
+  {id:'seed26_13', who:'u_anahi', t:'Print and update the binder with the 2026 handbook; have all production employees sign the acknowledgement form after reviewing the updates', a:'2026-05-29', d:'2026-06-05', c:'2026-06-05', n:'ENG handbook (English post). Refer to the Namely post for the updates to cover. Nothing new in practice \u2014 these are long-standing policies now written into the handbook. The signed acknowledgement form is required; employees may take time to sign.'},
+  {id:'seed26_14', who:'u_steph', t:'Print and update the binder with the 2026 handbook; have all production employees sign the acknowledgement form after reviewing the updates', a:'2026-05-29', d:'2026-06-05', c:'2026-06-02', n:'SPA handbook (Spanish post). Refer to the Namely post for the updates to cover. Nothing new in practice \u2014 these are long-standing policies now written into the handbook. The signed acknowledgement form is required; employees may take time to sign.'},
+  {id:'seed26_15', who:'u_anahi', t:'Obtain a second quote for the sprinkler leak issue', a:'2026-06-08', d:'2026-06-12', c:'2026-06-12', n:'Quote requested.'}
+];
+function tkSeed2026(){
+  try{ if(localStorage.getItem(TK_SEED26_FLAG)) return; }catch(e){ return; }
+  let arr=[]; try{ arr=JSON.parse(localStorage.getItem(TASKS_KEY)||'[]'); }catch(e){ arr=[]; }
+  if(!Array.isArray(arr)) arr=[];
+  const have=new Set(arr.map(t=>t&&t.id));
+  const isoAt=(ymd,h)=>{ const p=String(ymd).split('-'); return new Date(+p[0],+p[1]-1,+p[2],h,0,0,0).toISOString(); };
+  const admin=findUserById('u_admin');
+  let added=0;
+  TK_SEED26.forEach(s=>{
+    if(have.has(s.id)) return;
+    const u=findUserById(s.who);
+    arr.push({
+      id:s.id, title:s.t,
+      assigneeId:s.who, assigneeName:u?(u.name||u.email):'', assigneeEmail:u?u.email:'',
+      assignedById:'u_admin', assignedByName:(admin&&(admin.name||admin.email))||'Jose H.',
+      deadline:s.d, desc:s.n||'',
+      status:s.c?'done':'open',
+      createdAt:isoAt(s.a,9),
+      completedAt:s.c?isoAt(s.c,12):null,
+      log:[]
+    });
+    added++;
+  });
+  if(added){
+    tkCache=arr;
+    try{ localStorage.setItem(TASKS_KEY, JSON.stringify(arr)); }catch(e){}   // cloudReady is true here → syncs up via the storage shim
+  }
+  try{ localStorage.setItem(TK_SEED26_FLAG,'1'); }catch(e){}
+}
+
 /* lazy-load + memoize the Supabase client (only if configured) */
 async function tkClient(){
   if(!tkConfigured()) return null;
@@ -4750,6 +4807,7 @@ function tkToday(){ const d=new Date(); d.setHours(0,0,0,0); return d; }
 function tkParseDate(s){ if(!s) return null; const p=String(s).split('-'); if(p.length!==3) return null; const d=new Date(+p[0],+p[1]-1,+p[2]); return isNaN(d)?null:d; }
 function tkFmtDate(s){ const d=tkParseDate(s); if(!d) return ''; return d.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}); }
 function tkFmtWhen(iso){ if(!iso) return ''; const d=new Date(iso); if(isNaN(d)) return ''; return d.toLocaleDateString(undefined,{month:'short',day:'numeric'})+' '+d.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'}); }
+function tkFmtDay(iso){ if(!iso) return ''; const d=new Date(iso); return isNaN(d)?'':d.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}); }
 function tkDueState(t){
   if(t.status==='done' || !t.deadline) return '';
   const d=tkParseDate(t.deadline); if(!d) return '';
@@ -4758,19 +4816,34 @@ function tkDueState(t){
   if(diff<=2) return 'duesoon';
   return '';
 }
+/* A blown deadline is PERMANENT. A task "misses" if it wasn't completed on time —
+   either it's still open after its deadline day, or it was marked done after it.
+   Once missed it stays missed for good, even if completed later. No deadline = never missed. */
+function tkDeadlineEnd(t){ const d=tkParseDate(t.deadline); if(!d) return null; d.setHours(23,59,59,999); return d; }
+function tkIsMissed(t){
+  const end=tkDeadlineEnd(t); if(!end) return false;
+  if(t.completedAt) return new Date(t.completedAt) > end;   // completed late → missed
+  return new Date() > end;                                  // open & deadline day passed → missed
+}
+/* effective state used everywhere: 'done' (on time) | 'missed' (locked) | 'open' */
+function tkClass(t){ if(tkIsMissed(t)) return 'missed'; return t.status==='done' ? 'done' : 'open'; }
 
 /* ── stats ── */
 function tkInThisMonth(iso){ if(!iso) return false; const d=new Date(iso), n=new Date(); return d.getFullYear()===n.getFullYear() && d.getMonth()===n.getMonth(); }
 function tkStats(list){
   const total=list.length;
-  const done=list.filter(t=>t.status==='done').length;
-  const month=list.filter(t=>tkInThisMonth(t.createdAt));
-  const mTotal=month.length, mDone=month.filter(t=>t.status==='done').length;
-  const overdue=list.filter(t=>tkDueState(t)==='overdue').length;
+  const done   = list.filter(t=>tkClass(t)==='done').length;    // completed ON TIME only
+  const missed = list.filter(t=>tkClass(t)==='missed').length;  // blew the deadline (permanent)
+  const open   = list.filter(t=>tkClass(t)==='open').length;    // still open, deadline not passed
+  const month  = list.filter(t=>tkInThisMonth(t.createdAt));
+  const mTotal = month.length;
+  const mDone  = month.filter(t=>tkClass(t)==='done').length;
+  const mMissed= month.filter(t=>tkClass(t)==='missed').length;
   return {
-    total, done, open: total-done, overdue,
+    total, done, missed, open,
+    overdue: missed,                                  // alias: dashboard "Not completed" = missed
     pct: total?Math.round(done/total*100):0,
-    mTotal, mDone, mOpen:mTotal-mDone,
+    mTotal, mDone, mMissed, mOpen: mTotal-mDone-mMissed,
     mPct: mTotal?Math.round(mDone/mTotal*100):0
   };
 }
@@ -4830,7 +4903,7 @@ function tkRenderAdmin(){
     ${tkStatCard('Completion · overall','ti-checkbox',s.pct+'%',s.done+' of '+s.total+' done',s.pct,true)}
     ${tkStatCard('Completion · this month','ti-calendar-month',s.mPct+'%',s.mDone+' of '+s.mTotal+' assigned',s.mPct)}
     ${tkStatCard('Open','ti-progress',s.open,s.total+' total assigned')}
-    ${tkStatCard('Overdue','ti-alarm',s.overdue,s.overdue?'need attention':'all on track')}
+    ${tkStatCard('Missed deadline','ti-alarm',s.missed,s.missed?'locked as not completed':'none missed')}
   </div>`;
 
   // per-employee breakdown
@@ -4841,7 +4914,7 @@ function tkRenderAdmin(){
       <span class="tk-emp-av">${userInitials(u)}</span>
       <span class="tk-emp-name">${tkEsc(u.name||u.email)}</span>
       <div class="tk-emp-bar"><div class="tk-bar"><span style="width:${st.pct}%"></span></div></div>
-      <span class="tk-emp-nums"><b>${st.done}/${st.total}</b> done · ${st.pct}%${st.overdue?` · <span style="color:var(--red-600)">${st.overdue} overdue</span>`:''}</span>
+      <span class="tk-emp-nums"><b>${st.done}/${st.total}</b> done · ${st.pct}%${st.missed?` · <span style="color:var(--red-600)">${st.missed} missed</span>`:''}</span>
     </div>`;
   }).join('');
   const breakdown=`<div class="tk-card"><div class="tk-card-h"><i class="ti ti-users"></i> By employee · overall</div>${empRows}</div>`;
@@ -4849,7 +4922,7 @@ function tkRenderAdmin(){
   // filters — modern dropdown toolbar
   const empOpts=[`<option value="all" ${tkFilterEmp==='all'?'selected':''}>Everyone</option>`]
     .concat(users.map(u=>`<option value="${u.id}" ${tkFilterEmp===u.id?'selected':''}>${tkEsc(u.name||u.email)}</option>`)).join('');
-  const statusOpts=['all','open','done'].map(k=>`<option value="${k}" ${tkFilterStatus===k?'selected':''}>${k==='all'?'All statuses':k==='open'?'Open':'Done'}</option>`).join('');
+  const statusOpts=['all','open','missed','done'].map(k=>`<option value="${k}" ${tkFilterStatus===k?'selected':''}>${k==='all'?'All statuses':k==='open'?'Open':k==='missed'?'Missed':'Done'}</option>`).join('');
   const filters=`<div class="tk-toolbar">
       <div class="tk-group-h"><i class="ti ti-list-details"></i> All tasks</div>
       <div class="tk-tools">
@@ -4861,7 +4934,7 @@ function tkRenderAdmin(){
   // task list (filtered)
   let list=all.slice();
   if(tkFilterEmp!=='all') list=list.filter(t=>t.assigneeId===tkFilterEmp);
-  if(tkFilterStatus!=='all') list=list.filter(t=>t.status===tkFilterStatus);
+  if(tkFilterStatus!=='all') list=list.filter(t=>tkClass(t)===tkFilterStatus);
   list.sort(tkSortTasks);
   const rows = list.length ? list.map(t=>tkTaskCard(t,true)).join('')
     : `<div class="tk-empty"><i class="ti ti-clipboard-off"></i><h3>No tasks here</h3><p>Assign one above, or change the filters.</p></div>`;
@@ -4920,18 +4993,23 @@ function tkRenderRep(){
     ${tkStatCard('Completion · this month','ti-calendar-month',s.mPct+'%',s.mDone+' of '+s.mTotal+' done',s.mPct,true)}
     ${tkStatCard('Completion · overall','ti-checkbox',s.pct+'%',s.done+' of '+s.total+' done',s.pct)}
     ${tkStatCard('Open','ti-progress',s.open,'still to do')}
-    ${tkStatCard('Overdue','ti-alarm',s.overdue,s.overdue?'past deadline':'none')}
+    ${tkStatCard('Missed','ti-alarm',s.missed,s.missed?'past deadline':'none')}
   </div>`;
 
   if(!mine.length){
     return stats+`<div class="tk-empty"><i class="ti ti-coffee"></i><h3>No tasks assigned</h3><p>When HR assigns you a task, it\u2019ll show up here with its deadline and any notes.</p></div>`;
   }
-  const open=mine.filter(t=>t.status!=='done').sort(tkSortTasks);
-  const done=mine.filter(t=>t.status==='done').sort((a,b)=>new Date(b.completedAt||0)-new Date(a.completedAt||0));
+  const open  =mine.filter(t=>tkClass(t)==='open').sort(tkSortTasks);
+  const missed=mine.filter(t=>tkClass(t)==='missed').sort(tkSortTasks);
+  const done  =mine.filter(t=>tkClass(t)==='done').sort((a,b)=>new Date(b.completedAt||0)-new Date(a.completedAt||0));
   let out=stats;
   out+=`<div class="tk-group-h"><i class="ti ti-clipboard-list"></i> Open <span class="tk-count">${open.length}</span></div>`;
   out+= open.length ? open.map(t=>tkTaskCard(t,false)).join('')
     : `<div class="tk-empty"><i class="ti ti-circle-check"></i><h3>All caught up</h3><p>Nothing open right now.</p></div>`;
+  if(missed.length){
+    out+=`<div class="tk-group-h"><i class="ti ti-alarm" style="color:var(--red-600)"></i> Missed deadline <span class="tk-count">${missed.length}</span></div>`;
+    out+= missed.map(t=>tkTaskCard(t,false)).join('');
+  }
   if(done.length){
     out+=`<div class="tk-group-h"><i class="ti ti-check"></i> Completed <span class="tk-count">${done.length}</span></div>`;
     out+= done.map(t=>tkTaskCard(t,false)).join('');
@@ -4948,17 +5026,23 @@ function tkSortTasks(a,b){
   return new Date(b.createdAt||0)-new Date(a.createdAt||0);
 }
 function tkTaskCard(t, showWho){
+  const klass=tkClass(t);                 // 'done' | 'missed' | 'open'
   const due=tkDueState(t);
   const isDone=t.status==='done';
-  const cls=isDone?'done':(due||'');
+  const cls = klass==='done' ? 'done' : klass==='missed' ? 'missed' : (due||'');
+  const pillCls = klass==='missed'?'missed':klass==='done'?'done':'open';
+  const pillTxt = klass==='missed'?'Missed':klass==='done'?'Done':'Open';
   const meta=[];
   if(showWho) meta.push('<b><i class="ti ti-user" style="font-size:12px"></i> '+tkEsc(t.assigneeName||'—')+'</b>');
   if(t.deadline){
     const lbl=due==='overdue'?'Overdue · ':due==='duesoon'?'Due soon · ':'Due ';
     meta.push(`<span class="tk-due ${due==='overdue'?'over':due==='duesoon'?'soon':''}"><i class="ti ti-calendar-event"></i> ${lbl}${tkFmtDate(t.deadline)}</span>`);
   } else meta.push('<span class="tk-due">No deadline</span>');
-  meta.push('<span>Assigned by '+tkEsc(t.assignedByName||'—')+'</span>');
-  if(isDone && t.completedAt) meta.push('<span style="color:var(--green-pop-deep)"><i class="ti ti-circle-check"></i> Done '+tkFmtWhen(t.completedAt)+'</span>');
+  meta.push('<span><i class="ti ti-calendar-plus"></i> Assigned'+(t.createdAt?' '+tkFmtDay(t.createdAt):'')+' by '+tkEsc(t.assignedByName||'—')+'</span>');
+  if(isDone && t.completedAt){
+    if(klass==='missed') meta.push('<span style="color:var(--red-600)"><i class="ti ti-clock-exclamation"></i> Completed late '+tkFmtWhen(t.completedAt)+'</span>');
+    else meta.push('<span style="color:var(--green-pop-deep)"><i class="ti ti-circle-check"></i> Done '+tkFmtWhen(t.completedAt)+'</span>');
+  }
 
   const log=(t.log&&t.log.length)?`<div class="tk-log">${t.log.map(n=>`<div class="tk-log-item"><span class="tk-log-by">${tkEsc(n.by||'')}</span><span class="tk-log-at">${tkFmtWhen(n.at)}</span><div>${tkEsc(n.text)}</div></div>`).join('')}</div>`:'';
 
@@ -4973,10 +5057,10 @@ function tkTaskCard(t, showWho){
     actions.push(`<button class="tk-btn ${isDone?'reopen':'done'}" onclick="tkToggleDone('${t.id}')"><i class="ti ti-${isDone?'rotate':'check'}"></i> ${isDone?'Reopen':'Mark done'}</button>`);
   }
   if(tkCanManage()){
-    actions.push(`<span class="tk-status-pill ${isDone?'done':'open'}">${isDone?'Done':'Open'}</span>`);
+    actions.push(`<span class="tk-status-pill ${pillCls}">${pillTxt}</span>`);
     actions.push(`<div style="display:flex;gap:4px"><button class="tk-icon-btn" title="Edit" onclick="tkEdit('${t.id}')"><i class="ti ti-edit"></i></button><button class="tk-icon-btn del" title="Delete" onclick="tkDelete('${t.id}')"><i class="ti ti-trash"></i></button></div>`);
   } else {
-    actions.unshift(`<span class="tk-status-pill ${isDone?'done':'open'}">${isDone?'Done':'Open'}</span>`);
+    actions.unshift(`<span class="tk-status-pill ${pillCls}">${pillTxt}</span>`);
   }
 
   return `<div class="tk-task ${cls}">
@@ -5354,6 +5438,7 @@ async function hubBoot(){
         cloudReady = true;
         migrateUserEmails();
         migrateStephanieName();
+        tkSeed2026();
         try{ await cloudBridgeFromLRC(); }catch(e){}
         const u = findUserByEmail(session.user.email.toLowerCase());
         if(u){ enterApp(u); return; }
