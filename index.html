@@ -2137,10 +2137,10 @@ const SEED_USERS = [
   { id:'u_admin', name:'Jose H.', email:'jose.h@wsdisplay.com',
     passHash:'c3a9d491368fe181ba013e5f560719c18c384dc0816a314305a00218617aa79c',
     role:'admin', access:{}, caps:{} },
-  { id:'u_anahi', name:'Anahi Torres', email:'anahi.torres@wsdisplay.com',
+  { id:'u_anahi', name:'Anahi Torres', email:'anahi@wsdisplay.com',
     passHash:'0c9dbda57c1c3d9f4c5ff7ad78af8751337e6d4a4f0e8a3b4e2fbc68e402176e',
     role:'member', access:{yearly:true,turnover:true,recruiting:true,overtime:true,pto:true}, caps:{editTasks:true,editRecruiting:true,editPto:true} },
-  { id:'u_steph', name:'Stephanie Bryant', email:'stephanie.bryant@wsdisplay.com',
+  { id:'u_steph', name:'Stephanie Bryant', email:'stephanie.b@wsdisplay.com',
     passHash:'0c9dbda57c1c3d9f4c5ff7ad78af8751337e6d4a4f0e8a3b4e2fbc68e402176e',
     role:'member', access:{yearly:true,turnover:true,recruiting:true,overtime:true,pto:true}, caps:{editTasks:true,editRecruiting:true,editPto:true} }
 ];
@@ -2149,12 +2149,31 @@ let CURRENT = null;
 
 function loadUsers(){
   let arr=[]; try{ arr=JSON.parse(localStorage.getItem(USERS_KEY)||'[]'); }catch(e){ arr=[]; }
-  let changed=false;
-  SEED_USERS.forEach(s=>{ if(!arr.some(u=>u.email===s.email)){ arr.push(JSON.parse(JSON.stringify(s))); changed=true; } });
-  if(changed) saveUsers(arr);
+  // Seed only a truly empty install. Once a list exists (local or synced from the
+  // cloud), never re-inject seed accounts — otherwise corrected emails or removed
+  // users would keep coming back.
+  if(!arr.length){ arr=JSON.parse(JSON.stringify(SEED_USERS)); saveUsers(arr); }
   return arr;
 }
 function saveUsers(arr){ try{ localStorage.setItem(USERS_KEY, JSON.stringify(arr)); }catch(e){} }
+/* One-time fixup: correct rep emails that were seeded wrong in an earlier build so
+   they match the Supabase Auth logins. Idempotent — once corrected, the old emails
+   are gone and this is a no-op. Safe to remove in a later cleanup. */
+const USER_EMAIL_FIXES = {
+  'anahi.torres@wsdisplay.com': 'anahi@wsdisplay.com',
+  'stephanie.bryant@wsdisplay.com': 'stephanie.b@wsdisplay.com'
+};
+function migrateUserEmails(){
+  let arr; try{ arr=JSON.parse(localStorage.getItem(USERS_KEY)||'[]'); }catch(e){ return; }
+  if(!Array.isArray(arr) || !arr.length) return;
+  let changed=false;
+  arr.forEach(function(u){
+    if(!u || !u.email) return;
+    const fixed = USER_EMAIL_FIXES[u.email];
+    if(fixed && !arr.some(o=>o!==u && o.email===fixed)){ u.email=fixed; changed=true; }
+  });
+  if(changed) saveUsers(arr);   // persists locally and (when cloudReady) syncs the corrected list up
+}
 function findUserByEmail(email){ return loadUsers().find(u=>u.email===(email||'').toLowerCase()); }
 function findUserById(id){ return loadUsers().find(u=>u.id===id); }
 function userInitials(u){ const s=((u&&(u.name||u.email))||'?').trim(); const p=s.split(/\s+/); return (((p[0]||'')[0]||'')+((p[1]||'')[0]||'')).toUpperCase()||'?'; }
@@ -2187,6 +2206,7 @@ async function attemptLogin(){
   if(authErr){ btn.disabled=false; btn.textContent='Sign in'; showLoginError('Incorrect email or password.'); passEl.value=''; passEl.focus(); return; }
   await cloudHydrate();
   cloudReady = true;
+  migrateUserEmails();
   const u = findUserByEmail(email);
   btn.disabled = false; btn.textContent = 'Sign in';
   if(!u){
@@ -3270,7 +3290,7 @@ function renderSettingsForm(){
     <div class="sf-title">${editing?'Edit user':'Add user'}</div>
     <div class="sf-grid">
       <div class="sf-field"><label>Name</label><input id="sf-name" value="${editing?ytEsc(editing.name||''):''}" placeholder="Full name"/></div>
-      <div class="sf-field"><label>Email</label><input id="sf-email" type="email" value="${editing?ytEsc(editing.email):''}" placeholder="name@wsdisplay.com" ${editing?'disabled':''}/></div>
+      <div class="sf-field"><label>Email</label><input id="sf-email" type="email" value="${editing?ytEsc(editing.email):''}" placeholder="name@wsdisplay.com"/><div class="sf-note" style="font-size:12px;color:var(--gray-500);padding:4px 0 0">Must match their Supabase Auth login email exactly.</div></div>
       <div class="sf-field"><label>Sign-in &amp; password</label><div class="sf-note" style="font-size:12px;color:var(--gray-500);line-height:1.45;padding:8px 0">Managed in <b>Supabase Auth</b>. Create the account there with this same email; password resets happen in Supabase too.</div></div>
       <div class="sf-field"><label>Role</label>
         <select id="sf-role" onchange="document.getElementById('sf-perms').style.display=this.value==='admin'?'none':'block'">
@@ -3302,17 +3322,15 @@ async function settingsSave(){
   const users=loadUsers();
   const editing = settingsEditId ? users.find(u=>u.id===settingsEditId) : null;
   if(!name){ sfMsg('Enter a name.',false); return; }
-  if(!editing){
-    if(!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ sfMsg('Enter a valid email.',false); return; }
-    if(users.some(u=>u.email===email)){ sfMsg('A user with that email already exists.',false); return; }
-  }
+  if(!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ sfMsg('Enter a valid email.',false); return; }
+  if(users.some(u=>u.email===email && (!editing || u.id!==editing.id))){ sfMsg('A user with that email already exists.',false); return; }
   const access={}, caps={};
   if(role!=='admin'){
     PERM_SECTIONS.forEach(s=>{ const el=document.getElementById('sf-acc-'+s.id); if(el&&el.checked) access[s.id]=true; });
     PERM_CAPS.forEach(c=>{ const el=document.getElementById('sf-cap-'+c.id); if(el&&el.checked) caps[c.id]=true; });
   }
   if(editing){
-    editing.name=name; editing.role=role; editing.access=access; editing.caps=caps;
+    editing.name=name; editing.email=email; editing.role=role; editing.access=access; editing.caps=caps;
     saveUsers(users);
     if(CURRENT.id===editing.id){ CURRENT=editing; applyPermissions(); const _n=document.getElementById('su-name'); if(_n)_n.textContent=editing.name||editing.email; const _a=document.getElementById('su-avatar'); if(_a)_a.textContent=userInitials(editing); const _r=document.getElementById('su-role'); if(_r)_r.textContent=editing.role==='admin'?'Admin':'Member'; if(typeof setHeroGreeting==='function')setHeroGreeting(); }
     settingsEditId=null; sfMsg('Saved.',true);
@@ -5102,6 +5120,7 @@ async function hubBoot(){
       if(session && session.user && session.user.email){
         try{ await cloudHydrate(); }catch(e){}
         cloudReady = true;
+        migrateUserEmails();
         const u = findUserByEmail(session.user.email.toLowerCase());
         if(u){ enterApp(u); return; }
         cloudReady = false; try{ await sb.auth.signOut(); }catch(e){}
