@@ -2091,6 +2091,43 @@ async function cloudHydrate(){
   return true;
 }
 
+/* Self-heal bridge: the older one-way LRC table (lrc_dashboard) still holds full
+   turnover and overtime data even when the new two-way store (hrhub_store) is
+   missing it — e.g. a metric that was wiped from this device before cutover. For
+   any such metric that is empty here, pull it back from lrc_dashboard so it shows
+   and (since sync is live) gets written into hrhub_store. Runs only when a metric
+   is empty, so it's a no-op once data is present. Recruiting is intentionally NOT
+   bridged — only a stripped aggregate was ever pushed to lrc_dashboard, so bridging
+   it would lose the full requisition/rejection log. */
+async function cloudBridgeFromLRC(){
+  if(typeof window.hubPullLRC!=='function') return;
+  const localEmpty = function(k){
+    try{ const raw=localStorage.getItem(k); if(!raw) return true; const o=JSON.parse(raw);
+      return !o || (typeof o==='object' && !Object.keys(o).length); }catch(e){ return true; }
+  };
+  // turnover — per known year
+  try{
+    const years = (typeof TR_YEARS!=='undefined' && Array.isArray(TR_YEARS)) ? TR_YEARS : [2026];
+    for(const y of years){
+      const lsKey = 'hrhub_turnover2_'+y;
+      if(!localEmpty(lsKey)) continue;
+      const p = await window.hubPullLRC('turnover_'+y);
+      const data = (p && p.data && typeof p.data==='object') ? p.data : null;
+      if(data && Object.keys(data).length){ try{ localStorage.setItem(lsKey, JSON.stringify(data)); }catch(e){} }
+    }
+  }catch(e){ console.warn('turnover bridge failed', e); }
+  // overtime — current (clamped) year blob
+  try{
+    const otKey = (typeof OT_KEY!=='undefined') ? OT_KEY : 'hrhub_ot_2026';
+    if(localEmpty(otKey)){
+      const yy=new Date().getFullYear(); const oy=(yy>=2025 && yy<=2027)?yy:2026;
+      const p = await window.hubPullLRC('ot_'+oy);
+      const data = (p && Array.isArray(p.data)) ? p.data : null;
+      if(data && data.length){ try{ localStorage.setItem(otKey, JSON.stringify(data)); }catch(e){} }
+    }
+  }catch(e){ console.warn('overtime bridge failed', e); }
+}
+
 async function _cloudFlush(){
   _pushTimer = null;
   if(!cloudReady) return;
@@ -2207,6 +2244,7 @@ async function attemptLogin(){
   await cloudHydrate();
   cloudReady = true;
   migrateUserEmails();
+  await cloudBridgeFromLRC();
   const u = findUserByEmail(email);
   btn.disabled = false; btn.textContent = 'Sign in';
   if(!u){
@@ -5121,6 +5159,7 @@ async function hubBoot(){
         try{ await cloudHydrate(); }catch(e){}
         cloudReady = true;
         migrateUserEmails();
+        try{ await cloudBridgeFromLRC(); }catch(e){}
         const u = findUserByEmail(session.user.email.toLowerCase());
         if(u){ enterApp(u); return; }
         cloudReady = false; try{ await sb.auth.signOut(); }catch(e){}
@@ -6709,6 +6748,10 @@ spawnWaves(document.getElementById('hero-waves'), {
       if(!data) return null;
       return { year:(p.year||year), data:data, updated_at:(row.updated_at||null) };
     });
+  };
+  /* generic read of any lrc_dashboard payload (used by the cloud bridge) */
+  window.hubPullLRC = function(key){
+    return lrcPull(key).then(function(row){ return (row && row.payload) ? row.payload : null; });
   };
 
   /* ── one-time sync shortly after load, so the cloud reflects current data
