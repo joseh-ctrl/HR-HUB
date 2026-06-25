@@ -7067,6 +7067,7 @@ function ptoSaveEmp(){
   }
   ptoAdvanceEmp(emp, new Date());   // immediately catch up if any milestone already passed
   ptoSave();
+  if(typeof window.hubPushRoster==='function') window.hubPushRoster();
   ptoCloseModal();
   ptoRenderAll();
   if(typeof renderNotifications==='function') renderNotifications();
@@ -7077,7 +7078,9 @@ function ptoDeleteEmp(){
   const emp=PTO.employees.find(e=>e.id===ptoEditId);
   if(!confirm('Remove '+(emp?emp.name:'this employee')+' from the PTO roster? This cannot be undone.')) return;
   PTO.employees = PTO.employees.filter(e=>e.id!==ptoEditId);
-  ptoSave(); ptoCloseModal(); ptoRenderAll();
+  ptoSave();
+  if(typeof window.hubPushRoster==='function') window.hubPushRoster();
+  ptoCloseModal(); ptoRenderAll();
   if(typeof renderNotifications==='function') renderNotifications();
   ptoUpdateDashStat();
 }
@@ -7417,6 +7420,41 @@ spawnWaves(document.getElementById('hero-waves'), {
     var p=buildUpdates(); if(p) lrcPush('hr_updates', p);
   };
 
+  /* Roster snapshot for the LRC's celebration/anniversary cards. Maps the PTO
+     roster to the LRC's shape and uses the adjusted service date (which bridges
+     rehires) so anniversaries match the PTO tracker. A full snapshot is pushed
+     each time, so adds, edits and deletes all propagate. */
+  function buildRoster(){
+    var raw; try{ raw=localStorage.getItem('hrhub_pto_v1'); }catch(e){ raw=null; }
+    if(raw==null) return null;
+    var obj; try{ obj=JSON.parse(raw); }catch(e){ obj=null; }
+    var emps=(obj && Array.isArray(obj.employees)) ? obj.employees : null;
+    if(!emps) return null;
+    function mdy(iso){ var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(iso||''); return m ? (m[2]+'/'+m[3]+'/'+m[1]) : ''; }
+    function asdISO(e){
+      try{ if(typeof ptoASD==='function' && typeof ptoISO==='function'){ var a=ptoASD(e); if(a && a.asd) return ptoISO(a.asd); } }catch(_){}
+      return e.hireDate||'';
+    }
+    var recs=emps.map(function(e){
+      var name=(e.name||'').trim(), sp=name.indexOf(' ');
+      return {
+        first: sp<0?name:name.slice(0,sp),
+        last:  sp<0?'':name.slice(sp+1),
+        title: '',
+        state: (e.location||''),
+        department: (e.notes||''),
+        birthDate: mdy(e.birthDate),
+        hireDate:  mdy(asdISO(e))
+      };
+    });
+    return { records:recs };
+  }
+  window.hubPushRoster = function(){
+    var ok = (typeof ptoCanEdit==='function') ? ptoCanEdit() : (typeof can==='function' && can('editPto'));
+    if(!ok) return;
+    var p=buildRoster(); if(p) lrcPush('roster', p);
+  };
+
   /* ── pull (read-back) from the cloud, used by the Hub's "Restore from cloud" ── */
   function lrcPull(key){
     if(!LRC_SB_URL || !LRC_SB_ANON) return Promise.resolve(null);
@@ -7447,6 +7485,7 @@ spawnWaves(document.getElementById('hero-waves'), {
     try{ window.hubPushOT(); }catch(e){}
     try{ window.hubPushRecruiting(); }catch(e){}
     try{ window.hubPushUpdates(); }catch(e){}
+    try{ window.hubPushRoster(); }catch(e){}
   }
   if(document.readyState==='loading'){
     document.addEventListener('DOMContentLoaded', function(){ setTimeout(lrcSyncAll, 1800); });
