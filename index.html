@@ -396,6 +396,7 @@ a{color:inherit;text-decoration:none}
 .hu-cat-benefits{background:var(--green-pop-bg);color:var(--green-pop-deep)}
 .hu-cat-event{background:#FBEFE0;color:var(--amber-800)}
 .hu-cat-reminder{background:var(--gray-100);color:var(--gray-600)}
+.hu-cat-custom{background:#EEF2FF;color:#4338CA}
 .hu-pinned{font-size:9px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:var(--amber-800);background:#FBEFE0;padding:1px 7px 1px 5px;border-radius:10px;margin-left:6px;display:inline-flex;align-items:center;gap:3px;vertical-align:middle}
 .hu-empty{font-size:13px;color:var(--gray-500);padding:4px 0 6px}
 .sf-field textarea{width:100%;border:1px solid var(--gray-200);border-radius:var(--radius);padding:9px 11px;font-size:13.5px;font-family:inherit;background:var(--gray-50);color:var(--gray-900);outline:none;transition:all .15s;min-height:78px;resize:vertical;line-height:1.45}
@@ -3387,7 +3388,11 @@ function renderNotifModal(){
   if(huItems.length){
     html += `<div class="nm-group"><span class="nm-grp-emoji">\uD83D\uDCE3</span> HR updates</div>`;
     html += huItems.map(it=>{
-      const meta = ytEsc(huFmtDate(it.date)) + (it.body ? ' · '+ytEsc(it.body) : '');
+      const parts=[];
+      if(it.categoryLabel) parts.push(ytEsc(it.categoryLabel));
+      if(it.date) parts.push(ytEsc(huFmtDate(it.date)));
+      if(it.body) parts.push(ytEsc(it.body));
+      const meta = parts.join(' \u00b7 ');
       return `
     <div class="nm-item">
       <span class="nm-ic2"><i class="ti ti-speakerphone"></i></span>
@@ -3596,10 +3601,32 @@ function huNotifCollect(){
   const dismissed = (typeof notifDismissedSet==='function') ? notifDismissedSet() : new Set();
   return huSorted().filter(u=>huTargets(u).hub).map(u=>({
     id:u.id, title:u.title||'—', body:u.body||'', date:u.date||'', category:u.category||'update',
+    categoryLabel:(u.categoryLabel||huCatLabel(u.category)),
     dkey:'hu:'+u.id
   })).filter(it=>!dismissed.has(it.dkey));
 }
-function huCatLabel(id){ const c=HU_CATS.find(x=>x.id===id); return c?c.label:'Update'; }
+function huCatLabel(id){
+  const c=HU_CATS.find(x=>x.id===id); if(c) return c.label;
+  const cc=huCustomCats().find(x=>x.id===id); return cc?cc.label:'Update';
+}
+function huCatClass(id){ return HU_CATS.some(c=>c.id===id) ? 'hu-cat-'+id : 'hu-cat-custom'; }
+/* Custom categories are derived from the updates that use them (no separate
+   store): once a custom category is on at least one update it's offered again. */
+function huCustomCats(){
+  const builtin=new Set(HU_CATS.map(c=>c.id));
+  const seen=new Map();
+  huLoad().forEach(u=>{
+    const id=u.category||''; if(!id || builtin.has(id) || seen.has(id)) return;
+    seen.set(id, {id, label:(u.categoryLabel||id)});
+  });
+  return [...seen.values()].sort((a,b)=>a.label.localeCompare(b.label));
+}
+function huCatChange(){
+  const sel=document.getElementById('hu-cat'); const wrap=document.getElementById('hu-cat-new-wrap');
+  if(!sel||!wrap) return;
+  wrap.style.display = (sel.value==='__new__') ? '' : 'none';
+  if(sel.value==='__new__'){ const i=document.getElementById('hu-cat-new'); if(i) i.focus(); }
+}
 /* Where an update shows. Legacy items (created before destinations existed) have
    neither flag set — treat those as LRC-only, preserving their original behavior. */
 function huTargets(u){
@@ -3636,7 +3663,7 @@ function huRender(){
     const cat=u.category||'update';
     const body=u.body?`<div class="hu-body">${ytEsc(u.body)}</div>`:'';
     return `<div class="su-row hu-row">
-      <span class="hu-cat hu-cat-${ytEsc(cat)}">${ytEsc(huCatLabel(cat))}</span>
+      <span class="hu-cat ${huCatClass(cat)}">${ytEsc(u.categoryLabel||huCatLabel(cat))}</span>
       <div class="su-info">
         <div class="su-name">${ytEsc(u.title||'—')}${u.pinned?'<span class="hu-pinned"><i class="ti ti-pin-filled"></i> Pinned</span>':''}</div>
         ${body}
@@ -3664,7 +3691,15 @@ function huForm(){
       <div class="sf-field"><label>Date</label><input id="hu-date" type="date" value="${editing?ytEsc(editing.date||huTodayISO()):huTodayISO()}"/></div>
       <div class="sf-field" style="grid-column:1/-1"><label>Details</label><textarea id="hu-body" maxlength="600" placeholder="A sentence or two with the details people need.">${editing?ytEsc(editing.body||''):''}</textarea></div>
       <div class="sf-field"><label>Category</label>
-        <select id="hu-cat">${HU_CATS.map(c=>`<option value="${c.id}" ${cat===c.id?'selected':''}>${c.label}</option>`).join('')}</select>
+        <select id="hu-cat" onchange="huCatChange()">
+          <optgroup label="Standard">${HU_CATS.map(c=>`<option value="${c.id}" ${cat===c.id?'selected':''}>${c.label}</option>`).join('')}</optgroup>
+          ${(function(){ const cc=huCustomCats(); return cc.length?`<optgroup label="Custom">${cc.map(c=>`<option value="${ytEsc(c.id)}" ${cat===c.id?'selected':''}>${ytEsc(c.label)}</option>`).join('')}</optgroup>`:''; })()}
+          <option value="__new__">+ New category…</option>
+        </select>
+      </div>
+      <div class="sf-field" id="hu-cat-new-wrap" style="display:none">
+        <label>New category name</label>
+        <input id="hu-cat-new" maxlength="28" placeholder="e.g. Safety"/>
       </div>
       <div class="sf-field"><label>Pin</label>
         <label class="sf-check" style="padding:9px 0"><input type="checkbox" id="hu-pin" ${editing&&editing.pinned?'checked':''}/> Show first</label>
@@ -3693,22 +3728,38 @@ function huSubmit(){
   const title=(document.getElementById('hu-title').value||'').trim();
   const body=(document.getElementById('hu-body').value||'').trim();
   const date=(document.getElementById('hu-date').value||'').trim() || huTodayISO();
-  const category=document.getElementById('hu-cat').value || 'update';
+  let category, categoryLabel;
   const pinned=!!document.getElementById('hu-pin').checked;
   const showHub=!!document.getElementById('hu-dest-hub').checked;
   const showLrc=!!document.getElementById('hu-dest-lrc').checked;
   if(!title){ huMsg('Enter a title.',false); return; }
   if(!showHub && !showLrc){ huMsg('Choose at least one place to show this update.',false); return; }
+  {
+    const sel=document.getElementById('hu-cat').value;
+    if(sel==='__new__'){
+      const nameRaw=(document.getElementById('hu-cat-new').value||'').trim();
+      if(!nameRaw){ huMsg('Enter a name for the new category.',false); return; }
+      const name=nameRaw.slice(0,28);
+      const existing=huCustomCats().find(c=>c.label.toLowerCase()===name.toLowerCase());
+      if(existing){ category=existing.id; categoryLabel=existing.label; }
+      else { category='c_'+(name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')||'cat')+'_'+Date.now().toString(36).slice(-4); categoryLabel=name; }
+    } else {
+      category=sel||'update';
+      const b=HU_CATS.find(c=>c.id===category);
+      if(b){ categoryLabel=b.label; }
+      else { const c=huCustomCats().find(x=>x.id===category); categoryLabel=c?c.label:category; }
+    }
+  }
   const arr=huLoad();
   const editing = huEditId ? arr.find(u=>u.id===huEditId) : null;
   let savedId;
   if(editing){
-    editing.title=title; editing.body=body; editing.date=date; editing.category=category; editing.pinned=pinned;
+    editing.title=title; editing.body=body; editing.date=date; editing.category=category; editing.categoryLabel=categoryLabel; editing.pinned=pinned;
     editing.showHub=showHub; editing.showLrc=showLrc; editing.ts=editing.ts||Date.now();
     savedId=editing.id; huEditId=null;
   } else {
     savedId='upd_'+Date.now().toString(36)+Math.floor(Math.random()*1000).toString(36);
-    arr.push({ id:savedId, title, body, date, category, pinned, showHub, showLrc, ts:Date.now() });
+    arr.push({ id:savedId, title, body, date, category, categoryLabel, pinned, showHub, showLrc, ts:Date.now() });
   }
   // a saved/edited update should re-appear in the bell even if it was dismissed before
   try{ const s=notifDismissedSet(); if(s.delete('hu:'+savedId)){ localStorage.setItem(NOTIF_DISMISS_KEY, JSON.stringify([...s])); } }catch(e){}
@@ -7357,7 +7408,7 @@ spawnWaves(document.getElementById('hero-waves'), {
       return !!u.showLrc;
     }).map(function(u){
       return { id:(u.id||''), title:(u.title||''), body:(u.body||''), date:(u.date||''),
-               category:(u.category||'update'), pinned:!!u.pinned, ts:(u.ts||0) };
+               category:(u.category||'update'), categoryLabel:(u.categoryLabel||''), pinned:!!u.pinned, ts:(u.ts||0) };
     });
     return { records:recs };
   }
