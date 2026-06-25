@@ -1215,6 +1215,28 @@ select.rec-in{appearance:auto;cursor:pointer}
 .pto-rowbtn{border:1px solid var(--gray-200);background:#fff;border-radius:8px;width:30px;height:30px;cursor:pointer;color:var(--gray-500);font-size:16px;display:inline-flex;align-items:center;justify-content:center;transition:all .15s}
 .pto-rowbtn:hover{border-color:var(--blue-400);color:var(--blue-800);background:var(--blue-50)}
 .pto-empty-row{text-align:center;color:var(--gray-500);padding:30px 10px;font-size:13.5px}
+/* ── benefits eligibility ── */
+.ben-stat{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:800;letter-spacing:.3px;text-transform:uppercase;padding:2px 8px;border-radius:10px;margin-top:3px}
+.ben-stat.elig{background:#E4F8EC;color:var(--green-pop-deep)}
+.ben-stat.soon{background:#FCEEDB;color:var(--amber-800)}
+.ben-stat.future{background:var(--gray-100);color:var(--gray-500)}
+.ben-stat.na{background:var(--gray-100);color:var(--gray-400)}
+.ben-stat.due{background:#FCEAEA;color:#c0392b}
+.ben-status-tag{display:inline-block;margin-left:7px;font-size:9px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;padding:2px 7px;border-radius:10px;vertical-align:middle}
+.ben-status-tag.rehire{background:#EEEBFC;color:#5B4FCF}
+.ben-status-tag.newhire{background:var(--blue-50);color:var(--blue-800)}
+.ben-chip{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;font-family:inherit;padding:4px 10px;border-radius:14px;border:1px solid var(--gray-200);background:#fff;color:var(--gray-400);cursor:pointer;transition:all .14s;white-space:nowrap}
+.ben-chip i{font-size:13px}
+.ben-chip:hover{border-color:var(--blue-400)}
+.ben-chip.on{background:#E4F8EC;border-color:#9fe0bd;color:var(--green-pop-deep)}
+.ben-chip.due{background:#FCEAEA;border-color:#f2b8b8;color:#c0392b}
+.ben-chip[disabled]{cursor:default;opacity:.85}
+.ben-chip[disabled]:hover{border-color:var(--gray-200)}
+.ben-na-cell{color:var(--gray-300);font-weight:600}
+.bm-modeline{display:flex;gap:8px;align-items:center;margin-top:6px}
+.bm-modeline select{flex:0 0 auto;width:auto}
+.bm-auto{font-size:12px;color:var(--blue-800);font-weight:700;background:var(--blue-50);padding:5px 10px;border-radius:8px;display:inline-flex;align-items:center;gap:5px}
+.bm-auto i{font-size:14px}
 
 /* policy reference */
 .pto-policy{background:#fff;border:var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow);margin-bottom:18px;overflow:hidden}
@@ -1675,6 +1697,7 @@ select.rec-in{appearance:auto;cursor:pointer}
       <div class="nav-item" onclick="nav('recruiting',this)"><i class="ti ti-user-search"></i>Recruiting</div>
       <div class="nav-item" onclick="nav('overtime',this)"><i class="ti ti-clock-dollar"></i>Overtime by Department</div>
       <div class="nav-item" onclick="nav('pto',this)"><i class="ti ti-beach"></i>PTO Tracker</div>
+      <div class="nav-item" onclick="nav('benefits',this)"><i class="ti ti-heart-handshake"></i>Benefits Eligibility</div>
       <div class="nav-item" onclick="nav('timesheet',this)"><i class="ti ti-clock-search"></i>Timesheet Assistant</div>
       <div class="nav-item" onclick="nav('giftcards',this)"><i class="ti ti-gift"></i>Birthday &amp; Gift Cards</div>
     </div>
@@ -1688,6 +1711,7 @@ select.rec-in{appearance:auto;cursor:pointer}
 
     <div class="nav-group">
       <div class="nav-label">Vendor Portals</div>
+      <div class="nav-item nav-ext-link" onclick="window.open('https://www.employeenavigator.com/identity/Account/Login?ReturnUrl=%2Fidentity%2Fconnect%2Fauthorize%2Fcallback%3FauthzId%3D6FCD4D581E830DB758F1C387504A07752E4A67ACD5138C25B1CBAD1AB484A79A','_blank','noopener');closeSidebar()"><i class="ti ti-umbrella"></i>Employee Navigator<i class="ti ti-external-link nav-ext"></i></div>
       <div class="nav-item nav-ext-link" onclick="window.open('https://secure.indeed.com/auth?hl=en_US&co=US&continue=https%3A%2F%2Femployers.indeed.com%2Forchestrator%3Ffrom%3Dgnav_employer_marketing_header%26continue%3Dhttps%253A%252F%252Fwww.indeed.com%252Femployers%252Flogin%26hl%3Den%26co%3DUS&tmpl=mobile&from=gnav-util-employer--post-press--employer&jsContinue=https%3A%2F%2Fonboarding.indeed.com%2Fonboarding%3Fhl%3Den_US%26co%3DUS%26from%3Dgnav-employer--post-press--employer','_blank','noopener');closeSidebar()"><i class="ti ti-briefcase"></i>Indeed<i class="ti ti-external-link nav-ext"></i></div>
       <div class="nav-item nav-ext-link" onclick="window.open('https://sponsor.fidelity.com/pspublic/pl/site/login.html#/login?ccsource=int_log-in','_blank','noopener');closeSidebar()"><i class="ti ti-building-bank"></i>Fidelity PSW<i class="ti ti-external-link nav-ext"></i></div>
       <div class="nav-item nav-ext-link" onclick="window.open('https://apps.trustmineral.com/auth/login','_blank','noopener');closeSidebar()"><i class="ti ti-gavel"></i>Mineral<i class="ti ti-external-link nav-ext"></i></div>
@@ -1770,6 +1794,19 @@ select.rec-in{appearance:auto;cursor:pointer}
           <button class="pm-cancel" onclick="ptoCloseSettings()">Close</button>
           <button class="rec-add" onclick="ptoSaveSettings()"><i class="ti ti-check"></i> Save settings</button>
         </div>
+      </div>
+    </div>
+
+    <!-- Benefits eligibility add/edit modal -->
+    <div class="pto-modal" id="ben-modal" onclick="if(event.target===this)benCloseModal()">
+      <div class="pm-card">
+        <div class="pm-head">
+          <span class="pm-ic"><i class="ti ti-heart-handshake"></i></span>
+          <div><h3 id="bm-title">Add employee</h3><div class="pm-sub" id="bm-sub">Medical &amp; 401(k) eligibility</div></div>
+          <button class="pm-close" aria-label="Close" onclick="benCloseModal()"><i class="ti ti-x"></i></button>
+        </div>
+        <div class="pm-body" id="bm-body"></div>
+        <div class="pm-foot" id="bm-foot"></div>
       </div>
     </div>
 
@@ -2164,6 +2201,71 @@ select.rec-in{appearance:auto;cursor:pointer}
         </div>
       </div>
 
+      <!-- BENEFITS ELIGIBILITY -->
+      <div class="screen" id="screen-benefits">
+        <div class="screen-eyebrow">Benefits</div>
+        <div class="screen-title">Benefits Eligibility</div>
+        <p class="screen-lede">Track new-hire eligibility for medical and 401(k). You enter a name, start date, and status — the app computes the medical eligibility date (1st of the month after 60 days) and the 401(k) eligibility date (1-year anniversary) automatically, and flags notices as they come due. Saved to this browser and synced to your account.</p>
+
+        <div class="pto-toolbar">
+          <div class="pto-asof" title="The tracker recalculates automatically every time you open it.">
+            <i class="ti ti-calendar"></i> <span>As of</span> <b id="ben-today">today</b>
+            <span class="pto-auto"><i class="ti ti-refresh"></i> auto-updates</span>
+          </div>
+          <div class="pto-search">
+            <i class="ti ti-search"></i>
+            <input id="ben-search" type="text" autocomplete="off" placeholder="Search employees…" oninput="benSearchInput(this.value)">
+            <button class="pto-search-clear" id="ben-search-clear" onclick="benClearSearch()" aria-label="Clear search">&times;</button>
+          </div>
+          <button class="rec-add" id="ben-add-btn" onclick="benOpenModal()"><i class="ti ti-user-plus"></i> Add employee</button>
+          <span class="tr-readonly-note" id="ben-readonly" style="display:none"><i class="ti ti-eye"></i> View only · ask HR to edit</span>
+        </div>
+
+        <!-- notices + upcoming -->
+        <div class="pto-alerts">
+          <div class="pto-alerts-head">
+            <span class="pa-ic"><i class="ti ti-bell-ringing"></i></span>
+            <div>
+              <h2>Notices &amp; upcoming</h2>
+              <div class="pa-sub" id="ben-alerts-sub">Eligibility dates and notices coming due</div>
+            </div>
+            <span class="pa-count" id="ben-alerts-count">0</span>
+          </div>
+          <div class="pto-alerts-body" id="ben-alerts-body"></div>
+        </div>
+
+        <div class="tr-summary" id="ben-summary"></div>
+
+        <div class="pto-exportbar">
+          <div class="pxb-label">
+            <span class="pxb-t"><i class="ti ti-users-group"></i> Eligibility list</span>
+            <small>Download a snapshot of everyone's medical &amp; 401(k) eligibility as of today</small>
+          </div>
+          <div class="pxb-actions">
+            <button class="pxb-btn csv" onclick="benExportCSV()"><i class="ti ti-file-spreadsheet"></i> Download CSV</button>
+            <button class="pxb-btn pdf" onclick="benExportPDF()"><i class="ti ti-file-type-pdf"></i> Download PDF</button>
+          </div>
+        </div>
+
+        <div class="pto-tbl-wrap" id="ben-table"></div>
+        <div id="ben-table-more"></div>
+
+        <!-- rules reference -->
+        <details class="pto-policy">
+          <summary><i class="ti ti-book lead"></i> Eligibility rules &amp; reference <i class="ti ti-chevron-down chev"></i></summary>
+          <div class="pto-policy-body">
+            <h4>Medical / Health insurance</h4>
+            <p>Eligible the <b>1st of the month following 60 days</b> of employment. Example: hired Jan 8 → 60 days lands in early March → eligible <b>April 1</b>. New hires should receive enrollment information ahead of that date. The app computes this date for you the moment a start date is entered.</p>
+            <h4>401(k) &amp; Profit Sharing</h4>
+            <p>Per the Plan's Summary Plan Description, an employee is eligible at <b>age 18</b> after <b>one year of service with 1,000 hours</b>, entering on the <b>first day of the month</b>. This tracker uses the <b>1-year hire anniversary</b> as the eligibility date plus a <b>1,000-hour</b> checkbox you confirm (since hours can't be derived from a date alone). A 401(k) benefit notice should go out about <b>one month before</b> the anniversary.</p>
+            <p style="margin-top:4px"><b>Rehires:</b> employees who already met eligibility re-enter after one hour of service. Set their medical or 401(k) date to <i>N/A</i> or a <i>custom</i> date in the record as needed — the rest stays automatic.</p>
+            <div class="pto-hol">
+              <span>Medical: hire + 60 days → next 1st</span><span>401(k): hire + 1 year</span><span>1,000 hours required</span><span>Age 18+</span>
+            </div>
+          </div>
+        </details>
+      </div>
+
       <!-- RESOURCE ONE -->
       <!-- MY TASKS -->
       <div class="screen" id="screen-tasks">
@@ -2390,7 +2492,8 @@ const PERM_CAPS = [
   {id:'assign', label:'Assign tasks to people'},
   {id:'editTurnover', label:'Edit turnover numbers'},
   {id:'editRecruiting', label:'Edit recruiting logs & rejections'},
-  {id:'editPto', label:'Edit PTO roster & balances'}
+  {id:'editPto', label:'Edit PTO roster & balances'},
+  {id:'editBenefits', label:'Edit benefits eligibility tracker'}
 ];
 // Seed accounts — always available so they exist on a fresh device.
 const SEED_USERS = [
@@ -2399,10 +2502,10 @@ const SEED_USERS = [
     role:'admin', access:{}, caps:{} },
   { id:'u_anahi', name:'Anahi Torres', email:'anahi@wsdisplay.com',
     passHash:'0c9dbda57c1c3d9f4c5ff7ad78af8751337e6d4a4f0e8a3b4e2fbc68e402176e',
-    role:'member', access:{yearly:true,turnover:true,recruiting:true,overtime:true,pto:true}, caps:{editTasks:true,editRecruiting:true,editPto:true} },
+    role:'member', access:{yearly:true,turnover:true,recruiting:true,overtime:true,pto:true}, caps:{editTasks:true,editRecruiting:true,editPto:true,editBenefits:true} },
   { id:'u_steph', name:'Stephanie Bryan', email:'stephanie.b@wsdisplay.com',
     passHash:'0c9dbda57c1c3d9f4c5ff7ad78af8751337e6d4a4f0e8a3b4e2fbc68e402176e',
-    role:'member', access:{yearly:true,turnover:true,recruiting:true,overtime:true,pto:true}, caps:{editTasks:true,editRecruiting:true,editPto:true} }
+    role:'member', access:{yearly:true,turnover:true,recruiting:true,overtime:true,pto:true}, caps:{editTasks:true,editRecruiting:true,editPto:true,editBenefits:true} }
 ];
 const ADMIN_SEED = SEED_USERS[0];
 let CURRENT = null;
@@ -2466,6 +2569,7 @@ function can(key){
   if(key==='dashboard') return true;
   if(key==='tasks') return true; // every user has a My Tasks view
   if(key==='giftcards') return true; // whole HR team needs gift card / birthday visibility
+  if(key==='benefits') return true; // whole HR team needs benefits-eligibility visibility
   if(PERM_CAPS.some(c=>c.id===key)) return !!(CURRENT.caps && CURRENT.caps[key]);
   return !!(CURRENT.access && CURRENT.access[key]); // section
 }
@@ -2541,6 +2645,7 @@ function enterApp(user){
   trInit();
   recInit();
   if(typeof ptoInit==='function') ptoInit();
+  if(typeof benInit==='function') benInit();
   if(typeof gcInit==='function') gcInit();
   renderNotifications();
   setTimeout(function(){
@@ -2566,7 +2671,7 @@ async function doLogout(){
 
 /* ══════════════ NAV ══════════════ */
 const pageTitles = {
-  dashboard:'Dashboard', yearly:'Yearly Tasks', turnover:'Turnover Rates', recruiting:'Recruiting', overtime:'Overtime by Department', pto:'PTO Tracker', timesheet:'Timesheet Assistant', tasks:'My Tasks', giftcards:'Birthday & Gift Cards', settings:'Settings'
+  dashboard:'Dashboard', yearly:'Yearly Tasks', turnover:'Turnover Rates', recruiting:'Recruiting', overtime:'Overtime by Department', pto:'PTO Tracker', benefits:'Benefits Eligibility', timesheet:'Timesheet Assistant', tasks:'My Tasks', giftcards:'Birthday & Gift Cards', settings:'Settings'
 };
 function nav(id, el){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -2581,6 +2686,7 @@ function nav(id, el){
   if(id==='recruiting' && typeof recRender==='function') recRender();
   if(id==='overtime' && typeof otRender==='function') otRender();
   if(id==='pto' && typeof ptoRender==='function') ptoRender();
+  if(id==='benefits' && typeof benRender==='function') benRender();
   if(id==='timesheet' && typeof tsRender==='function') tsRender();
   if(id==='giftcards' && typeof gcRender==='function') gcRender();
   if(id==='tasks' && typeof tasksRender==='function'){ tasksRender(); if(typeof tkConfigured==='function' && tkConfigured()) tkPull(false); }
@@ -3487,7 +3593,8 @@ function renderNotifications(){
   const huItems = (typeof huNotifCollect==='function') ? huNotifCollect() : [];
   const holItems = (typeof holNotifCollect==='function') ? holNotifCollect() : [];
   const gcItems = (typeof gcNotifCollect==='function') ? gcNotifCollect() : [];
-  const total = items.length + celebs.length + tkItems.length + huItems.length + holItems.length + gcItems.length;
+  const benItems = (typeof benNotifCollect==='function') ? benNotifCollect() : [];
+  const total = items.length + celebs.length + tkItems.length + huItems.length + holItems.length + gcItems.length + benItems.length;
   const cnt = document.getElementById('dn-count'); if(cnt) cnt.textContent = total;
   const hint = document.getElementById('nt-hint');
   if(hint) hint.textContent = total ? `${total} update${total===1?'':'s'} · tap to view` : "You're all caught up.";
@@ -3505,7 +3612,8 @@ function renderNotifModal(){
   const huItems = (typeof huNotifCollect==='function') ? huNotifCollect() : [];
   const holItems = (typeof holNotifCollect==='function') ? holNotifCollect() : [];
   const gcItems = (typeof gcNotifCollect==='function') ? gcNotifCollect() : [];
-  const total = items.length+celebs.length+tkItems.length+huItems.length+holItems.length+gcItems.length;
+  const benItems = (typeof benNotifCollect==='function') ? benNotifCollect() : [];
+  const total = items.length+celebs.length+tkItems.length+huItems.length+holItems.length+gcItems.length+benItems.length;
   if(sub) sub.textContent = total+' update'+(total===1?'':'s')+' · '+(notifMode==='mine'?'your tasks & celebrations':'all tasks & celebrations');
   if(!total){ body.innerHTML='<div class="nm-empty"><i class="ti ti-circle-check"></i>You\u2019re all caught up — no new updates.</div>'; return; }
   const clearBar = `<div class="nm-clear"><button onclick="notifDismissVisible()"><i class="ti ti-checks"></i> Clear all</button></div>`;
@@ -3529,6 +3637,25 @@ function renderNotifModal(){
       </div>
       <div class="nm-actions">
         <button class="nm-del" title="Close" aria-label="Close" onclick="notifDismiss('${it.dkey}')"><i class="ti ti-x"></i></button>
+      </div>
+    </div>`;
+    }).join('');
+  }
+  // 🩺 Benefits enrollment reminders (for Stephanie & Anahi)
+  if(benItems.length){
+    html += `<div class="nm-group"><span class="nm-grp-emoji">\uD83E\uDE7A</span> Benefits enrollment</div>`;
+    html += benItems.map(it=>{
+      const when = it.days===1 ? 'tomorrow' : 'in '+it.days+' days';
+      return `
+    <div class="nm-item">
+      <span class="nm-ic2"><i class="ti ti-stethoscope"></i></span>
+      <div class="nm-info">
+        <div class="nm-name">Email ${ytEsc(it.name)} about benefit selections</div>
+        <div class="nm-meta">Medical-eligible ${ytEsc(benFmtLong(it.date))} · ${when} — send enrollment info so they can elect coverage</div>
+      </div>
+      <div class="nm-actions">
+        <button class="nm-open" onclick="benOpenFromNotif()">Open</button>
+        <button class="nm-del" title="Dismiss" aria-label="Dismiss" onclick="notifDismiss('${it.dkey}')"><i class="ti ti-x"></i></button>
       </div>
     </div>`;
     }).join('');
@@ -7336,6 +7463,466 @@ function ptoUpdateDashStat(){
     : `${PTO.employees.length} employees tracked — all balances current, nothing due.`;
 }
 function ptoOpenFromDash(){ const navEl=document.querySelector('.nav-item[onclick*="\'pto\'"]')||document.querySelector('.nav-item[onclick*=pto]'); nav('pto', navEl); }
+
+/* ══════════════ BENEFITS ELIGIBILITY ══════════════
+   Medical: 1st of the month following 60 days after hire.
+   401(k):  1-year hire anniversary (+ 1,000-hour service condition, confirmed by checkbox).
+   Per-date override modes: auto | na | custom — for rehires & special cases.
+   Stored under hrhub_benefits_v1, so it syncs with the rest of the hub. */
+const BEN_KEY = 'hrhub_benefits_v1';
+let BEN = { employees: [] };
+let benEditId = null;
+let benSearch = '';
+let benTableOpen = false;
+const BEN_TABLE_PAGE = 14;
+
+/* ── 2026 seed (transferred from the Benefit Eligibility Tracker) ── */
+const BEN_SEED = [
+  {first:'Ludirma',  last:'Sanchez',     start:'2026-01-05', status:'Rehire',   k401Mode:'na'},
+  {first:'George',   last:'Hunter',      start:'2026-01-08', status:'New Hire'},
+  {first:'Charity',  last:'Blaine',      start:'2026-01-12', status:'New Hire'},
+  {first:'Felysha',  last:'Funtes',      start:'2026-01-15', status:'Rehire',   k401Mode:'na'},
+  {first:'Stephanie',last:'Bryan',       start:'2026-01-20', status:'New Hire'},
+  {first:'John',     last:'Sullivan',    start:'2026-01-22', status:'New Hire'},
+  {first:'Daniel',   last:'Hanson',      start:'2026-01-26', status:'New Hire'},
+  {first:'Luke',     last:'Smerchansky', start:'2026-02-09', status:'New Hire'},
+  {first:'Julio',    last:'Velazquez',   start:'2026-02-11', status:'New Hire'},
+  {first:'Darnell',  last:'Johnson',     start:'2026-02-16', status:'New Hire'},
+  {first:'Segifredo',last:'Escobedo',    start:'2026-02-23', status:'New Hire'},
+  {first:'Kyle',     last:'Neidigh',     start:'2026-03-09', status:'New Hire', medNoticeSent:true},
+  {first:'Ricky',    last:'Rosales',     start:'2026-03-10', status:'Rehire',   medMode:'na', k401Mode:'custom', k401Custom:'2026-03-10'},
+  {first:'Brittany', last:'Miller',      start:'2026-03-30', status:'New Hire'},
+  {first:"D'anerie", last:'Luperon',     start:'2026-03-30', status:'New Hire'},
+  {first:'Bal',      last:'Darjee',      start:'2026-03-30', status:'New Hire'},
+  {first:'Gopal',    last:'Gautam',      start:'2026-04-09', status:'Rehire',   k401Mode:'na', medNoticeSent:true},
+  {first:'Robert',   last:'Smyser',      start:'2026-04-13', status:'New Hire', k401Mode:'custom', k401Custom:'2026-04-13', medNoticeSent:true},
+  {first:'Jairamai', last:'Cosme',       start:'2026-04-14', status:'New Hire'},
+  {first:'Bertha',   last:'Flores',      start:'2026-04-23', status:'Rehire'},
+  {first:'Rafaela',  last:'Acosta',      start:'2026-04-27', status:'New Hire'},
+  {first:'Brian',    last:'Bone',        start:'2026-05-11', status:'New Hire'},
+  {first:'Paris',    last:'Williams',    start:'2026-05-11', status:'New Hire'},
+  {first:'Dayquan',  last:'Scott',       start:'2026-05-26', status:'New Hire'}
+].map((r,i)=>Object.assign({
+  id:'ben_seed_'+(i+1), medMode:'auto', medCustom:'', k401Mode:'auto', k401Custom:'',
+  medNoticeSent:false, elected:false, k401NoticeSent:false, hours1000:false, contributing:false, notes:''
+}, r));
+
+/* ── date helpers ── */
+function benParse(s){ if(!s) return null; if(s instanceof Date) return s; const p=String(s).slice(0,10).split('-'); if(p.length!==3) return null; const d=new Date(+p[0],(+p[1])-1,+p[2]); return isNaN(d.getTime())?null:d; }
+function benISO(d){ if(!d) return ''; const z=n=>String(n).padStart(2,'0'); return d.getFullYear()+'-'+z(d.getMonth()+1)+'-'+z(d.getDate()); }
+function benFmt(d){ d=benParse(d); if(!d) return '—'; return (d.getMonth()+1)+'/'+d.getDate()+'/'+String(d.getFullYear()).slice(2); }
+function benFmtLong(d){ d=benParse(d); if(!d) return '—'; return d.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}); }
+function benToday(){ const t=new Date(); return new Date(t.getFullYear(),t.getMonth(),t.getDate()); }
+function benAddDays(d,n){ const x=new Date(d.getTime()); x.setDate(x.getDate()+n); return x; }
+function benDaysBetween(a,b){ return Math.round((benParse(a)-benParse(b))/86400000); }
+function benEsc(s){ return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+/* ── eligibility math ── */
+function benMedAuto(start){ const h=benParse(start); if(!h) return null; const d60=benAddDays(h,60); return new Date(d60.getFullYear(), d60.getMonth()+1, 1); }
+function benK401Auto(start){ const h=benParse(start); if(!h) return null; return new Date(h.getFullYear()+1, h.getMonth(), h.getDate()); }
+function benResolve(mode, customISO, autoDate){
+  if(mode==='na') return {na:true, date:null};
+  if(mode==='custom') return {na:false, date:benParse(customISO)};
+  return {na:false, date:autoDate};
+}
+/* status pill for a resolved date */
+function benStatus(date, na){
+  if(na) return {cls:'na', label:'N/A'};
+  if(!date) return {cls:'future', label:'—'};
+  const days = benDaysBetween(date, benToday());
+  if(days<=0) return {cls:'elig', label:'Eligible'};
+  if(days<=30) return {cls:'soon', label:'In '+days+'d'};
+  return {cls:'future', label:'Upcoming'};
+}
+/* full computed view for one employee */
+function benCompute(e){
+  const med = benResolve(e.medMode||'auto', e.medCustom, benMedAuto(e.start));
+  const k401 = benResolve(e.k401Mode||'auto', e.k401Custom, benK401Auto(e.start));
+  const medSt = benStatus(med.date, med.na);
+  const k401St = benStatus(k401.date, k401.na);
+  // medical notice due: within 30 days of eligibility, not yet eligible, not sent
+  const medDays = (!med.na && med.date) ? benDaysBetween(med.date, benToday()) : null;
+  const medNoticeDue = (!med.na && med.date && medDays>0 && medDays<=30 && !e.medNoticeSent);
+  // 401k notice due: ~1 month before the anniversary, not sent
+  const kDays = (!k401.na && k401.date) ? benDaysBetween(k401.date, benToday()) : null;
+  const k401NoticeDue = (!k401.na && k401.date && kDays>0 && kDays<=31 && !e.k401NoticeSent);
+  return {med, k401, medSt, k401St, medDays, kDays, medNoticeDue, k401NoticeDue};
+}
+
+/* ── load / save ── */
+function benLoad(){
+  let raw=null; try{ raw=JSON.parse(localStorage.getItem(BEN_KEY)||'null'); }catch(e){}
+  const seeded = localStorage.getItem(BEN_KEY+'_seeded')==='1';
+  BEN = (raw && Array.isArray(raw.employees)) ? raw : {employees:[]};
+  if(!BEN.employees.length && !seeded){
+    BEN.employees = BEN_SEED.map(x=>Object.assign({}, x));
+    try{ localStorage.setItem(BEN_KEY+'_seeded','1'); }catch(e){}
+  }
+  benSave();
+}
+function benSave(){ try{ localStorage.setItem(BEN_KEY, JSON.stringify(BEN)); }catch(e){} }
+function benCanEdit(){ return (typeof can==='function') && (can('editBenefits') || (typeof isAdmin==='function' && isAdmin())); }
+function benNewId(){ return 'ben_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+function benInit(){ benLoad(); }
+
+/* ── render ── */
+function benRender(){
+  const td=document.getElementById('ben-today'); if(td) td.textContent=benFmtLong(benToday());
+  const ro=document.getElementById('ben-readonly'); const addBtn=document.getElementById('ben-add-btn');
+  const ed=benCanEdit();
+  if(ro) ro.style.display = ed?'none':'inline-flex';
+  if(addBtn) addBtn.style.display = ed?'inline-flex':'none';
+  benRenderSummary();
+  benRenderAlerts();
+  benRenderTable();
+}
+
+function benRenderSummary(){
+  const host=document.getElementById('ben-summary'); if(!host) return;
+  const today=benToday();
+  let medElig=0, medUpcoming=0, k401Elig=0, k401Upcoming=0, noticesDue=0;
+  BEN.employees.forEach(e=>{
+    const c=benCompute(e);
+    if(!c.med.na && c.med.date){ if(c.medDays<=0) medElig++; else if(c.medDays<=30) medUpcoming++; }
+    if(!c.k401.na && c.k401.date){ if(c.kDays<=0) k401Elig++; else if(c.kDays<=31) k401Upcoming++; }
+    if(c.medNoticeDue) noticesDue++;
+    if(c.k401NoticeDue) noticesDue++;
+  });
+  const tile=(lbl,ic,val,sub,accent)=>`<div class="tr-tile"><div class="tr-tile-label"><i class="ti ${ic}"></i> ${lbl}</div><div class="tr-tile-val ${accent?'accent':''}">${val}</div><div class="tr-tile-sub">${sub}</div></div>`;
+  host.innerHTML =
+    tile('Tracking','ti-users',BEN.employees.length, BEN.employees.length?'Employees on the list':'Add your first employee', true) +
+    tile('Medical — next 30 days','ti-stethoscope',medUpcoming, medUpcoming?'Becoming medical-eligible soon':'None in the next 30 days') +
+    tile('401(k) — next 30 days','ti-pig-money',k401Upcoming, k401Upcoming?'Anniversaries coming up':'None in the next 30 days') +
+    (noticesDue
+      ? `<div class="tr-tile tr-tile-click" onclick="benFocusAlerts()" title="See who needs a notice"><div class="tr-tile-label"><i class="ti ti-mail-exclamation"></i> Notices to send</div><div class="tr-tile-val">${noticesDue}</div><div class="tr-tile-sub">Medical or 401(k) notices due</div><div class="tr-tile-more"><i class="ti ti-list-search"></i> View list</div></div>`
+      : tile('Notices to send','ti-mail-check',0,'All caught up'));
+}
+function benFocusAlerts(){ const el=document.getElementById('ben-alerts-body'); if(el) el.scrollIntoView({behavior:'smooth', block:'center'}); }
+
+function benCollectAlerts(){
+  const out=[];
+  BEN.employees.forEach(e=>{
+    const c=benCompute(e); const name=((e.first||'')+' '+(e.last||'')).trim()||'—';
+    if(c.medNoticeDue) out.push({id:e.id, name, type:'med-notice', days:c.medDays, date:benISO(c.med.date),
+      title:'Medical enrollment notice', desc:`Eligible ${benFmtLong(c.med.date)} (in ${c.medDays}d) — send enrollment info`});
+    else if(!c.med.na && c.med.date && c.medDays<=0 && c.medDays>=-30 && !e.elected)
+      out.push({id:e.id, name, type:'med-elig', days:c.medDays, date:benISO(c.med.date),
+        title:'Medical-eligible now', desc:`Eligible since ${benFmtLong(c.med.date)} — confirm enrollment / waiver`});
+    if(c.k401NoticeDue) out.push({id:e.id, name, type:'k401-notice', days:c.kDays, date:benISO(c.k401.date),
+      title:'401(k) benefit notice', desc:`1-yr anniversary ${benFmtLong(c.k401.date)} (in ${c.kDays}d) — send notice now`});
+    else if(!c.k401.na && c.k401.date && c.kDays<=0 && c.kDays>=-30 && !e.contributing)
+      out.push({id:e.id, name, type:'k401-elig', days:c.kDays, date:benISO(c.k401.date),
+        title:'401(k)-eligible now', desc:`Anniversary ${benFmtLong(c.k401.date)} reached — confirm 1,000 hrs & enrollment`});
+  });
+  out.sort((a,b)=> a.days-b.days);
+  return out;
+}
+function benRenderAlerts(){
+  const host=document.getElementById('ben-alerts-body'); if(!host) return;
+  const alerts=benCollectAlerts();
+  const cnt=document.getElementById('ben-alerts-count'); if(cnt) cnt.textContent=alerts.length;
+  const sub=document.getElementById('ben-alerts-sub');
+  if(sub) sub.textContent = alerts.length? `${alerts.length} item${alerts.length===1?'':'s'} · as of ${benFmt(benToday())}` : 'Eligibility dates and notices coming due';
+  if(!alerts.length){ host.innerHTML = `<div class="pa-empty"><i class="ti ti-circle-check"></i>All caught up — no eligibility dates or notices due in the next 30 days.</div>`; return; }
+  const meta={
+    'med-notice':{badge:'ninety', ic:'ti-mail-forward', tag:['t-ninety','Notice due']},
+    'med-elig':  {badge:'sick',   ic:'ti-stethoscope',  tag:['t-sick','Medical']},
+    'k401-notice':{badge:'anniv', ic:'ti-mail-forward', tag:['t-anniv','Notice due']},
+    'k401-elig': {badge:'anniv',  ic:'ti-pig-money',    tag:['t-anniv','401(k)']}
+  };
+  host.innerHTML = alerts.map(a=>{
+    const m=meta[a.type]||{badge:'soon',ic:'ti-bell',tag:['t-soon','Update']};
+    return `<div class="pa-item">
+      <span class="pa-badge ${m.badge}"><i class="ti ${m.ic}"></i></span>
+      <div class="pa-info">
+        <div class="pa-name">${benEsc(a.name)}<span class="pa-tag ${m.tag[0]}">${m.tag[1]}</span></div>
+        <div class="pa-desc">${benEsc(a.title)} — ${benEsc(a.desc)}</div>
+      </div>
+      <button class="pa-act ghost" onclick="benOpenModal('${a.id}')">Open</button>
+    </div>`;
+  }).join('');
+}
+
+function benRowSort(a,b){
+  const sa=benParse(a.start), sb=benParse(b.start);
+  if(sa&&sb&&sa.getTime()!==sb.getTime()) return sb-sa;   // newest hire first
+  return ((a.last||'')+(a.first||'')).localeCompare((b.last||'')+(b.first||''));
+}
+function benMatch(e,q){ return (((e.first||'')+' '+(e.last||'')+' '+(e.status||'')+' '+(e.notes||'')).toLowerCase()).indexOf(q)>=0; }
+
+function benChip(e, field, onLabel, offLabel, ed){
+  const on=!!e[field];
+  const cls = on ? 'on' : '';
+  const ic = on ? 'ti-check' : 'ti-minus';
+  const dis = ed ? '' : 'disabled';
+  const click = ed ? `onclick="benToggle('${e.id}','${field}')"` : '';
+  return `<button class="ben-chip ${cls}" ${dis} ${click}><i class="ti ${ic}"></i>${on?onLabel:offLabel}</button>`;
+}
+function benDateCell(date, na, st, noticeDue){
+  if(na) return `<span class="ben-na-cell">N/A</span>`;
+  if(!date) return `<span class="ben-na-cell">—</span>`;
+  const cls = noticeDue ? 'due' : st.cls;
+  const lbl = noticeDue ? 'Notice due' : st.label;
+  return `<div class="pto-num">${benFmt(date)}</div><span class="ben-stat ${cls}">${lbl}</span>`;
+}
+function benRenderTable(){
+  const host=document.getElementById('ben-table'); if(!host) return;
+  const moreHost=document.getElementById('ben-table-more'); if(moreHost) moreHost.innerHTML='';
+  const ed=benCanEdit();
+  if(!BEN.employees.length){
+    host.innerHTML = `<table class="pto-tbl"><tbody><tr><td class="pto-empty-row">No employees yet. ${ed?'Click <b>Add employee</b> — enter a name, start date, and status, and the medical &amp; 401(k) dates fill in automatically.':'Ask HR to add employees.'}</td></tr></tbody></table>`;
+    return;
+  }
+  const q=benSearch.trim().toLowerCase();
+  let sorted=BEN.employees.slice().sort(benRowSort);
+  if(q) sorted=sorted.filter(e=>benMatch(e,q));
+  if(q && !sorted.length){ host.innerHTML = `<table class="pto-tbl"><tbody><tr><td class="pto-empty-row">No employees match “${benEsc(benSearch.trim())}”.</td></tr></tbody></table>`; return; }
+  const shown = (q || benTableOpen) ? sorted : sorted.slice(0, BEN_TABLE_PAGE);
+  const rows = shown.map(e=>{
+    const c=benCompute(e);
+    const name=((e.first||'')+' '+(e.last||'')).trim()||'—';
+    const stTag = e.status==='Rehire' ? '<span class="ben-status-tag rehire">Rehire</span>' : '<span class="ben-status-tag newhire">New hire</span>';
+    return `<tr>
+      <td><div class="pto-emp"><span class="pto-emp-name">${benEsc(name)}</span><span class="pto-emp-meta">Started ${benFmt(e.start)}</span></div></td>
+      <td>${stTag}</td>
+      <td>${benDateCell(c.med.date, c.med.na, c.medSt, c.medNoticeDue)}</td>
+      <td>${benChip(e,'medNoticeSent','Sent','Send', ed)}</td>
+      <td>${benChip(e,'elected','Elected','—', ed)}</td>
+      <td>${benDateCell(c.k401.date, c.k401.na, c.k401St, c.k401NoticeDue)}</td>
+      <td>${benChip(e,'k401NoticeSent','Sent','Send', ed)}</td>
+      <td>${benChip(e,'hours1000','1,000 hrs','1,000 hrs', ed)}</td>
+      <td>${benChip(e,'contributing','Yes','—', ed)}</td>
+      <td style="text-align:right">${ed?`<button class="pto-rowbtn" title="Edit" onclick="benOpenModal('${e.id}')"><i class="ti ti-pencil"></i></button>`:`<button class="pto-rowbtn" title="View" onclick="benOpenModal('${e.id}')"><i class="ti ti-eye"></i></button>`}</td>
+    </tr>`;
+  }).join('');
+  host.innerHTML = `<table class="pto-tbl"><thead><tr>
+    <th>Employee</th><th>Status</th><th>Medical eligible</th><th>Med notice</th><th>Elected</th>
+    <th>401(k) eligible</th><th>401(k) notice</th><th>1,000 hrs</th><th>Contributing</th><th></th>
+  </tr></thead><tbody>${rows}</tbody></table>`;
+  if(moreHost && !q && sorted.length>BEN_TABLE_PAGE){
+    moreHost.innerHTML = benTableOpen
+      ? `<div class="pto-expand"><button onclick="benToggleTable()"><i class="ti ti-chevron-up"></i> Show fewer</button></div>`
+      : `<div class="pto-expand"><button onclick="benToggleTable()"><i class="ti ti-chevron-down"></i> Show all ${sorted.length} employees (${sorted.length-BEN_TABLE_PAGE} more)</button></div>`;
+  }
+}
+function benToggleTable(){ benTableOpen=!benTableOpen; benRenderTable(); }
+function benSearchInput(v){ benSearch=v||''; const c=document.getElementById('ben-search-clear'); if(c) c.style.display=benSearch.trim()?'block':'none'; benRenderTable(); }
+function benClearSearch(){ benSearch=''; const i=document.getElementById('ben-search'); if(i) i.value=''; const c=document.getElementById('ben-search-clear'); if(c) c.style.display='none'; benRenderTable(); }
+
+/* toggle a Yes/No flag straight from the table */
+function benToggle(id, field){
+  if(!benCanEdit()) return;
+  const e=BEN.employees.find(x=>x.id===id); if(!e) return;
+  e[field]=!e[field];
+  benSave();
+  benRenderTable(); benRenderAlerts(); benRenderSummary();
+  if(typeof renderNotifications==='function') renderNotifications();
+}
+
+/* ── add / edit modal ── */
+function benOpenModal(id){
+  benEditId = id || null;
+  const e = id ? BEN.employees.find(x=>x.id===id) : null;
+  const ed = benCanEdit();
+  const r = e || {status:'New Hire', medMode:'auto', k401Mode:'auto'};
+  const dis = ed?'':'disabled';
+  document.getElementById('bm-title').textContent = e ? (ed?'Edit employee':'Employee details') : 'Add employee';
+  document.getElementById('bm-sub').textContent = e ? (((e.first||'')+' '+(e.last||'')).trim()||'') : 'Medical & 401(k) eligibility';
+  const modeSel=(cur,prefix)=>`
+    <select id="${prefix}-mode" ${dis} onchange="benModalRecalc()">
+      <option value="auto" ${(cur||'auto')==='auto'?'selected':''}>Automatic</option>
+      <option value="custom" ${cur==='custom'?'selected':''}>Custom date</option>
+      <option value="na" ${cur==='na'?'selected':''}>N/A</option>
+    </select>`;
+  document.getElementById('bm-body').innerHTML = `
+    <div class="pm-grid">
+      <div class="pm-section">Employee</div>
+      <div class="sf-field"><label>First name</label><input id="bm-first" ${dis} value="${benEsc(r.first||'')}" placeholder="e.g. Maria"></div>
+      <div class="sf-field"><label>Last name</label><input id="bm-last" ${dis} value="${benEsc(r.last||'')}" placeholder="e.g. Lopez"></div>
+      <div class="sf-field"><label>Start date</label><input type="date" id="bm-start" ${dis} value="${benEsc(r.start||'')}" oninput="benModalRecalc()"></div>
+      <div class="sf-field"><label>Status</label><select id="bm-status" ${dis}>
+        <option ${r.status==='New Hire'?'selected':''}>New Hire</option>
+        <option ${r.status==='Rehire'?'selected':''}>Rehire</option>
+      </select></div>
+
+      <div class="pm-section">Medical / health insurance</div>
+      <div class="sf-field"><label>Eligibility date</label>${modeSel(r.medMode,'bm-med')}
+        <div class="bm-modeline" id="bm-med-customwrap" style="${r.medMode==='custom'?'':'display:none'}"><input type="date" id="bm-med-custom" ${dis} value="${benEsc(r.medCustom||'')}" oninput="benModalRecalc()"></div>
+        <div class="pm-hint" id="bm-med-auto"></div>
+      </div>
+      <div class="sf-field"><label>Status</label>
+        <label class="pm-check" style="margin-top:8px"><input type="checkbox" id="bm-mednotice" ${dis} ${r.medNoticeSent?'checked':''}> Enrollment notice sent</label>
+        <label class="pm-check" style="margin-top:8px"><input type="checkbox" id="bm-elected" ${dis} ${r.elected?'checked':''}> Coverage elected</label>
+      </div>
+
+      <div class="pm-section">401(k) &amp; profit sharing</div>
+      <div class="sf-field"><label>Eligibility date</label>${modeSel(r.k401Mode,'bm-k401')}
+        <div class="bm-modeline" id="bm-k401-customwrap" style="${r.k401Mode==='custom'?'':'display:none'}"><input type="date" id="bm-k401-custom" ${dis} value="${benEsc(r.k401Custom||'')}" oninput="benModalRecalc()"></div>
+        <div class="pm-hint" id="bm-k401-auto"></div>
+      </div>
+      <div class="sf-field"><label>Status</label>
+        <label class="pm-check" style="margin-top:8px"><input type="checkbox" id="bm-knotice" ${dis} ${r.k401NoticeSent?'checked':''}> Benefit notice sent</label>
+        <label class="pm-check" style="margin-top:8px"><input type="checkbox" id="bm-hours" ${dis} ${r.hours1000?'checked':''}> 1,000 hours met</label>
+        <label class="pm-check" style="margin-top:8px"><input type="checkbox" id="bm-contrib" ${dis} ${r.contributing?'checked':''}> Contributing</label>
+      </div>
+
+      <div class="pm-computed" id="bm-computed"></div>
+
+      <div class="pm-section">Notes</div>
+      <div class="sf-field full"><label>Notes <span class="pm-sec-note">(optional)</span></label><input id="bm-notes" ${dis} value="${benEsc(r.notes||'')}" placeholder="Optional"></div>
+    </div>`;
+  const foot=document.getElementById('bm-foot');
+  if(ed){
+    foot.innerHTML = `${e?`<button class="pm-del" onclick="benDeleteEmp()"><i class="ti ti-trash"></i> Remove</button>`:''}
+      <button class="pm-cancel" onclick="benCloseModal()">Cancel</button>
+      <button class="rec-add" onclick="benSaveEmp()"><i class="ti ti-check"></i> ${e?'Save changes':'Add employee'}</button>`;
+  } else {
+    foot.innerHTML = `<button class="pm-cancel" onclick="benCloseModal()">Close</button>`;
+  }
+  document.getElementById('ben-modal').classList.add('open');
+  benModalRecalc();
+}
+function benModalRecalc(){
+  const start=(document.getElementById('bm-start')||{}).value||'';
+  const medMode=(document.getElementById('bm-med-mode')||{}).value||'auto';
+  const k401Mode=(document.getElementById('bm-k401-mode')||{}).value||'auto';
+  const mcw=document.getElementById('bm-med-customwrap'); if(mcw) mcw.style.display = medMode==='custom'?'':'none';
+  const kcw=document.getElementById('bm-k401-customwrap'); if(kcw) kcw.style.display = k401Mode==='custom'?'':'none';
+  const medAuto=benMedAuto(start), k401Auto=benK401Auto(start);
+  const ma=document.getElementById('bm-med-auto');
+  if(ma) ma.innerHTML = start ? (medMode==='na' ? 'Marked not applicable.' : medMode==='custom' ? 'Using the custom date above.' : `<span class="bm-auto"><i class="ti ti-wand"></i> Auto: ${benFmtLong(medAuto)}</span> — 1st of the month after 60 days`) : 'Enter a start date to calculate.';
+  const ka=document.getElementById('bm-k401-auto');
+  if(ka) ka.innerHTML = start ? (k401Mode==='na' ? 'Marked not applicable.' : k401Mode==='custom' ? 'Using the custom date above.' : `<span class="bm-auto"><i class="ti ti-wand"></i> Auto: ${benFmtLong(k401Auto)}</span> — 1-year anniversary`) : 'Enter a start date to calculate.';
+  const box=document.getElementById('bm-computed'); if(!box) return;
+  if(!benParse(start)){ box.innerHTML = `<div class="pm-cv" style="grid-column:1/-1;color:var(--gray-500)">Enter a start date and the medical &amp; 401(k) eligibility dates calculate automatically.</div>`; return; }
+  const medCustom=(document.getElementById('bm-med-custom')||{}).value||'';
+  const k401Custom=(document.getElementById('bm-k401-custom')||{}).value||'';
+  const med=benResolve(medMode, medCustom, medAuto), k401=benResolve(k401Mode, k401Custom, k401Auto);
+  const medSt=benStatus(med.date, med.na), kSt=benStatus(k401.date, k401.na);
+  const pill=(st)=>`<span class="ben-stat ${st.cls}" style="margin-top:0">${st.label}</span>`;
+  box.innerHTML =
+    `<div class="pm-cv">Medical eligibility<b>${med.na?'N/A':benFmtLong(med.date)} ${med.na?'':pill(medSt)}</b></div>`+
+    `<div class="pm-cv">401(k) eligibility<b>${k401.na?'N/A':benFmtLong(k401.date)} ${k401.na?'':pill(kSt)}</b></div>`;
+}
+function benCloseModal(){ document.getElementById('ben-modal').classList.remove('open'); benEditId=null; }
+function benSaveEmp(){
+  if(!benCanEdit()) return;
+  const first=(document.getElementById('bm-first').value||'').trim();
+  const last=(document.getElementById('bm-last').value||'').trim();
+  const start=document.getElementById('bm-start').value;
+  if(!first && !last){ alert('Enter the employee name.'); return; }
+  if(!start){ alert('Enter the start date.'); return; }
+  const medMode=document.getElementById('bm-med-mode').value;
+  const k401Mode=document.getElementById('bm-k401-mode').value;
+  const draft={
+    first, last, start, status:document.getElementById('bm-status').value,
+    medMode, medCustom: medMode==='custom' ? (document.getElementById('bm-med-custom').value||'') : '',
+    k401Mode, k401Custom: k401Mode==='custom' ? (document.getElementById('bm-k401-custom').value||'') : '',
+    medNoticeSent:document.getElementById('bm-mednotice').checked,
+    elected:document.getElementById('bm-elected').checked,
+    k401NoticeSent:document.getElementById('bm-knotice').checked,
+    hours1000:document.getElementById('bm-hours').checked,
+    contributing:document.getElementById('bm-contrib').checked,
+    notes:(document.getElementById('bm-notes').value||'').trim()
+  };
+  let emp = benEditId ? BEN.employees.find(x=>x.id===benEditId) : null;
+  if(emp){ Object.assign(emp, draft); }
+  else { emp=Object.assign({id:benNewId()}, draft); BEN.employees.push(emp); }
+  benSave(); benCloseModal(); benRender(); if(typeof renderNotifications==="function") renderNotifications(); if(typeof renderNotifications===(typeof Function.name==="string"?"function":"function")) renderNotifications();
+}
+function benDeleteEmp(){
+  if(!benCanEdit() || !benEditId) return;
+  const emp=BEN.employees.find(x=>x.id===benEditId);
+  const nm=emp?((emp.first||'')+' '+(emp.last||'')).trim():'this employee';
+  if(!confirm('Remove '+nm+' from the benefits tracker? This cannot be undone.')) return;
+  BEN.employees=BEN.employees.filter(x=>x.id!==benEditId);
+  benSave(); benCloseModal(); benRender(); if(typeof renderNotifications==="function") renderNotifications(); if(typeof renderNotifications===(typeof Function.name==="string"?"function":"function")) renderNotifications();
+}
+
+/* ── export ── */
+function benExportRows(){
+  const head=['First','Last','Start date','Status','Medical eligible','Med notice sent','Coverage elected','401(k) eligible','401(k) notice sent','1,000 hrs met','Contributing','Notes'];
+  const yn=v=>v?'Yes':'No';
+  const rows=BEN.employees.slice().sort(benRowSort).map(e=>{
+    const c=benCompute(e);
+    return [e.first||'', e.last||'', benFmt(e.start), e.status||'',
+      c.med.na?'N/A':benFmt(c.med.date), yn(e.medNoticeSent), yn(e.elected),
+      c.k401.na?'N/A':benFmt(c.k401.date), yn(e.k401NoticeSent), yn(e.hours1000), yn(e.contributing), e.notes||''];
+  });
+  return {head, rows, title:'Benefits Eligibility — WS Display', file:'benefits-eligibility'};
+}
+function benExportCSV(){
+  const {head,rows,file}=benExportRows();
+  const cell=(typeof recCSVCell==='function')?recCSVCell:(v=>{ v=String(v==null?'':v); return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; });
+  const csv=[head].concat(rows).map(r=>r.map(cell).join(',')).join('\r\n');
+  const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});
+  if(typeof recDownload==='function'){ recDownload(blob, file+'.csv'); return; }
+  const url=URL.createObjectURL(blob), a=document.createElement('a');
+  a.href=url; a.download=file+'.csv'; document.body.appendChild(a); a.click();
+  setTimeout(()=>{ document.body.removeChild(a); URL.revokeObjectURL(url); },1000);
+}
+async function benExportPDF(){
+  const {head,rows,title,file}=benExportRows();
+  try{
+    await recLoadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+    await recLoadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js');
+    const JS=window.jspdf && window.jspdf.jsPDF; if(!JS) throw new Error('no jsPDF');
+    const doc=new JS({orientation:'landscape', unit:'pt', format:'letter'});
+    doc.setFontSize(14); doc.setTextColor(12,68,124); doc.text(title, 30, 38);
+    doc.setFontSize(9); doc.setTextColor(130,130,130);
+    doc.text('Generated '+new Date().toLocaleString()+' · '+rows.length+' employees · Confidential', 30, 52);
+    doc.autoTable({ head:[head], body:rows, startY:64, styles:{fontSize:7.5, cellPadding:3, overflow:'linebreak'},
+      headStyles:{fillColor:[24,95,165], textColor:255}, alternateRowStyles:{fillColor:[245,247,250]}, margin:{left:30,right:30} });
+    doc.save(file+'.pdf');
+  }catch(e){
+    if(typeof recPrintFallback==='function') recPrintFallback(title, head, rows);
+    else alert('PDF export needs an internet connection for the PDF library — use CSV instead.');
+  }
+}
+
+/* ── Benefits enrollment reminders (dashboard bell) ──
+   A derived notification (not stored): one month before an employee becomes
+   medical-eligible, a reminder appears on Stephanie's and Anahi's Hub dashboards
+   (and Jose's, as admin) prompting them to email the employee about making their
+   benefit selections. It clears the moment the "Med notice" is marked Sent, the
+   employee is past their eligibility date, or it's dismissed. */
+function benIsReminderRecipient(){
+  if(typeof CURRENT==='undefined' || !CURRENT) return false;
+  if(CURRENT.role==='admin') return true; // Jose oversees the team
+  const em=(CURRENT.email||'').trim().toLowerCase();
+  return CURRENT.id==='u_anahi' || CURRENT.id==='u_steph'
+      || em==='anahi@wsdisplay.com' || em==='anahi.torres@wsdisplay.com'
+      || em==='stephanie.b@wsdisplay.com' || em==='stephanie.bryant@wsdisplay.com';
+}
+function benMonthBefore(d){ const x=new Date(d.getTime()); x.setMonth(x.getMonth()-1); return x; }
+function benNotifCollect(){
+  if(!benIsReminderRecipient()) return [];
+  if((typeof BEN==='undefined' || !BEN || !BEN.employees) && typeof benLoad==='function'){ try{ benLoad(); }catch(e){} }
+  if(typeof BEN==='undefined' || !BEN || !Array.isArray(BEN.employees)) return [];
+  const today=benToday();
+  const dismissed=(typeof notifDismissedSet==='function')?notifDismissedSet():new Set();
+  const out=[];
+  BEN.employees.forEach(e=>{
+    const med = benResolve(e.medMode||'auto', e.medCustom, benMedAuto(e.start));
+    if(med.na || !med.date) return;
+    const days = benDaysBetween(med.date, today);
+    if(days<=0) return;                       // already eligible — window has closed
+    if(today < benMonthBefore(med.date)) return; // more than a month out — not yet
+    if(e.medNoticeSent) return;               // enrollment email already sent → reminder done
+    const dkey='ben:med:'+e.id+':'+benISO(med.date);
+    if(dismissed.has(dkey)) return;
+    const name=((e.first||'')+' '+(e.last||'')).trim()||'—';
+    out.push({ dkey, empId:e.id, name, date:benISO(med.date), days });
+  });
+  out.sort((a,b)=>a.days-b.days);
+  return out;
+}
+function benOpenFromNotif(){
+  if(typeof closeNotifModal==='function') closeNotifModal();
+  const el=document.querySelector(".nav-item[onclick*=\"'benefits'\"]")||document.querySelector('.nav-item[onclick*=benefits]');
+  if(typeof nav==='function') nav('benefits', el);
+}
+
 function ptoDashNotifs(){
   if(!PTO) return {html:'',count:0};
   let alerts = ptoCollectAlerts(ptoAsOf||ptoTodayISO());
