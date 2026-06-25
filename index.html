@@ -405,6 +405,8 @@ a{color:inherit;text-decoration:none}
 .hu-dest{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;padding:1px 7px;border-radius:10px;margin-left:5px;vertical-align:middle}
 .hu-dest-hub{background:var(--blue-50);color:var(--blue-800)}
 .hu-dest-lrc{background:#E2F6FB;color:#0E7C93}
+.hu-exp{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;padding:1px 7px;border-radius:10px;margin-left:5px;vertical-align:middle;background:#FEF3E2;color:#B45309}
+.hu-exp.is-past{background:var(--gray-100);color:var(--gray-500)}
 @media(max-width:560px){
   .sf-grid{grid-template-columns:1fr}
   .su-access{display:none}
@@ -3327,6 +3329,7 @@ function notifDismissVisible(){
   if(typeof celebCollect==='function'){ celebCollect().forEach(c=>s.add(c.dkey)); }
   if(typeof tkNotifCollect==='function'){ tkNotifCollect(notifMode).forEach(it=>s.add(it.dkey)); }
   if(typeof huNotifCollect==='function'){ huNotifCollect().forEach(it=>s.add(it.dkey)); }
+  if(typeof holNotifCollect==='function'){ holNotifCollect().forEach(it=>s.add(it.dkey)); }
   try{ localStorage.setItem(NOTIF_DISMISS_KEY, JSON.stringify([...s])); }catch(e){}
   notifSyncAfterDismiss();
 }
@@ -3363,7 +3366,8 @@ function renderNotifications(){
   const celebs = (typeof celebCollect==='function') ? celebCollect() : [];
   const tkItems = (typeof tkNotifCollect==='function') ? tkNotifCollect(notifMode) : [];
   const huItems = (typeof huNotifCollect==='function') ? huNotifCollect() : [];
-  const total = items.length + celebs.length + tkItems.length + huItems.length;
+  const holItems = (typeof holNotifCollect==='function') ? holNotifCollect() : [];
+  const total = items.length + celebs.length + tkItems.length + huItems.length + holItems.length;
   const cnt = document.getElementById('dn-count'); if(cnt) cnt.textContent = total;
   const hint = document.getElementById('nt-hint');
   if(hint) hint.textContent = total ? `${total} update${total===1?'':'s'} · tap to view` : "You're all caught up.";
@@ -3379,7 +3383,8 @@ function renderNotifModal(){
   const celebs = (typeof celebCollect==='function') ? celebCollect() : [];
   const tkItems = (typeof tkNotifCollect==='function') ? tkNotifCollect(notifMode) : [];
   const huItems = (typeof huNotifCollect==='function') ? huNotifCollect() : [];
-  const total = items.length+celebs.length+tkItems.length+huItems.length;
+  const holItems = (typeof holNotifCollect==='function') ? holNotifCollect() : [];
+  const total = items.length+celebs.length+tkItems.length+huItems.length+holItems.length;
   if(sub) sub.textContent = total+' update'+(total===1?'':'s')+' · '+(notifMode==='mine'?'your tasks & celebrations':'all tasks & celebrations');
   if(!total){ body.innerHTML='<div class="nm-empty"><i class="ti ti-circle-check"></i>You\u2019re all caught up — no new updates.</div>'; return; }
   const clearBar = `<div class="nm-clear"><button onclick="notifDismissVisible()"><i class="ti ti-checks"></i> Clear all</button></div>`;
@@ -3440,6 +3445,21 @@ function renderNotifModal(){
       </div>
       <div class="nm-actions">
         <button class="nm-del" title="Dismiss" aria-label="Dismiss" onclick="notifDismiss('${c.dkey}')"><i class="ti ti-x"></i></button>
+      </div>
+    </div>`).join('');
+  }
+  // 🎊 Paid holidays (company closed)
+  if(holItems.length){
+    html += `<div class="nm-group"><span class="nm-grp-emoji">\uD83C\uDF8A</span> Paid holidays</div>`;
+    html += holItems.map(h=>`
+    <div class="nm-item">
+      <span class="nm-ic2"><i class="ti ti-calendar-star"></i></span>
+      <div class="nm-info">
+        <div class="nm-name">${ytEsc(h.name)}</div>
+        <div class="nm-meta">${ytEsc(h.when)} · Company closed</div>
+      </div>
+      <div class="nm-actions">
+        <button class="nm-del" title="Dismiss" aria-label="Dismiss" onclick="notifDismiss('${h.dkey}')"><i class="ti ti-x"></i></button>
       </div>
     </div>`).join('');
   }
@@ -3599,7 +3619,7 @@ function huStore(arr){
 function huNotifCollect(){
   if(!CURRENT) return [];
   const dismissed = (typeof notifDismissedSet==='function') ? notifDismissedSet() : new Set();
-  return huSorted().filter(u=>huTargets(u).hub).map(u=>({
+  return huSorted().filter(u=>huTargets(u).hub && !huExpired(u)).map(u=>({
     id:u.id, title:u.title||'—', body:u.body||'', date:u.date||'', category:u.category||'update',
     categoryLabel:(u.categoryLabel||huCatLabel(u.category)),
     dkey:'hu:'+u.id
@@ -3640,6 +3660,16 @@ function huDestChips(u){
   if(t.lrc) s+='<span class="hu-dest hu-dest-lrc"><i class="ti ti-building"></i> LRC</span>';
   return s;
 }
+/* Optional auto-hide: when "expires" is set, the update drops off the live
+   surfaces (Hub bell + LRC dashboard) the day after its date. It still shows in
+   this Settings list (marked) so it can be edited or removed. */
+function huExpired(u){ return !!(u && u.expires && u.date && huTodayISO() > u.date); }
+function huExpChip(u){
+  if(!u || !u.expires || !u.date) return '';
+  const past = huTodayISO() > u.date;
+  const lbl = (past ? 'Hidden since ' : 'Hides after ') + huFmtDate(u.date);
+  return '<span class="hu-exp'+(past?' is-past':'')+'"><i class="ti ti-clock-hour-4"></i> '+ytEsc(lbl)+'</span>';
+}
 function huTodayISO(){ const d=new Date(); const p=n=>String(n).padStart(2,'0'); return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate()); }
 function huFmtDate(iso){
   if(!iso || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) return iso||'';
@@ -3667,7 +3697,7 @@ function huRender(){
       <div class="su-info">
         <div class="su-name">${ytEsc(u.title||'—')}${u.pinned?'<span class="hu-pinned"><i class="ti ti-pin-filled"></i> Pinned</span>':''}</div>
         ${body}
-        <div class="su-access">${ytEsc(huFmtDate(u.date))}${huDestChips(u)}</div>
+        <div class="su-access">${ytEsc(huFmtDate(u.date))}${huDestChips(u)}${huExpChip(u)}</div>
       </div>
       <div class="su-actions">
         <button class="su-btn ${u.pinned?'is-on':''}" onclick="huPin('${u.id}')" title="${u.pinned?'Unpin':'Pin to top'}"><i class="ti ti-pin"></i></button>
@@ -3701,8 +3731,11 @@ function huForm(){
         <label>New category name</label>
         <input id="hu-cat-new" maxlength="28" placeholder="e.g. Safety"/>
       </div>
-      <div class="sf-field"><label>Pin</label>
-        <label class="sf-check" style="padding:9px 0"><input type="checkbox" id="hu-pin" ${editing&&editing.pinned?'checked':''}/> Show first</label>
+      <div class="sf-field"><label>Options</label>
+        <div class="sf-checks" style="margin-bottom:0">
+          <label class="sf-check"><input type="checkbox" id="hu-pin" ${editing&&editing.pinned?'checked':''}/> Pin (show first)</label>
+          <label class="sf-check"><input type="checkbox" id="hu-expire" ${editing&&editing.expires?'checked':''}/> Hide after the date above</label>
+        </div>
       </div>
       <div class="sf-field" style="grid-column:1/-1">
         <label>Show on</label>
@@ -3730,6 +3763,7 @@ function huSubmit(){
   const date=(document.getElementById('hu-date').value||'').trim() || huTodayISO();
   let category, categoryLabel;
   const pinned=!!document.getElementById('hu-pin').checked;
+  const expires=!!document.getElementById('hu-expire').checked;
   const showHub=!!document.getElementById('hu-dest-hub').checked;
   const showLrc=!!document.getElementById('hu-dest-lrc').checked;
   if(!title){ huMsg('Enter a title.',false); return; }
@@ -3754,12 +3788,12 @@ function huSubmit(){
   const editing = huEditId ? arr.find(u=>u.id===huEditId) : null;
   let savedId;
   if(editing){
-    editing.title=title; editing.body=body; editing.date=date; editing.category=category; editing.categoryLabel=categoryLabel; editing.pinned=pinned;
+    editing.title=title; editing.body=body; editing.date=date; editing.category=category; editing.categoryLabel=categoryLabel; editing.pinned=pinned; editing.expires=expires;
     editing.showHub=showHub; editing.showLrc=showLrc; editing.ts=editing.ts||Date.now();
     savedId=editing.id; huEditId=null;
   } else {
     savedId='upd_'+Date.now().toString(36)+Math.floor(Math.random()*1000).toString(36);
-    arr.push({ id:savedId, title, body, date, category, categoryLabel, pinned, showHub, showLrc, ts:Date.now() });
+    arr.push({ id:savedId, title, body, date, category, categoryLabel, pinned, expires, showHub, showLrc, ts:Date.now() });
   }
   // a saved/edited update should re-appear in the bell even if it was dismissed before
   try{ const s=notifDismissedSet(); if(s.delete('hu:'+savedId)){ localStorage.setItem(NOTIF_DISMISS_KEY, JSON.stringify([...s])); } }catch(e){}
@@ -6611,6 +6645,41 @@ function ptoCollectAlerts(asOfISO){
    birthDate (month/day only — year ignored). PTO accrual/hours updates are NOT
    included here — those apply automatically and live in the PTO tab. */
 const CELEB_WINDOW_DAYS = 7;
+/* ── Paid company holidays (mirrors the LRC's list). Surfaced in the dashboard
+   bell up to a month ahead, and they roll off automatically once the day passes. ── */
+const HOL_WINDOW_DAYS = 30;
+function hubHolNth(y,m,wd,n){ const d=new Date(y,m,1); const add=(wd-d.getDay()+7)%7; return new Date(y,m,1+add+(n-1)*7); }
+function hubHolLast(y,m,wd){ const d=new Date(y,m+1,0); const sub=(d.getDay()-wd+7)%7; return new Date(y,m,d.getDate()-sub); }
+function hubHolObs(y,m,day){ const d=new Date(y,m,day); if(d.getDay()===6) return new Date(y,m,day-1); if(d.getDay()===0) return new Date(y,m,day+1); return d; }
+function hubPaidHolidays(year){
+  return [
+    {name:"New Year's Day",   date:hubHolObs(year,0,1)},
+    {name:"MLK Day",          date:hubHolNth(year,0,1,3)},
+    {name:"Memorial Day",     date:hubHolLast(year,4,1)},
+    {name:"Independence Day", date:(year===2026 ? new Date(2026,6,3) : hubHolObs(year,6,4))},
+    {name:"Labor Day",        date:hubHolNth(year,8,1,1)},
+    {name:"Thanksgiving",     date:hubHolNth(year,10,4,4)},
+    {name:"Christmas Day",    date:hubHolObs(year,11,25)}
+  ];
+}
+function holNotifCollect(){
+  if(!CURRENT) return [];
+  const today = ptoParse(ptoTodayISO()); if(!today) return [];
+  const horizon = ptoAddDays(today, HOL_WINDOW_DAYS);
+  const dismissed = (typeof notifDismissedSet==='function') ? notifDismissedSet() : new Set();
+  const years = [today.getFullYear()]; if(horizon.getFullYear()!==today.getFullYear()) years.push(horizon.getFullYear());
+  const out=[], seen={};
+  years.forEach(y=>hubPaidHolidays(y).forEach(h=>{
+    const hd=new Date(h.date.getFullYear(),h.date.getMonth(),h.date.getDate());
+    if(hd<today || hd>horizon) return;
+    const dkey='hol:'+h.name+':'+hd.getFullYear();
+    if(seen[dkey]) return; seen[dkey]=true;
+    if(dismissed.has(dkey)) return;
+    out.push({name:h.name, date:hd, dateISO:ptoISO(hd), when:celebWhen(hd), dkey});
+  }));
+  out.sort((a,b)=> a.dateISO<b.dateISO?-1:(a.dateISO>b.dateISO?1:0));
+  return out;
+}
 function celebCollect(){
   if(!PTO || !PTO.employees) return [];
   const today = ptoParse(ptoTodayISO()); if(!today) return [];
@@ -7411,7 +7480,7 @@ spawnWaves(document.getElementById('hero-waves'), {
       return !!u.showLrc;
     }).map(function(u){
       return { id:(u.id||''), title:(u.title||''), body:(u.body||''), date:(u.date||''),
-               category:(u.category||'update'), categoryLabel:(u.categoryLabel||''), pinned:!!u.pinned, ts:(u.ts||0) };
+               category:(u.category||'update'), categoryLabel:(u.categoryLabel||''), pinned:!!u.pinned, expires:!!u.expires, ts:(u.ts||0) };
     });
     return { records:recs };
   }
