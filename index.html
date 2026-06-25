@@ -386,6 +386,24 @@ a{color:inherit;text-decoration:none}
 .sf-cancel{border:1px solid var(--gray-200);background:#fff;color:var(--gray-600);border-radius:var(--radius);padding:10px 18px;font-size:13.5px;font-weight:600;cursor:pointer;font-family:inherit}
 .sf-msg{margin-top:10px;font-size:12.5px;font-weight:600}
 .sf-msg.ok{color:var(--green-600)}.sf-msg.err{color:var(--red-600)}
+/* ── HR Updates editor (broadcasts to the Leadership Resource Center) ── */
+.hu-where{font-size:11px;font-weight:600;color:var(--gray-400);letter-spacing:0;text-transform:none;margin-left:auto;text-align:right}
+.hu-row .su-info{min-width:0}
+.hu-body{font-size:12.5px;color:var(--gray-600);margin-top:3px;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere}
+.hu-cat{font-size:9.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;padding:4px 9px;border-radius:20px;flex-shrink:0;align-self:flex-start;margin-top:3px}
+.hu-cat-update{background:var(--blue-50);color:var(--blue-800)}
+.hu-cat-policy{background:#EDEAFB;color:#5B4FCF}
+.hu-cat-benefits{background:var(--green-pop-bg);color:var(--green-pop-deep)}
+.hu-cat-event{background:#FBEFE0;color:var(--amber-800)}
+.hu-cat-reminder{background:var(--gray-100);color:var(--gray-600)}
+.hu-pinned{font-size:9px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:var(--amber-800);background:#FBEFE0;padding:1px 7px 1px 5px;border-radius:10px;margin-left:6px;display:inline-flex;align-items:center;gap:3px;vertical-align:middle}
+.hu-empty{font-size:13px;color:var(--gray-500);padding:4px 0 6px}
+.sf-field textarea{width:100%;border:1px solid var(--gray-200);border-radius:var(--radius);padding:9px 11px;font-size:13.5px;font-family:inherit;background:var(--gray-50);color:var(--gray-900);outline:none;transition:all .15s;min-height:78px;resize:vertical;line-height:1.45}
+.sf-field textarea:focus{border-color:var(--blue-400);background:#fff;box-shadow:0 0 0 3px rgba(55,138,221,.12)}
+.su-btn.is-on{border-color:var(--amber-800);color:var(--amber-800);background:#FBEFE0}
+.hu-dest{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;padding:1px 7px;border-radius:10px;margin-left:5px;vertical-align:middle}
+.hu-dest-hub{background:var(--blue-50);color:var(--blue-800)}
+.hu-dest-lrc{background:#E2F6FB;color:#0E7C93}
 @media(max-width:560px){
   .sf-grid{grid-template-columns:1fr}
   .su-access{display:none}
@@ -1768,6 +1786,14 @@ select.rec-in{appearance:auto;cursor:pointer}
         <div class="screen-eyebrow">Admin</div>
         <div class="screen-title">Settings</div>
         <p class="screen-lede">Manage who can sign in and what they can access. Accounts and permissions are saved to this device only — move to Supabase to sync across users.</p>
+
+        <div class="settings-section">
+          <div class="settings-h"><i class="ti ti-speakerphone"></i> HR Updates
+            <span class="hu-where">Shown on the Leadership Resource Center dashboard</span>
+          </div>
+          <div id="settings-updates"></div>
+          <div id="settings-updates-form"></div>
+        </div>
 
         <div class="settings-section">
           <div class="settings-h"><i class="ti ti-users"></i> Users</div>
@@ -3299,6 +3325,7 @@ function notifDismissVisible(){
   notifCollect(notifMode).forEach(it=>s.add(it.dkey));
   if(typeof celebCollect==='function'){ celebCollect().forEach(c=>s.add(c.dkey)); }
   if(typeof tkNotifCollect==='function'){ tkNotifCollect(notifMode).forEach(it=>s.add(it.dkey)); }
+  if(typeof huNotifCollect==='function'){ huNotifCollect().forEach(it=>s.add(it.dkey)); }
   try{ localStorage.setItem(NOTIF_DISMISS_KEY, JSON.stringify([...s])); }catch(e){}
   notifSyncAfterDismiss();
 }
@@ -3334,7 +3361,8 @@ function renderNotifications(){
   const items = notifCollect(notifMode);
   const celebs = (typeof celebCollect==='function') ? celebCollect() : [];
   const tkItems = (typeof tkNotifCollect==='function') ? tkNotifCollect(notifMode) : [];
-  const total = items.length + celebs.length + tkItems.length;
+  const huItems = (typeof huNotifCollect==='function') ? huNotifCollect() : [];
+  const total = items.length + celebs.length + tkItems.length + huItems.length;
   const cnt = document.getElementById('dn-count'); if(cnt) cnt.textContent = total;
   const hint = document.getElementById('nt-hint');
   if(hint) hint.textContent = total ? `${total} update${total===1?'':'s'} · tap to view` : "You're all caught up.";
@@ -3349,11 +3377,30 @@ function renderNotifModal(){
   const items=notifCollect(notifMode);
   const celebs = (typeof celebCollect==='function') ? celebCollect() : [];
   const tkItems = (typeof tkNotifCollect==='function') ? tkNotifCollect(notifMode) : [];
-  const total = items.length+celebs.length+tkItems.length;
+  const huItems = (typeof huNotifCollect==='function') ? huNotifCollect() : [];
+  const total = items.length+celebs.length+tkItems.length+huItems.length;
   if(sub) sub.textContent = total+' update'+(total===1?'':'s')+' · '+(notifMode==='mine'?'your tasks & celebrations':'all tasks & celebrations');
   if(!total){ body.innerHTML='<div class="nm-empty"><i class="ti ti-circle-check"></i>You\u2019re all caught up — no new updates.</div>'; return; }
   const clearBar = `<div class="nm-clear"><button onclick="notifDismissVisible()"><i class="ti ti-checks"></i> Clear all</button></div>`;
   let html = clearBar;
+  // 📣 HR updates (posted in Settings, targeted to the Hub)
+  if(huItems.length){
+    html += `<div class="nm-group"><span class="nm-grp-emoji">\uD83D\uDCE3</span> HR updates</div>`;
+    html += huItems.map(it=>{
+      const meta = ytEsc(huFmtDate(it.date)) + (it.body ? ' · '+ytEsc(it.body) : '');
+      return `
+    <div class="nm-item">
+      <span class="nm-ic2"><i class="ti ti-speakerphone"></i></span>
+      <div class="nm-info">
+        <div class="nm-name">${ytEsc(it.title)}</div>
+        <div class="nm-meta">${meta}</div>
+      </div>
+      <div class="nm-actions">
+        <button class="nm-del" title="Dismiss" aria-label="Dismiss" onclick="notifDismiss('${it.dkey}')"><i class="ti ti-x"></i></button>
+      </div>
+    </div>`;
+    }).join('');
+  }
   // ✅ Assigned tasks (from My Tasks)
   if(tkItems.length){
     html += `<div class="nm-group"><span class="nm-grp-emoji">\u2705</span> ${notifMode==='mine'?'Assigned to you':'Assigned tasks'}</div>`;
@@ -3444,6 +3491,7 @@ function renderSettings(){
     </div>`;
   }).join('');
   renderSettingsForm();
+  if(typeof huRender==='function') huRender();
 }
 function renderSettingsForm(){
   const wrap = document.getElementById('settings-form'); if(!wrap) return;
@@ -3517,6 +3565,170 @@ function settingsRemove(id){
   saveUsers(loadUsers().filter(x=>x.id!==id));
   if(settingsEditId===id) settingsEditId=null;
   renderSettings(); renderNotifications();
+}
+
+/* ══════════════ HR UPDATES (broadcast to the LRC dashboard) ══════════════ */
+/* Stored under hrhub_updates (auto-synced across this user's devices via
+   hrhub_store) and pushed to the shared lrc_dashboard table so the Leadership
+   Resource Center shows the same items. Admin-only, matching who manages Settings. */
+const HU_KEY  = 'hrhub_updates';
+const HU_CATS = [
+  {id:'update',   label:'Update'},
+  {id:'policy',   label:'Policy'},
+  {id:'benefits', label:'Benefits'},
+  {id:'event',    label:'Event'},
+  {id:'reminder', label:'Reminder'}
+];
+let huEditId = null;
+
+function huLoad(){
+  let a=[]; try{ a=JSON.parse(localStorage.getItem(HU_KEY)||'[]'); }catch(e){ a=[]; }
+  return Array.isArray(a)?a:[];
+}
+function huStore(arr){
+  try{ localStorage.setItem(HU_KEY, JSON.stringify(arr)); }catch(e){}
+  if(typeof window.hubPushUpdates==='function'){ try{ window.hubPushUpdates(); }catch(e){} }
+  if(typeof renderNotifications==='function'){ try{ renderNotifications(); }catch(e){} }
+}
+/* Hub-targeted updates, as notification items for the dashboard bell/modal. */
+function huNotifCollect(){
+  if(!CURRENT) return [];
+  const dismissed = (typeof notifDismissedSet==='function') ? notifDismissedSet() : new Set();
+  return huSorted().filter(u=>huTargets(u).hub).map(u=>({
+    id:u.id, title:u.title||'—', body:u.body||'', date:u.date||'', category:u.category||'update',
+    dkey:'hu:'+u.id
+  })).filter(it=>!dismissed.has(it.dkey));
+}
+function huCatLabel(id){ const c=HU_CATS.find(x=>x.id===id); return c?c.label:'Update'; }
+/* Where an update shows. Legacy items (created before destinations existed) have
+   neither flag set — treat those as LRC-only, preserving their original behavior. */
+function huTargets(u){
+  const hasHub=(typeof u.showHub==='boolean'), hasLrc=(typeof u.showLrc==='boolean');
+  if(!hasHub && !hasLrc) return {hub:false, lrc:true};
+  return {hub:!!u.showHub, lrc:!!u.showLrc};
+}
+function huDestChips(u){
+  const t=huTargets(u); let s='';
+  if(t.hub) s+='<span class="hu-dest hu-dest-hub"><i class="ti ti-bell"></i> Hub</span>';
+  if(t.lrc) s+='<span class="hu-dest hu-dest-lrc"><i class="ti ti-building"></i> LRC</span>';
+  return s;
+}
+function huTodayISO(){ const d=new Date(); const p=n=>String(n).padStart(2,'0'); return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate()); }
+function huFmtDate(iso){
+  if(!iso || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) return iso||'';
+  const [y,m,d]=iso.split('-').map(Number);
+  return new Date(y,m-1,d).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+}
+/* sort: pinned first, then newest date, then newest created */
+function huSorted(){
+  return huLoad().slice().sort((a,b)=>{
+    if(!!b.pinned!==!!a.pinned) return b.pinned?1:-1;
+    const da=(a.date||''), db=(b.date||''); if(db!==da) return db<da?-1:1;
+    return (b.ts||0)-(a.ts||0);
+  });
+}
+
+function huRender(){
+  const host=document.getElementById('settings-updates'); if(!host) return;
+  if(!CURRENT || !can('settings')){ host.innerHTML=''; const f=document.getElementById('settings-updates-form'); if(f) f.innerHTML=''; return; }
+  const list=huSorted();
+  host.innerHTML = list.length ? list.map(u=>{
+    const cat=u.category||'update';
+    const body=u.body?`<div class="hu-body">${ytEsc(u.body)}</div>`:'';
+    return `<div class="su-row hu-row">
+      <span class="hu-cat hu-cat-${ytEsc(cat)}">${ytEsc(huCatLabel(cat))}</span>
+      <div class="su-info">
+        <div class="su-name">${ytEsc(u.title||'—')}${u.pinned?'<span class="hu-pinned"><i class="ti ti-pin-filled"></i> Pinned</span>':''}</div>
+        ${body}
+        <div class="su-access">${ytEsc(huFmtDate(u.date))}${huDestChips(u)}</div>
+      </div>
+      <div class="su-actions">
+        <button class="su-btn ${u.pinned?'is-on':''}" onclick="huPin('${u.id}')" title="${u.pinned?'Unpin':'Pin to top'}"><i class="ti ti-pin"></i></button>
+        <button class="su-btn" onclick="huEdit('${u.id}')" title="Edit"><i class="ti ti-edit"></i></button>
+        <button class="su-btn su-del" onclick="huRemove('${u.id}')" title="Delete"><i class="ti ti-trash"></i></button>
+      </div>
+    </div>`;
+  }).join('') : `<div class="hu-empty">No updates yet. Add one below and it'll appear on the Leadership Resource Center dashboard.</div>`;
+  huForm();
+}
+
+function huForm(){
+  const wrap=document.getElementById('settings-updates-form'); if(!wrap) return;
+  const editing = huEditId ? huLoad().find(u=>u.id===huEditId) : null;
+  const cat = editing ? (editing.category||'update') : 'update';
+  const tgt = editing ? huTargets(editing) : {hub:true, lrc:true}; // new updates default to both
+  wrap.innerHTML = `
+    <div class="sf-title" style="margin-top:16px">${editing?'Edit update':'Add update'}</div>
+    <div class="sf-grid">
+      <div class="sf-field"><label>Title</label><input id="hu-title" maxlength="120" value="${editing?ytEsc(editing.title||''):''}" placeholder="e.g. Open enrollment closes Friday"/></div>
+      <div class="sf-field"><label>Date</label><input id="hu-date" type="date" value="${editing?ytEsc(editing.date||huTodayISO()):huTodayISO()}"/></div>
+      <div class="sf-field" style="grid-column:1/-1"><label>Details</label><textarea id="hu-body" maxlength="600" placeholder="A sentence or two with the details people need.">${editing?ytEsc(editing.body||''):''}</textarea></div>
+      <div class="sf-field"><label>Category</label>
+        <select id="hu-cat">${HU_CATS.map(c=>`<option value="${c.id}" ${cat===c.id?'selected':''}>${c.label}</option>`).join('')}</select>
+      </div>
+      <div class="sf-field"><label>Pin</label>
+        <label class="sf-check" style="padding:9px 0"><input type="checkbox" id="hu-pin" ${editing&&editing.pinned?'checked':''}/> Show first</label>
+      </div>
+      <div class="sf-field" style="grid-column:1/-1">
+        <label>Show on</label>
+        <div class="sf-checks" style="margin-bottom:0">
+          <label class="sf-check"><input type="checkbox" id="hu-dest-hub" ${tgt.hub?'checked':''}/> <i class="ti ti-bell" style="font-size:15px;color:var(--blue-600)"></i> HR Hub dashboard <span style="color:var(--gray-400);font-weight:500">(notifications)</span></label>
+          <label class="sf-check"><input type="checkbox" id="hu-dest-lrc" ${tgt.lrc?'checked':''}/> <i class="ti ti-building" style="font-size:15px;color:#0E7C93"></i> Leadership Resource Center</label>
+        </div>
+      </div>
+    </div>
+    <div class="sf-actions">
+      <button class="sf-save" onclick="huSubmit()">${editing?'Save changes':'Add update'}</button>
+      ${editing?'<button class="sf-cancel" onclick="huCancel()">Cancel</button>':''}
+    </div>
+    <div class="sf-msg" id="hu-msg"></div>`;
+}
+
+function huMsg(t,ok){ const m=document.getElementById('hu-msg'); if(m){ m.textContent=t; m.className='sf-msg '+(ok?'ok':'err'); } }
+function huEdit(id){ huEditId=id; huForm(); const f=document.getElementById('settings-updates-form'); if(f&&f.scrollIntoView) f.scrollIntoView({behavior:'smooth',block:'center'}); }
+function huCancel(){ huEditId=null; huForm(); }
+
+function huSubmit(){
+  if(!can('settings')) return;
+  const title=(document.getElementById('hu-title').value||'').trim();
+  const body=(document.getElementById('hu-body').value||'').trim();
+  const date=(document.getElementById('hu-date').value||'').trim() || huTodayISO();
+  const category=document.getElementById('hu-cat').value || 'update';
+  const pinned=!!document.getElementById('hu-pin').checked;
+  const showHub=!!document.getElementById('hu-dest-hub').checked;
+  const showLrc=!!document.getElementById('hu-dest-lrc').checked;
+  if(!title){ huMsg('Enter a title.',false); return; }
+  if(!showHub && !showLrc){ huMsg('Choose at least one place to show this update.',false); return; }
+  const arr=huLoad();
+  const editing = huEditId ? arr.find(u=>u.id===huEditId) : null;
+  let savedId;
+  if(editing){
+    editing.title=title; editing.body=body; editing.date=date; editing.category=category; editing.pinned=pinned;
+    editing.showHub=showHub; editing.showLrc=showLrc; editing.ts=editing.ts||Date.now();
+    savedId=editing.id; huEditId=null;
+  } else {
+    savedId='upd_'+Date.now().toString(36)+Math.floor(Math.random()*1000).toString(36);
+    arr.push({ id:savedId, title, body, date, category, pinned, showHub, showLrc, ts:Date.now() });
+  }
+  // a saved/edited update should re-appear in the bell even if it was dismissed before
+  try{ const s=notifDismissedSet(); if(s.delete('hu:'+savedId)){ localStorage.setItem(NOTIF_DISMISS_KEY, JSON.stringify([...s])); } }catch(e){}
+  huStore(arr); huRender();
+  const where = (showHub&&showLrc)?'the Hub bell and the LRC dashboard':(showHub?'the Hub notifications':'the LRC dashboard');
+  huMsg((editing?'Saved':'Added')+' — showing on '+where+'.',true);
+}
+
+function huPin(id){
+  if(!can('settings')) return;
+  const arr=huLoad(); const u=arr.find(x=>x.id===id); if(!u) return;
+  u.pinned=!u.pinned; huStore(arr); huRender();
+}
+function huRemove(id){
+  if(!can('settings')) return;
+  const u=huLoad().find(x=>x.id===id); if(!u) return;
+  if(!confirm('Delete "'+(u.title||'this update')+'"? It will be removed from the LRC dashboard too.')) return;
+  huStore(huLoad().filter(x=>x.id!==id));
+  if(huEditId===id) huEditId=null;
+  huRender();
 }
 
 /* ══════════════ MOBILE SIDEBAR ══════════════ */
@@ -7131,6 +7343,29 @@ spawnWaves(document.getElementById('hero-waves'), {
     var p=buildRecruiting(); if(p) lrcPush('recruiting_'+p.year, p);
   };
 
+  /* HR Updates — broadcast the dashboard updates the LRC reads. Pushes even an
+     empty list so deletions propagate, but never when the key is absent on this
+     device (so a device that never used the feature can't clobber the cloud). */
+  function buildUpdates(){
+    var raw; try{ raw=localStorage.getItem('hrhub_updates'); }catch(e){ raw=null; }
+    if(raw==null) return null;
+    var arr; try{ arr=JSON.parse(raw); }catch(e){ arr=null; }
+    if(!Array.isArray(arr)) return null;
+    var recs = arr.filter(function(u){
+      var hasHub=(typeof u.showHub==='boolean'), hasLrc=(typeof u.showLrc==='boolean');
+      if(!hasHub && !hasLrc) return true;   // legacy items were LRC-only
+      return !!u.showLrc;
+    }).map(function(u){
+      return { id:(u.id||''), title:(u.title||''), body:(u.body||''), date:(u.date||''),
+               category:(u.category||'update'), pinned:!!u.pinned, ts:(u.ts||0) };
+    });
+    return { records:recs };
+  }
+  window.hubPushUpdates = function(){
+    if(!(typeof can==='function' && can('settings'))) return; // admin-managed in the Hub
+    var p=buildUpdates(); if(p) lrcPush('hr_updates', p);
+  };
+
   /* ── pull (read-back) from the cloud, used by the Hub's "Restore from cloud" ── */
   function lrcPull(key){
     if(!LRC_SB_URL || !LRC_SB_ANON) return Promise.resolve(null);
@@ -7160,6 +7395,7 @@ spawnWaves(document.getElementById('hero-waves'), {
     try{ window.hubPushTurnover(); }catch(e){}
     try{ window.hubPushOT(); }catch(e){}
     try{ window.hubPushRecruiting(); }catch(e){}
+    try{ window.hubPushUpdates(); }catch(e){}
   }
   if(document.readyState==='loading'){
     document.addEventListener('DOMContentLoaded', function(){ setTimeout(lrcSyncAll, 1800); });
