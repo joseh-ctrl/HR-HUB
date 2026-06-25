@@ -1491,6 +1491,101 @@ select.rec-in{appearance:auto;cursor:pointer}
   .pm-foot{padding:12px 16px}
 }
 
+/* ══════════════ BIRTHDAY & GIFT CARDS ══════════════ */
+.gc-seg button .ti{font-size:15px}
+.gc-reminder{position:relative;overflow:hidden;border-radius:16px;padding:20px 22px;margin-bottom:4px;
+  background:radial-gradient(620px 300px at 90% -40%,rgba(45,160,224,.30),transparent 60%),linear-gradient(135deg,var(--hero-1),var(--hero-2));
+  box-shadow:var(--shadow-hi);color:#fff}
+.gc-reminder-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.gc-rm-eyebrow{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--cyan-bright);margin-bottom:5px;display:flex;align-items:center;gap:7px}
+.gc-rm-title{font-size:18px;font-weight:800;letter-spacing:-.2px;margin-bottom:3px}
+.gc-rm-sub{font-size:12.5px;color:rgba(226,238,250,.8)}
+.gc-rm-actions{display:flex;gap:8px;flex-wrap:wrap}
+.gc-rm-btn{display:inline-flex;align-items:center;gap:7px;border:none;border-radius:20px;padding:9px 15px;font-size:12.5px;font-weight:700;font-family:inherit;cursor:pointer;transition:filter .15s,transform .05s}
+.gc-rm-btn.primary{background:var(--cyan-bright);color:#062033}
+.gc-rm-btn.ghost{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.22)}
+.gc-rm-btn:hover{filter:brightness(1.08)}.gc-rm-btn:active{transform:scale(.97)}
+.gc-rm-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:15px}
+.gc-rm-chip{display:inline-flex;align-items:center;gap:9px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:8px 12px;font-size:12.5px}
+.gc-rm-chip b{font-weight:700}
+.gc-rm-chip .gc-rm-day{color:var(--cyan-bright);font-weight:700;font-size:11.5px}
+.gc-rm-chip .gc-rm-loc{font-size:10px;font-weight:700;letter-spacing:.4px;padding:1px 6px;border-radius:20px;background:rgba(255,255,255,.16)}
+.gc-rm-empty{margin-top:13px;font-size:13px;color:rgba(226,238,250,.85);display:flex;align-items:center;gap:8px}
+
+.gc-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px}
+.gc-stat{position:relative;overflow:hidden;background:#fff;border:var(--border);border-radius:14px;padding:15px 16px;box-shadow:var(--shadow-card)}
+.gc-stat::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px}
+.gc-stat.given::before{background:linear-gradient(180deg,#42C888,#1A9E60)}
+.gc-stat.pending::before{background:linear-gradient(180deg,#F4A044,#DE7A1E)}
+.gc-stat.week::before{background:linear-gradient(180deg,#46AEE6,#2174B8)}
+.gc-stat.total::before{background:var(--g-brand)}
+.gc-stat-num{font-size:24px;font-weight:800;letter-spacing:-.5px;line-height:1}
+.gc-stat-lbl{font-size:11.5px;font-weight:600;color:var(--gray-500);margin-top:5px;text-transform:uppercase;letter-spacing:.5px}
+
+.gc-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.gc-search{flex:1;min-width:180px;border:1px solid var(--gray-200);background:var(--gray-50);border-radius:20px;padding:9px 14px;font-size:13px;font-family:inherit;color:var(--gray-800)}
+.gc-search:focus{outline:none;border-color:var(--blue-400);background:#fff}
+.gc-filter{border:1px solid var(--gray-200);background:#fff;border-radius:20px;padding:9px 12px;font-size:12.5px;font-family:inherit;color:var(--gray-700);cursor:pointer}
+.gc-note{font-size:12.5px;color:var(--gray-600);background:var(--blue-50);border:1px solid var(--blue-100);border-radius:10px;padding:11px 14px;margin-bottom:14px;line-height:1.5}
+.gc-note b{color:var(--blue-800)}
+
+.gc-tbl-wrap{overflow-x:auto;border:var(--border);border-radius:var(--radius-lg);background:#fff;box-shadow:var(--shadow-card)}
+.gc-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.gc-tbl thead th{background:linear-gradient(135deg,var(--hero-1),#103a68);color:#dbeafc;font-size:10.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;text-align:left;padding:11px 12px;white-space:nowrap;position:sticky;top:0;z-index:1}
+.gc-tbl tbody td{padding:9px 12px;border-bottom:1px solid var(--gray-100);vertical-align:middle;color:var(--gray-800);white-space:nowrap}
+.gc-tbl tbody tr:nth-child(even){background:#F7FAFD}
+.gc-tbl tbody tr:hover{background:#EEF6FE}
+.gc-tbl tbody tr.gc-soon{background:#FFF7EC}
+.gc-tbl tbody tr.gc-soon:hover{background:#FFF1DD}
+.gc-name{font-weight:600;color:var(--gray-900)}
+.gc-msub{font-size:11px;color:var(--gray-400)}
+.gc-empty-row td{text-align:center;color:var(--gray-400);padding:26px;font-size:13px}
+
+.gc-loc{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.4px;padding:2px 8px;border-radius:20px;background:var(--gray-100);color:var(--gray-600)}
+.gc-loc.CA{background:#EAF3FC;color:#1D6FB8}
+.gc-loc.PA{background:#EFF8F2;color:#178A50}
+
+.gc-status{display:inline-flex;align-items:center;gap:6px;border:none;border-radius:20px;padding:5px 12px;font-size:11.5px;font-weight:700;font-family:inherit;cursor:pointer;transition:filter .12s,transform .05s}
+.gc-status:active{transform:scale(.96)}
+.gc-status.given{background:var(--green-pop-bg);color:var(--green-pop-deep);border:1px solid var(--green-pop-border)}
+.gc-status.pending{background:#FCEFD9;color:#9A5B12;border:1px solid #F0CE94}
+.gc-status:hover{filter:brightness(.97)}
+.gc-status .ti{font-size:14px}
+
+.gc-icon-btn{border:none;background:none;cursor:pointer;color:var(--gray-400);font-size:16px;padding:5px;border-radius:8px;transition:background .12s,color .12s}
+.gc-icon-btn:hover{background:var(--gray-100);color:var(--red-600)}
+.gc-icon-btn.edit:hover{color:var(--blue-600)}
+
+.gc-addbar{display:flex;justify-content:flex-end;margin-bottom:12px;gap:8px;flex-wrap:wrap}
+.gc-form{background:#fff;border:var(--border);border-radius:var(--radius-lg);padding:16px 18px;box-shadow:var(--shadow-card);margin-bottom:16px}
+.gc-form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.gc-fld{display:flex;flex-direction:column;gap:5px}
+.gc-fld label{font-size:11px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;color:var(--gray-500)}
+.gc-fld input,.gc-fld select{border:1px solid var(--gray-200);background:var(--gray-50);border-radius:8px;padding:8px 10px;font-size:13px;font-family:inherit;color:var(--gray-800)}
+.gc-fld input:focus,.gc-fld select:focus{outline:none;border-color:var(--blue-400);background:#fff}
+.gc-form-foot{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+.gc-link-btn{border:none;background:none;color:var(--gray-500);font-size:12.5px;font-weight:600;font-family:inherit;cursor:pointer;padding:9px 10px;border-radius:8px}
+.gc-link-btn:hover{background:var(--gray-100);color:var(--gray-700)}
+
+@media(max-width:640px){
+  .gc-reminder{padding:16px}
+  .gc-rm-actions{width:100%}
+  .gc-rm-actions .gc-rm-btn{flex:1;justify-content:center}
+}
+
+/* inline-editable Type / Card # cells in the birthday table */
+.gc-cell-inp{width:120px;max-width:100%;border:1px solid var(--gray-200);background:var(--gray-50);border-radius:7px;padding:5px 8px;font-size:12.5px;font-family:inherit;color:var(--gray-800)}
+.gc-cell-inp:focus{outline:none;border-color:var(--blue-400);background:#fff}
+.gc-cell-inp::placeholder{color:var(--gray-400)}
+
+/* weekly gift-card reminder rows inside the notifications modal */
+.gc-nm-item .gc-nm-list{margin-top:8px;display:flex;flex-direction:column;gap:5px}
+.gc-nm-row{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--gray-800)}
+.gc-nm-row b{font-weight:600;color:var(--gray-900)}
+.gc-nm-day{min-width:96px;font-size:11px;font-weight:700;color:var(--gray-500)}
+.gc-nm-loc{font-size:9.5px;font-weight:700;letter-spacing:.4px;padding:1px 7px;border-radius:20px;background:var(--gray-100);color:var(--gray-600)}
+.gc-nm-sent{font-size:9.5px;font-weight:700;letter-spacing:.3px;padding:1px 7px;border-radius:20px;background:var(--green-pop-bg);color:var(--green-pop-deep)}
+
 </style>
 </head>
 <body>
@@ -1581,6 +1676,7 @@ select.rec-in{appearance:auto;cursor:pointer}
       <div class="nav-item" onclick="nav('overtime',this)"><i class="ti ti-clock-dollar"></i>Overtime by Department</div>
       <div class="nav-item" onclick="nav('pto',this)"><i class="ti ti-beach"></i>PTO Tracker</div>
       <div class="nav-item" onclick="nav('timesheet',this)"><i class="ti ti-clock-search"></i>Timesheet Assistant</div>
+      <div class="nav-item" onclick="nav('giftcards',this)"><i class="ti ti-gift"></i>Birthday &amp; Gift Cards</div>
     </div>
 
     <div class="nav-group">
@@ -2116,6 +2212,25 @@ select.rec-in{appearance:auto;cursor:pointer}
         <div id="ts-legend"></div>
       </div>
 
+      <!-- BIRTHDAY & GIFT CARDS -->
+      <div class="screen" id="screen-giftcards">
+        <div class="screen-eyebrow">Recognition</div>
+        <div class="screen-title">Birthday &amp; Gift Cards</div>
+        <p class="screen-lede">Birthday gift cards, recognition cards, and ULINE raffle winners in one place.</p>
+
+        <!-- weekly reminder for Anahi -->
+        <div id="gc-reminder"></div>
+
+        <!-- view toggle: Birthdays / Recognition / Raffle Winners -->
+        <div class="ts-state-seg gc-seg" id="gc-seg" style="margin:22px 0 18px">
+          <button data-gc="birthday" class="on" onclick="gcSetView('birthday')"><i class="ti ti-cake"></i> Birthdays</button>
+          <button data-gc="recognition" onclick="gcSetView('recognition')"><i class="ti ti-award"></i> Recognition</button>
+          <button data-gc="raffle" onclick="gcSetView('raffle')"><i class="ti ti-confetti"></i> Raffle Winners</button>
+        </div>
+
+        <div id="gc-body"></div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -2350,6 +2465,7 @@ function can(key){
   if(key==='settings') return false;
   if(key==='dashboard') return true;
   if(key==='tasks') return true; // every user has a My Tasks view
+  if(key==='giftcards') return true; // whole HR team needs gift card / birthday visibility
   if(PERM_CAPS.some(c=>c.id===key)) return !!(CURRENT.caps && CURRENT.caps[key]);
   return !!(CURRENT.access && CURRENT.access[key]); // section
 }
@@ -2425,6 +2541,7 @@ function enterApp(user){
   trInit();
   recInit();
   if(typeof ptoInit==='function') ptoInit();
+  if(typeof gcInit==='function') gcInit();
   renderNotifications();
   setTimeout(function(){
     if(typeof enhanceHeaders==='function') enhanceHeaders();
@@ -2449,7 +2566,7 @@ async function doLogout(){
 
 /* ══════════════ NAV ══════════════ */
 const pageTitles = {
-  dashboard:'Dashboard', yearly:'Yearly Tasks', turnover:'Turnover Rates', recruiting:'Recruiting', overtime:'Overtime by Department', pto:'PTO Tracker', timesheet:'Timesheet Assistant', tasks:'My Tasks', settings:'Settings'
+  dashboard:'Dashboard', yearly:'Yearly Tasks', turnover:'Turnover Rates', recruiting:'Recruiting', overtime:'Overtime by Department', pto:'PTO Tracker', timesheet:'Timesheet Assistant', tasks:'My Tasks', giftcards:'Birthday & Gift Cards', settings:'Settings'
 };
 function nav(id, el){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -2465,6 +2582,7 @@ function nav(id, el){
   if(id==='overtime' && typeof otRender==='function') otRender();
   if(id==='pto' && typeof ptoRender==='function') ptoRender();
   if(id==='timesheet' && typeof tsRender==='function') tsRender();
+  if(id==='giftcards' && typeof gcRender==='function') gcRender();
   if(id==='tasks' && typeof tasksRender==='function'){ tasksRender(); if(typeof tkConfigured==='function' && tkConfigured()) tkPull(false); }
   if(id==='settings' && typeof renderSettings==='function') renderSettings();
   window.scrollTo(0,0);
@@ -3330,6 +3448,7 @@ function notifDismissVisible(){
   if(typeof tkNotifCollect==='function'){ tkNotifCollect(notifMode).forEach(it=>s.add(it.dkey)); }
   if(typeof huNotifCollect==='function'){ huNotifCollect().forEach(it=>s.add(it.dkey)); }
   if(typeof holNotifCollect==='function'){ holNotifCollect().forEach(it=>s.add(it.dkey)); }
+  if(typeof gcNotifCollect==='function'){ gcNotifCollect().forEach(it=>s.add(it.dkey)); }
   try{ localStorage.setItem(NOTIF_DISMISS_KEY, JSON.stringify([...s])); }catch(e){}
   notifSyncAfterDismiss();
 }
@@ -3367,7 +3486,8 @@ function renderNotifications(){
   const tkItems = (typeof tkNotifCollect==='function') ? tkNotifCollect(notifMode) : [];
   const huItems = (typeof huNotifCollect==='function') ? huNotifCollect() : [];
   const holItems = (typeof holNotifCollect==='function') ? holNotifCollect() : [];
-  const total = items.length + celebs.length + tkItems.length + huItems.length + holItems.length;
+  const gcItems = (typeof gcNotifCollect==='function') ? gcNotifCollect() : [];
+  const total = items.length + celebs.length + tkItems.length + huItems.length + holItems.length + gcItems.length;
   const cnt = document.getElementById('dn-count'); if(cnt) cnt.textContent = total;
   const hint = document.getElementById('nt-hint');
   if(hint) hint.textContent = total ? `${total} update${total===1?'':'s'} · tap to view` : "You're all caught up.";
@@ -3384,11 +3504,35 @@ function renderNotifModal(){
   const tkItems = (typeof tkNotifCollect==='function') ? tkNotifCollect(notifMode) : [];
   const huItems = (typeof huNotifCollect==='function') ? huNotifCollect() : [];
   const holItems = (typeof holNotifCollect==='function') ? holNotifCollect() : [];
-  const total = items.length+celebs.length+tkItems.length+huItems.length+holItems.length;
+  const gcItems = (typeof gcNotifCollect==='function') ? gcNotifCollect() : [];
+  const total = items.length+celebs.length+tkItems.length+huItems.length+holItems.length+gcItems.length;
   if(sub) sub.textContent = total+' update'+(total===1?'':'s')+' · '+(notifMode==='mine'?'your tasks & celebrations':'all tasks & celebrations');
   if(!total){ body.innerHTML='<div class="nm-empty"><i class="ti ti-circle-check"></i>You\u2019re all caught up — no new updates.</div>'; return; }
   const clearBar = `<div class="nm-clear"><button onclick="notifDismissVisible()"><i class="ti ti-checks"></i> Clear all</button></div>`;
   let html = clearBar;
+  // 🎁 Weekly gift-card reminder (Anahi's dashboard)
+  if(gcItems.length){
+    html += `<div class="nm-group"><span class="nm-grp-emoji">\uD83C\uDF81</span> Gift card reminder</div>`;
+    html += gcItems.map(it=>{
+      const range = (typeof huFmtDate==='function') ? (huFmtDate(it.weekStart)+' \u2013 '+huFmtDate(it.weekEnd)) : '';
+      const rows = it.people.map(p=>{
+        let day=''; try{ day=p.date.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'}); }catch(e){}
+        return `<div class="gc-nm-row"><span class="gc-nm-day">${ytEsc(day)}</span><b>${ytEsc(p.name)}</b>${p.loc?` <span class="gc-nm-loc">${ytEsc(p.loc)}</span>`:''}${p.given?` <span class="gc-nm-sent">already sent</span>`:''}</div>`;
+      }).join('');
+      return `
+    <div class="nm-item gc-nm-item">
+      <span class="nm-ic2"><i class="ti ti-gift"></i></span>
+      <div class="nm-info">
+        <div class="nm-name">Reminder: send gift cards to the following</div>
+        <div class="nm-meta">${ytEsc(range)} \u00b7 ${it.people.length} ${it.people.length===1?'birthday':'birthdays'}</div>
+        <div class="gc-nm-list">${rows}</div>
+      </div>
+      <div class="nm-actions">
+        <button class="nm-del" title="Close" aria-label="Close" onclick="notifDismiss('${it.dkey}')"><i class="ti ti-x"></i></button>
+      </div>
+    </div>`;
+    }).join('');
+  }
   // 📣 HR updates (posted in Settings, targeted to the Hub)
   if(huItems.length){
     html += `<div class="nm-group"><span class="nm-grp-emoji">\uD83D\uDCE3</span> HR updates</div>`;
@@ -7560,6 +7704,533 @@ spawnWaves(document.getElementById('hero-waves'), {
     document.addEventListener('DOMContentLoaded', function(){ setTimeout(lrcSyncAll, 1800); });
   } else { setTimeout(lrcSyncAll, 1800); }
 })();
+</script>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════════
+   BIRTHDAY & GIFT CARDS
+   - Birthdays: derived from the PTO roster (PTO.employees). Status seeded so
+     everyone whose current-year birthday has already passed is marked "given";
+     upcoming ones stay "pending". Self-resets each calendar year.
+   - Recognition: log of recognition gift cards (seeded from the HR sheet).
+   - Raffle: ULINE raffle winners (seeded from the PA raffle log).
+   Stored under an hrhub_* key, so it auto-syncs to Supabase across devices.
+   ══════════════════════════════════════════════════════════════════════ */
+const GC_KEY = 'hrhub_giftcards_v1';
+const GC_ANAHI_EMAIL = 'anahi@wsdisplay.com';
+let GC = null;
+let gcView = 'birthday';
+let gcFilter = { q:'', loc:'all', status:'all' };
+let gcRaffleLoc = 'all';
+let gcRecEditId = null, gcRafEditId = null;
+
+const gcEsc = (typeof ptoEsc==='function') ? ptoEsc
+  : (s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])));
+
+/* ── seed: recognition gift cards (from the HR recognition sheet) ── */
+const GC_RECOGNITION_SEED = [
+  {id:'gcr_seed_1', requestedBy:'Angel Coronel', requesterTitle:'WS Assistant Manager', recipient:'Kenny D.', recipientTitle:'Inventory Associate', reason:'Thank you card', type:'Amazon $25', card:'E-gift', date:'2026-03-06'},
+  {id:'gcr_seed_2', requestedBy:'Rea Hackman', requesterTitle:'Production Assistant Manager', recipient:'Blanca Medina', recipientTitle:'Sewing Machine Operator', reason:'Thank you card', type:'Amazon $25', card:'E-gift', date:'2026-03-31'},
+  {id:'gcr_seed_3', requestedBy:'Rea Hackman', requesterTitle:'Production Assistant Manager', recipient:'Emma Guachichullca', recipientTitle:'Sewing Machine Operator', reason:'Thank you card', type:'Amazon $25', card:'E-gift', date:'2026-03-31'},
+  {id:'gcr_seed_4', requestedBy:'Rea Hackman', requesterTitle:'Production Assistant Manager', recipient:'Bertha Guachichullca', recipientTitle:'Sewing Machine Operator', reason:'Thank you card', type:'Amazon $25', card:'E-gift', date:'2026-03-31'}
+];
+
+/* ── seed: ULINE raffle winners (PA log). location defaults PA; add CA as needed ── */
+const GC_RAFFLE_SEED = [
+  {id:'gcf_seed_01', item:'Magic Bullet', ordered:'2025-01-14', raffled:'2025-01-28', recipient:'Harry Santiago-Ayala', title:'Warehouse Manager', type:'Random Raffle', source:'Uline Item (free w/ purchase)', loc:'PA'},
+  {id:'gcf_seed_02', item:'Gourmia Air Fryer', ordered:'2025-02-03', raffled:'2025-02-04', recipient:'Luis Cruz', title:'Warehouse Assistant', type:'Random Raffle', source:'Uline Item (free w/ purchase)', loc:'PA'},
+  {id:'gcf_seed_03', item:'Wonderboom Bluetooth Speaker', ordered:'2025-02-13', raffled:'2025-02-14', recipient:'Gopal Gautam', title:'Machine Op./Mat. Handler (2nd shift)', type:'Random Raffle', source:'Uline Item (free w/ purchase)', loc:'PA'},
+  {id:'gcf_seed_04', item:'Corkcicle Set', ordered:'2025-03-04', raffled:'2025-03-05', recipient:'Ceferino Cruz', title:'Warehouse Associate', type:'Random Raffle', source:'Uline Item (free w/ purchase)', loc:'PA'},
+  {id:'gcf_seed_05', item:'Yeti Cooler', ordered:'2025-03-28', raffled:'2025-03-31', recipient:'David Thorpe', title:'Manufacturing Associate', type:'Random Raffle', source:'Uline Item (free w/ purchase)', loc:'PA'},
+  {id:'gcf_seed_06', item:'Bog Bagg Cooler', ordered:'2025-04-14', raffled:'2025-04-24', recipient:'Ceferino Cruz', title:'Inventory Associate', type:'Random Raffle', source:'Uline Item (free w/ purchase)', loc:'PA'},
+  {id:'gcf_seed_07', item:'Gourmia Air Fryer', ordered:'2025-04-25', raffled:'2025-05-07', recipient:'Maria C', title:'Sewing Machine Operator', type:'Random Raffle', source:'Uline Item (free w/ purchase)', loc:'PA'},
+  {id:'gcf_seed_08', item:'Double Zero Gravity Chair', ordered:'2025-05-13', raffled:'2025-05-16', recipient:'David Thorpe', title:'Manufacturing Associate', type:'Random Raffle', source:'Uline Item (free w/ purchase)', loc:'PA'},
+  {id:'gcf_seed_09', item:'Sony Wireless Earbuds', ordered:'2025-05-22', raffled:'2025-05-29', recipient:'Deysi Galacia de Borja', title:'Sewing Machine Operator', type:'Random Raffle', source:'Uline Item (free w/ purchase)', loc:'PA'},
+  {id:'gcf_seed_10', item:'Zero Gravity Chair', ordered:'2025-06-16', raffled:'2025-06-20', recipient:'Zuhal Ahmadi', title:'Sewing Machine Operator', type:'Random Raffle', source:'Uline Item (free w/ purchase)', loc:'PA'},
+  {id:'gcf_seed_11', item:'Hersheypark Day Pass (2)', ordered:'2025-06-11', raffled:'2025-06-27', recipient:'Grace Cruz', title:'Sewing Machine Operator', type:'HR Budget Raffle', source:'Other (see note)', loc:'PA'},
+  {id:'gcf_seed_12', item:'Hersheypark Day Pass (2)', ordered:'2025-06-11', raffled:'2025-06-27', recipient:'Elisa Parrales', title:'Sewing Machine Operator', type:'HR Budget Raffle', source:'Other (see note)', loc:'PA'},
+  {id:'gcf_seed_13', item:'Gourmia Air Fryer', ordered:'2025-07-24', raffled:'2025-07-28', recipient:'Jason Smiley', title:'Machine Operator / Material Handler', type:'Random Raffle', source:'Uline Item (free w/ purchase)', loc:'PA'},
+  {id:'gcf_seed_14', item:'Bid Daddy Rocker', ordered:'2025-08-19', raffled:'2025-08-20', recipient:'John Rey Saucelo', title:'Fabric Cutter/Folder', type:'Random Raffle', source:'Uline Item (free w/ purchase)', loc:'PA'},
+  {id:'gcf_seed_15', item:'Sony Wireless Earbuds', ordered:'2025-09-18', raffled:'2025-09-26', recipient:'George Hunter', title:'Temp - Axiom Staffing - Production Associate', type:'Random Raffle', source:'Uline Item (free w/ purchase)', loc:'PA'},
+  {id:'gcf_seed_16', item:'Wonderboom Bluetooth Speaker', ordered:'2025-10-06', raffled:'2025-10-10', recipient:'Todd Macon', title:'Assistant Print Manager', type:'Random Raffle', source:'Uline Item (free w/ purchase)', loc:'PA'},
+  {id:'gcf_seed_17', item:'Uline Camp Chair', ordered:'2025-10-08', raffled:'2025-10-24', recipient:'Sima Qudusi', title:'Sewing Machine Operator', type:'Random Raffle', source:'Uline Item (free w/ purchase)', loc:'PA'},
+  {id:'gcf_seed_18', item:'Uline Camp Chair & Cooler Combo', ordered:'2025-10-29', raffled:'2025-11-12', recipient:'Marshall Woods', title:'PA Print Operator', type:'Random Raffle', source:'Uline Item (free w/ purchase)', loc:'PA'},
+  {id:'gcf_seed_19', item:'Gourmia Air Fryer', ordered:'2025-10-31', raffled:'2025-11-26', recipient:'Jonathan Borja', title:'PA Print Assistant', type:'Random Raffle', source:'Uline Item (free w/ purchase)', loc:'PA'},
+  {id:'gcf_seed_20', item:'Gourmia Air Fryer', ordered:'2025-12-01', raffled:'2025-12-05', recipient:'Zahra Bayat', title:'Fabric Cutter/Folder', type:'Random Raffle', source:'Uline Item (free w/ purchase)', loc:'PA'},
+  {id:'gcf_seed_21', item:'Gourmia Air Fryer', ordered:'2026-03-02', raffled:'2026-03-03', recipient:'Darnell Johnson', title:'Banner Installer', type:'Random Raffle', source:'Uline Item (free w/ purchase)', loc:'PA'},
+  {id:'gcf_seed_22', item:'Gourmia Air Fryer', ordered:'2026-03-20', raffled:'2026-03-20', recipient:'Luis Martinez', title:'Warehouse / Shipping', type:'Random Raffle', source:'Uline Item (free w/ purchase)', loc:'PA'},
+  {id:'gcf_seed_23', item:'Corkcicle Set', ordered:'2026-04-07', raffled:'2026-04-08', recipient:'Charity Blaine', title:'Banner Installer', type:'Random Raffle', source:'Uline Item (free w/ purchase)', loc:'PA'},
+  {id:'gcf_seed_24', item:'Blackstone Griddle & cleaning kit', ordered:'2026-04-22', raffled:'2026-04-23', recipient:'Aisha Muwabi', title:'Sewing Machine Operator', type:'Random Raffle', source:'Uline Item (free w/ purchase)', loc:'PA'},
+  {id:'gcf_seed_25', item:'Gourmia Air Fryer', ordered:'2026-05-04', raffled:'2026-05-06', recipient:'Ludirma Diaz Sanchez', title:'Sewing Machine Operator', type:'Random Raffle', source:'Uline Item (free w/ purchase)', loc:'PA'},
+  {id:'gcf_seed_26', item:'Bog Bagg Cooler', ordered:'2026-05-20', raffled:'2026-05-26', recipient:'Stephanie Bryan', title:'HR Coordinator', type:'Random Raffle', source:'Uline Item (free w/ purchase)', loc:'PA'},
+  {id:'gcf_seed_27', item:'Sony Wireless Earbuds', ordered:'2026-06-01', raffled:'2026-06-03', recipient:"D'anerie Luperon", title:'Production Associate', type:'Random Raffle', source:'Uline Item (free w/ purchase)', loc:'PA'},
+  {id:'gcf_seed_28', item:'Wonderboom Bluetooth Speaker', ordered:'2026-06-08', raffled:'2026-06-11', recipient:'Robert Smyser', title:'Quality Assurance Associate', type:'Random Raffle', source:'Uline Item (free w/ purchase)', loc:'PA'}
+];
+
+function gcDefault(){ return { bday:{}, recognition:[], raffle:[], _v:1 }; }
+
+function gcLoad(){
+  let raw=null; try{ raw=JSON.parse(localStorage.getItem(GC_KEY)||'null'); }catch(e){}
+  GC = raw && typeof raw==='object' ? raw : gcDefault();
+  if(!GC.bday || typeof GC.bday!=='object') GC.bday={};
+  if(!Array.isArray(GC.recognition)) GC.recognition=[];
+  if(!Array.isArray(GC.raffle)) GC.raffle=[];
+  // one-time seed of the recognition + raffle logs
+  if(!GC._seeded){
+    GC.recognition = GC_RECOGNITION_SEED.map(x=>Object.assign({},x));
+    GC.raffle = GC_RAFFLE_SEED.map(x=>Object.assign({},x));
+    GC._seeded = true;
+  }
+  gcSeedBirthdays(); // backfill "given" status for birthdays already passed this year (runs once)
+  gcMigrateCards();  // backfill historical given rows with a "see spreadsheet" card # (runs once)
+  gcSave();
+}
+function gcSave(){ try{ localStorage.setItem(GC_KEY, JSON.stringify(GC)); }catch(e){} }
+function gcInit(){ gcLoad(); }
+
+/* mark everyone whose current-year birthday has already passed as "given" — once. */
+function gcSeedBirthdays(){
+  if(GC._bdaySeeded) return;
+  if(!(typeof PTO!=='undefined' && PTO && Array.isArray(PTO.employees))) return; // wait until roster exists
+  const Y = new Date().getFullYear();
+  const today = ptoParse(ptoTodayISO());
+  PTO.employees.forEach(emp=>{
+    if(!emp || !emp.id || !emp.birthDate) return;
+    const bd = ptoParse(emp.birthDate); if(!bd) return;
+    const thisYr = new Date(Y, bd.getMonth(), bd.getDate());
+    if(thisYr < today){ GC.bday[emp.id] = { given:true, year:Y, sent:'', card:'see spreadsheet', type:'' }; }
+  });
+  GC._bdaySeeded = true;
+}
+
+/* one-time: give the already-passed (historical) birthdays a placeholder card #
+   of "see spreadsheet", and ensure a type field exists. New cards stay blank so
+   their number can be typed in. */
+function gcMigrateCards(){
+  if(GC._cardSeeded) return;
+  const Y = new Date().getFullYear();
+  Object.keys(GC.bday||{}).forEach(id=>{
+    const r=GC.bday[id]; if(!r) return;
+    if(r.given && r.year===Y && (!r.card || !String(r.card).trim())) r.card='see spreadsheet';
+    if(typeof r.type==='undefined') r.type='';
+  });
+  GC._cardSeeded = true;
+}
+
+/* ── birthday helpers ── */
+function gcBdayGiven(empId){ const r=GC.bday[empId]; const Y=new Date().getFullYear(); return !!(r && r.year===Y && r.given); }
+function gcNextBday(bd){ // returns Date of next occurrence (today or later)
+  const today = ptoParse(ptoTodayISO());
+  let d = new Date(today.getFullYear(), bd.getMonth(), bd.getDate());
+  if(d < today) d = new Date(today.getFullYear()+1, bd.getMonth(), bd.getDate());
+  return d;
+}
+function gcRoster(){ return (typeof PTO!=='undefined' && PTO && Array.isArray(PTO.employees)) ? PTO.employees : []; }
+
+/* employees with a birthday in the next 7 days (today .. +6) */
+function gcWeekBirthdays(){
+  const today = ptoParse(ptoTodayISO()); if(!today) return [];
+  const horizon = ptoAddDays(today, 6);
+  const out=[];
+  gcRoster().forEach(emp=>{
+    if(!emp || !emp.birthDate) return;
+    const bd = ptoParse(emp.birthDate); if(!bd) return;
+    const next = gcNextBday(bd);
+    if(next>=today && next<=horizon){
+      out.push({ id:emp.id, name:emp.name, loc:emp.location||'', date:next, given:gcBdayGiven(emp.id) });
+    }
+  });
+  out.sort((a,b)=> a.date-b.date);
+  return out;
+}
+
+/* ── weekly dashboard reminder for Anahi ──
+   A derived notification (not stored): each calendar week that has birthdays, a
+   single "send gift cards to the following" item appears on Anahi's Hub
+   dashboard. She can close (dismiss) it; nothing to mark complete. A fresh one
+   appears automatically at the start of the next week. */
+function gcIsAnahi(){
+  if(typeof CURRENT==='undefined' || !CURRENT) return false;
+  const em=(CURRENT.email||'').trim().toLowerCase();
+  return CURRENT.id==='u_anahi' || em==='anahi@wsdisplay.com' || em==='anahi.torres@wsdisplay.com';
+}
+function gcWeekBounds(){
+  const today=ptoParse(ptoTodayISO()); if(!today) return null;
+  const start=ptoAddDays(today, -today.getDay()); // Sunday of the current week (anchor for dismissal)
+  return { start, end:ptoAddDays(start, 6) };
+}
+function gcNotifCollect(){
+  if(!gcIsAnahi()) return [];
+  if(typeof GC==='undefined' || !GC){ if(typeof gcLoad==='function'){ try{ gcLoad(); }catch(e){} } }
+  const b=gcWeekBounds(); if(!b) return [];
+  const wk=gcWeekBirthdays(); // upcoming 7 days (today..+6) — gives lead time to buy & send
+  if(!wk.length) return [];
+  const dkey='gc:wk:'+ptoISO(b.start); // one reminder per calendar week; closing it lasts the week
+  const dismissed=(typeof notifDismissedSet==='function')?notifDismissedSet():new Set();
+  if(dismissed.has(dkey)) return [];
+  const today=ptoParse(ptoTodayISO());
+  return [{ dkey, weekStart:ptoISO(today), weekEnd:ptoISO(ptoAddDays(today,6)), people:wk }];
+}
+function gcSetView(v){
+  gcView=v; gcRecEditId=null; gcRafEditId=null;
+  document.querySelectorAll('#gc-seg button').forEach(b=>b.classList.toggle('on', b.dataset.gc===v));
+  gcRenderBody();
+}
+
+function gcRender(){ if(!GC) gcLoad(); gcRenderReminder(); gcRenderBody(); }
+
+/* ── weekly reminder banner ── */
+function gcRenderReminder(){
+  const host=document.getElementById('gc-reminder'); if(!host) return;
+  const wk = gcWeekBirthdays();
+  const today = ptoParse(ptoTodayISO());
+  const end = ptoAddDays(today, 6);
+  const range = ptoFmtLong(today).replace(/, \d{4}$/,'') + ' – ' + ptoFmtLong(end).replace(/, \d{4}$/,'');
+  let inner = `
+    <div class="gc-reminder-head">
+      <div>
+        <div class="gc-rm-eyebrow"><i class="ti ti-bell-ringing"></i> Weekly reminder · for Anahi</div>
+        <div class="gc-rm-title">Birthdays this week</div>
+        <div class="gc-rm-sub">${gcEsc(range)} · ${wk.length} ${wk.length===1?'birthday':'birthdays'}</div>
+      </div>`;
+  if(wk.length){
+    inner += `
+      <div class="gc-rm-actions">
+        <button class="gc-rm-btn primary" onclick="gcEmailAnahi()"><i class="ti ti-mail"></i> Email Anahi</button>
+        <button class="gc-rm-btn ghost" onclick="gcCopyReminder(this)"><i class="ti ti-copy"></i> Copy</button>
+      </div>`;
+  }
+  inner += `</div>`;
+  if(wk.length){
+    inner += `<div class="gc-rm-list">` + wk.map(p=>`
+      <span class="gc-rm-chip">
+        <span class="gc-rm-day">${gcEsc(p.date.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'}))}</span>
+        <b>${gcEsc(p.name)}</b>
+        ${p.loc?`<span class="gc-rm-loc">${gcEsc(p.loc)}</span>`:''}
+        ${p.given?`<i class="ti ti-circle-check" title="Already given" style="color:#7BE6A8"></i>`:''}
+      </span>`).join('') + `</div>`;
+  } else {
+    inner += `<div class="gc-rm-empty"><i class="ti ti-confetti-off"></i> No birthdays in the next 7 days.</div>`;
+  }
+  host.className='gc-reminder';
+  host.innerHTML = inner;
+}
+
+function gcReminderText(){
+  const wk = gcWeekBirthdays();
+  const today = ptoParse(ptoTodayISO());
+  const end = ptoAddDays(today, 6);
+  const range = ptoFmtLong(today) + ' – ' + ptoFmtLong(end);
+  let lines = ['Hi Anahi,', '', `Here are this week's birthdays (${range}) — please purchase and send a gift card for each:`, ''];
+  if(!wk.length){ lines.push('• No birthdays this week.'); }
+  else {
+    wk.forEach(p=>{
+      const day = p.date.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'});
+      lines.push(`• ${p.name}${p.loc?' ('+p.loc+')':''} — ${day}${p.given?'  [already sent]':''}`);
+    });
+  }
+  lines.push('', 'Thanks!');
+  return lines.join('\n');
+}
+
+function gcEmailAnahi(){
+  const today = ptoParse(ptoTodayISO());
+  const end = ptoAddDays(today, 6);
+  const subj = `Gift cards — birthdays this week (${ptoFmt(today)}–${ptoFmt(end)})`;
+  const url = 'mailto:'+encodeURIComponent(GC_ANAHI_EMAIL)+'?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(gcReminderText());
+  window.location.href = url;
+}
+
+function gcCopyReminder(btn){
+  const text = gcReminderText();
+  const done = ()=>{ if(btn){ const o=btn.innerHTML; btn.innerHTML='<i class="ti ti-check"></i> Copied'; setTimeout(()=>btn.innerHTML=o,1500); } };
+  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(done).catch(()=>gcFallbackCopy(text,done)); }
+  else gcFallbackCopy(text, done);
+}
+function gcFallbackCopy(text, cb){
+  try{ const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); cb&&cb(); }catch(e){}
+}
+
+/* ════════ BODY ROUTER ════════ */
+function gcRenderBody(){
+  const host=document.getElementById('gc-body'); if(!host) return;
+  if(gcView==='birthday') host.innerHTML = gcBirthdayHTML();
+  else if(gcView==='recognition') host.innerHTML = gcRecognitionHTML();
+  else host.innerHTML = gcRaffleHTML();
+}
+
+/* ════════ BIRTHDAYS ════════ */
+function gcBirthdayHTML(){
+  const Y=new Date().getFullYear();
+  const today=ptoParse(ptoTodayISO());
+  const soon=ptoAddDays(today,6);
+  let roster = gcRoster().filter(e=>e && e.birthDate).slice();
+  // sort by calendar month/day
+  roster.sort((a,b)=>{
+    const ba=ptoParse(a.birthDate), bb=ptoParse(b.birthDate);
+    return (ba.getMonth()-bb.getMonth()) || (ba.getDate()-bb.getDate()) || a.name.localeCompare(b.name);
+  });
+  // stats
+  let given=0, pending=0;
+  roster.forEach(e=>{ gcBdayGiven(e.id)?given++:pending++; });
+  const weekCount = gcWeekBirthdays().length;
+
+  // filters
+  const q=gcFilter.q.trim().toLowerCase();
+  const rows = roster.filter(e=>{
+    if(gcFilter.loc!=='all'){ if(gcFilter.loc==='other'){ if(e.location==='CA'||e.location==='PA') return false; } else if(e.location!==gcFilter.loc) return false; }
+    const g=gcBdayGiven(e.id);
+    if(gcFilter.status==='given' && !g) return false;
+    if(gcFilter.status==='pending' && g) return false;
+    if(q && !(e.name||'').toLowerCase().includes(q) && !(e.notes||'').toLowerCase().includes(q)) return false;
+    return true;
+  });
+
+  let html = `
+    <div class="gc-cards">
+      <div class="gc-stat given"><div class="gc-stat-num">${given}</div><div class="gc-stat-lbl">Given this year</div></div>
+      <div class="gc-stat pending"><div class="gc-stat-num">${pending}</div><div class="gc-stat-lbl">Pending</div></div>
+      <div class="gc-stat week"><div class="gc-stat-num">${weekCount}</div><div class="gc-stat-lbl">This week</div></div>
+      <div class="gc-stat total"><div class="gc-stat-num">${roster.length}</div><div class="gc-stat-lbl">Employees</div></div>
+    </div>
+    <div class="gc-toolbar">
+      <input class="gc-search" placeholder="Search employees…" value="${gcEsc(gcFilter.q)}" oninput="gcSetFilter('q',this.value)">
+      <select class="gc-filter" onchange="gcSetFilter('loc',this.value)">
+        ${['all','CA','PA','other'].map(v=>`<option value="${v}" ${gcFilter.loc===v?'selected':''}>${v==='all'?'All locations':(v==='other'?'Other':v)}</option>`).join('')}
+      </select>
+      <select class="gc-filter" onchange="gcSetFilter('status',this.value)">
+        ${[['all','All status'],['pending','Pending only'],['given','Given only']].map(o=>`<option value="${o[0]}" ${gcFilter.status===o[0]?'selected':''}>${o[1]}</option>`).join('')}
+      </select>
+    </div>
+    <div class="gc-tbl-wrap">
+      <table class="gc-tbl">
+        <thead><tr>
+          <th>Employee</th><th>Loc</th><th>Birthday</th><th>${Y} gift card</th><th>Date sent</th><th>Type</th><th>Card #</th>
+        </tr></thead>
+        <tbody>`;
+  if(!rows.length){
+    html += `<tr class="gc-empty-row"><td colspan="7">No employees match these filters.</td></tr>`;
+  } else {
+    rows.forEach(e=>{
+      const bd=ptoParse(e.birthDate);
+      const next=gcNextBday(bd);
+      const isSoon = next>=today && next<=soon;
+      const given=gcBdayGiven(e.id);
+      const rec=GC.bday[e.id]||{};
+      const typeCell = given
+        ? `<input class="gc-cell-inp" list="gc-bd-type-list" value="${gcEsc(rec.type||'')}" placeholder="Type" onchange="gcSetBdayField('${e.id}','type',this.value)">`
+        : '<span class="gc-msub">—</span>';
+      const cardCell = given
+        ? `<input class="gc-cell-inp" value="${gcEsc(rec.card||'')}" placeholder="Card #" onchange="gcSetBdayField('${e.id}','card',this.value)">`
+        : '<span class="gc-msub">—</span>';
+      html += `
+        <tr class="${isSoon?'gc-soon':''}">
+          <td><div class="gc-name">${gcEsc(e.name)}</div>${e.notes?`<div class="gc-msub">${gcEsc(e.notes)}</div>`:''}</td>
+          <td><span class="gc-loc ${e.location==='CA'||e.location==='PA'?e.location:''}">${gcEsc(e.location||'—')}</span></td>
+          <td>${gcEsc(bd.toLocaleDateString(undefined,{month:'short',day:'numeric'}))}${isSoon?' <i class="ti ti-cake" style="color:#DE7A1E" title="This week"></i>':''}</td>
+          <td><button class="gc-status ${given?'given':'pending'}" onclick="gcToggleBday('${e.id}')">
+            <i class="ti ${given?'ti-circle-check':'ti-clock'}"></i> ${given?'Given':'Pending'}</button></td>
+          <td>${(given&&rec.sent)?gcEsc(ptoFmt(rec.sent)):'<span class="gc-msub">—</span>'}</td>
+          <td>${typeCell}</td>
+          <td>${cardCell}</td>
+        </tr>`;
+    });
+  }
+  html += `</tbody></table></div>
+    <datalist id="gc-bd-type-list"><option>Amazon</option><option>Walmart</option></datalist>`;
+  return html;
+}
+
+function gcSetFilter(k,v){
+  gcFilter[k]=v;
+  const host=document.getElementById('gc-body');
+  if(host){ host.innerHTML = gcBirthdayHTML();
+    // keep focus + caret on search when typing
+    if(k==='q'){ const s=host.querySelector('.gc-search'); if(s){ s.focus(); s.setSelectionRange(s.value.length,s.value.length); } }
+  }
+}
+
+function gcToggleBday(empId){
+  const Y=new Date().getFullYear();
+  if(gcBdayGiven(empId)){
+    GC.bday[empId] = { given:false, year:Y, sent:'', card:'', type:'' };
+  } else {
+    GC.bday[empId] = { given:true, year:Y, sent:ptoTodayISO(), card:'', type:'' };
+  }
+  gcSave();
+  gcRenderReminder();
+  const host=document.getElementById('gc-body'); if(host) host.innerHTML=gcBirthdayHTML();
+}
+
+/* inline edit of the Type / Card # cells (given rows only) — saved without a
+   re-render so the input keeps focus while typing the next field. */
+function gcSetBdayField(empId, field, val){
+  const r=GC.bday[empId]; if(!r) return;
+  r[field]=(val||'').trim();
+  GC.bday[empId]=r; gcSave();
+}
+
+/* ════════ RECOGNITION ════════ */
+function gcRecognitionHTML(){
+  const list = GC.recognition.slice().sort((a,b)=> (b.date||'').localeCompare(a.date||''));
+  let html = `
+    <div class="gc-note">Recognition gift cards requested by managers for a thank-you or a job well done. Add each as it's sent.</div>
+    <div class="gc-addbar"><button class="rec-add sm" onclick="gcRecForm()"><i class="ti ti-plus"></i> Add recognition card</button></div>
+    <div id="gc-rec-form"></div>
+    <div class="gc-tbl-wrap">
+      <table class="gc-tbl">
+        <thead><tr><th>Date</th><th>Requested by</th><th>Recipient</th><th>Reason</th><th>Type</th><th>Card #</th><th></th></tr></thead>
+        <tbody>`;
+  if(!list.length){
+    html += `<tr class="gc-empty-row"><td colspan="7">No recognition cards yet. Add the first one above.</td></tr>`;
+  } else {
+    list.forEach(r=>{
+      html += `
+        <tr>
+          <td>${r.date?gcEsc(ptoFmt(r.date)):'—'}</td>
+          <td><div class="gc-name">${gcEsc(r.requestedBy||'—')}</div>${r.requesterTitle?`<div class="gc-msub">${gcEsc(r.requesterTitle)}</div>`:''}</td>
+          <td><div class="gc-name">${gcEsc(r.recipient||'—')}</div>${r.recipientTitle?`<div class="gc-msub">${gcEsc(r.recipientTitle)}</div>`:''}</td>
+          <td>${gcEsc(r.reason||'—')}</td>
+          <td>${gcEsc(r.type||'—')}</td>
+          <td>${gcEsc(r.card||'—')}</td>
+          <td style="text-align:right;white-space:nowrap">
+            <button class="gc-icon-btn edit" title="Edit" onclick="gcRecForm('${r.id}')"><i class="ti ti-pencil"></i></button>
+            <button class="gc-icon-btn" title="Delete" onclick="gcRecDelete('${r.id}')"><i class="ti ti-trash"></i></button>
+          </td>
+        </tr>`;
+    });
+  }
+  html += `</tbody></table></div>`;
+  return html;
+}
+
+function gcRecForm(id){
+  gcRecEditId = id||null;
+  const r = id ? GC.recognition.find(x=>x.id===id) : {};
+  const host=document.getElementById('gc-rec-form'); if(!host) return;
+  const v=(k)=>gcEsc(r&&r[k]!=null?r[k]:'');
+  host.innerHTML = `
+    <div class="gc-form">
+      <div class="gc-form-grid">
+        <div class="gc-fld"><label>Date</label><input type="date" id="gcr-date" value="${v('date')}"></div>
+        <div class="gc-fld"><label>Requested by</label><input id="gcr-reqby" value="${v('requestedBy')}" placeholder="Manager name"></div>
+        <div class="gc-fld"><label>Requester title</label><input id="gcr-reqtitle" value="${v('requesterTitle')}" placeholder="e.g. Production Assistant Manager"></div>
+        <div class="gc-fld"><label>Recipient</label><input id="gcr-recip" value="${v('recipient')}" placeholder="Employee name"></div>
+        <div class="gc-fld"><label>Recipient title</label><input id="gcr-reciptitle" value="${v('recipientTitle')}" placeholder="e.g. Sewing Machine Operator"></div>
+        <div class="gc-fld"><label>Reason</label><input id="gcr-reason" value="${v('reason')}" placeholder="e.g. Thank you card"></div>
+        <div class="gc-fld"><label>Card type</label><input id="gcr-type" list="gc-type-list" value="${v('type')}" placeholder="e.g. Amazon $25"></div>
+        <div class="gc-fld"><label>Card # / delivery</label><input id="gcr-card" value="${v('card')}" placeholder="e.g. E-gift"></div>
+      </div>
+      <datalist id="gc-type-list"><option>Amazon $25</option><option>Amazon $50</option><option>Visa $25</option><option>Visa $50</option></datalist>
+      <div class="gc-form-foot">
+        <button class="gc-link-btn" onclick="gcRecCancel()">Cancel</button>
+        <button class="rec-add sm" onclick="gcRecSave()"><i class="ti ti-check"></i> ${id?'Save changes':'Add card'}</button>
+      </div>
+    </div>`;
+  host.querySelector('#gcr-reqby').focus();
+}
+function gcRecCancel(){ gcRecEditId=null; const h=document.getElementById('gc-rec-form'); if(h) h.innerHTML=''; }
+function gcRecSave(){
+  const g=(id)=>{ const el=document.getElementById(id); return el?el.value.trim():''; };
+  const rec={ requestedBy:g('gcr-reqby'), requesterTitle:g('gcr-reqtitle'), recipient:g('gcr-recip'), recipientTitle:g('gcr-reciptitle'), reason:g('gcr-reason'), type:g('gcr-type'), card:g('gcr-card'), date:g('gcr-date') };
+  if(!rec.recipient && !rec.requestedBy){ alert('Enter at least a requester or recipient.'); return; }
+  if(gcRecEditId){ const i=GC.recognition.findIndex(x=>x.id===gcRecEditId); if(i>=0) GC.recognition[i]=Object.assign({id:gcRecEditId},rec); }
+  else { rec.id='gcr_'+Date.now().toString(36); GC.recognition.push(rec); }
+  gcRecEditId=null; gcSave(); gcRenderBody();
+}
+function gcRecDelete(id){
+  const r=GC.recognition.find(x=>x.id===id);
+  if(!confirm('Delete this recognition card'+(r&&r.recipient?' for '+r.recipient:'')+'?')) return;
+  GC.recognition = GC.recognition.filter(x=>x.id!==id); gcSave(); gcRenderBody();
+}
+
+/* ════════ RAFFLE WINNERS ════════ */
+function gcRaffleHTML(){
+  let list = GC.raffle.slice();
+  if(gcRaffleLoc!=='all') list = list.filter(r=>(r.loc||'')===gcRaffleLoc);
+  list.sort((a,b)=> (b.raffled||b.ordered||'').localeCompare(a.raffled||a.ordered||''));
+  const caCount = GC.raffle.filter(r=>r.loc==='CA').length;
+  const paCount = GC.raffle.filter(r=>r.loc==='PA').length;
+  let html = `
+    <div class="gc-note">ULINE products raffled to employees in CA and PA. <b>House rules:</b> the previous winner is excluded from the next raffle, then added back. Once everyone has won, the bucket resets and all names go back in.</div>
+    <div class="gc-toolbar">
+      <select class="gc-filter" onchange="gcRaffleSetLoc(this.value)">
+        <option value="all" ${gcRaffleLoc==='all'?'selected':''}>All locations (${GC.raffle.length})</option>
+        <option value="CA" ${gcRaffleLoc==='CA'?'selected':''}>CA (${caCount})</option>
+        <option value="PA" ${gcRaffleLoc==='PA'?'selected':''}>PA (${paCount})</option>
+      </select>
+      <div style="flex:1"></div>
+      <button class="rec-add sm" onclick="gcRafForm()"><i class="ti ti-plus"></i> Add raffle winner</button>
+    </div>
+    <div id="gc-raf-form"></div>
+    <div class="gc-tbl-wrap">
+      <table class="gc-tbl">
+        <thead><tr><th>Item</th><th>Ordered</th><th>Raffled</th><th>Winner</th><th>Type</th><th>Source</th><th>Loc</th><th></th></tr></thead>
+        <tbody>`;
+  if(!list.length){
+    html += `<tr class="gc-empty-row"><td colspan="8">No raffle winners for this filter yet.</td></tr>`;
+  } else {
+    list.forEach(r=>{
+      html += `
+        <tr>
+          <td><div class="gc-name">${gcEsc(r.item||'—')}</div></td>
+          <td>${r.ordered?gcEsc(ptoFmt(r.ordered)):'—'}</td>
+          <td>${r.raffled?gcEsc(ptoFmt(r.raffled)):'—'}</td>
+          <td><div class="gc-name">${gcEsc(r.recipient||'—')}</div>${r.title?`<div class="gc-msub">${gcEsc(r.title)}</div>`:''}</td>
+          <td>${gcEsc(r.type||'—')}</td>
+          <td>${gcEsc(r.source||'—')}</td>
+          <td><span class="gc-loc ${r.loc==='CA'||r.loc==='PA'?r.loc:''}">${gcEsc(r.loc||'—')}</span></td>
+          <td style="text-align:right;white-space:nowrap">
+            <button class="gc-icon-btn edit" title="Edit" onclick="gcRafForm('${r.id}')"><i class="ti ti-pencil"></i></button>
+            <button class="gc-icon-btn" title="Delete" onclick="gcRafDelete('${r.id}')"><i class="ti ti-trash"></i></button>
+          </td>
+        </tr>`;
+    });
+  }
+  html += `</tbody></table></div>`;
+  return html;
+}
+function gcRaffleSetLoc(v){ gcRaffleLoc=v; gcRenderBody(); }
+function gcRafForm(id){
+  gcRafEditId=id||null;
+  const r=id?GC.raffle.find(x=>x.id===id):{};
+  const host=document.getElementById('gc-raf-form'); if(!host) return;
+  const v=(k)=>gcEsc(r&&r[k]!=null?r[k]:'');
+  const sel=(k,val)=> (r&&r[k]===val)?'selected':'';
+  host.innerHTML = `
+    <div class="gc-form">
+      <div class="gc-form-grid">
+        <div class="gc-fld"><label>Item</label><input id="gcf-item" value="${v('item')}" placeholder="e.g. Gourmia Air Fryer"></div>
+        <div class="gc-fld"><label>Winner</label><input id="gcf-recip" value="${v('recipient')}" placeholder="Employee name"></div>
+        <div class="gc-fld"><label>Title</label><input id="gcf-title" value="${v('title')}" placeholder="e.g. Sewing Machine Operator"></div>
+        <div class="gc-fld"><label>Date ordered</label><input type="date" id="gcf-ordered" value="${v('ordered')}"></div>
+        <div class="gc-fld"><label>Date raffled</label><input type="date" id="gcf-raffled" value="${v('raffled')}"></div>
+        <div class="gc-fld"><label>Location</label><select id="gcf-loc"><option value="PA" ${sel('loc','PA')||(!id?'selected':'')}>PA</option><option value="CA" ${sel('loc','CA')}>CA</option></select></div>
+        <div class="gc-fld"><label>Type</label><select id="gcf-type"><option ${sel('type','Random Raffle')||(!id?'selected':'')}>Random Raffle</option><option ${sel('type','HR Budget Raffle')}>HR Budget Raffle</option></select></div>
+        <div class="gc-fld"><label>Source</label><input id="gcf-source" list="gc-source-list" value="${id?v('source'):'Uline Item (free w/ purchase)'}" placeholder="e.g. Uline Item (free w/ purchase)"></div>
+      </div>
+      <datalist id="gc-source-list"><option>Uline Item (free w/ purchase)</option><option>Other (see note)</option></datalist>
+      <div class="gc-form-foot">
+        <button class="gc-link-btn" onclick="gcRafCancel()">Cancel</button>
+        <button class="rec-add sm" onclick="gcRafSave()"><i class="ti ti-check"></i> ${id?'Save changes':'Add winner'}</button>
+      </div>
+    </div>`;
+  host.querySelector('#gcf-item').focus();
+}
+function gcRafCancel(){ gcRafEditId=null; const h=document.getElementById('gc-raf-form'); if(h) h.innerHTML=''; }
+function gcRafSave(){
+  const g=(id)=>{ const el=document.getElementById(id); return el?el.value.trim():''; };
+  const rec={ item:g('gcf-item'), recipient:g('gcf-recip'), title:g('gcf-title'), ordered:g('gcf-ordered'), raffled:g('gcf-raffled'), loc:g('gcf-loc'), type:g('gcf-type'), source:g('gcf-source') };
+  if(!rec.item && !rec.recipient){ alert('Enter at least an item or a winner.'); return; }
+  if(gcRafEditId){ const i=GC.raffle.findIndex(x=>x.id===gcRafEditId); if(i>=0) GC.raffle[i]=Object.assign({id:gcRafEditId},rec); }
+  else { rec.id='gcf_'+Date.now().toString(36); GC.raffle.push(rec); }
+  gcRafEditId=null; gcSave(); gcRenderBody();
+}
+function gcRafDelete(id){
+  const r=GC.raffle.find(x=>x.id===id);
+  if(!confirm('Delete this raffle entry'+(r&&r.recipient?' for '+r.recipient:'')+'?')) return;
+  GC.raffle = GC.raffle.filter(x=>x.id!==id); gcSave(); gcRenderBody();
+}
 </script>
 
 </body>
