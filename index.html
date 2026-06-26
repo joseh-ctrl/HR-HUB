@@ -1015,6 +1015,26 @@ select.rec-in{appearance:auto;cursor:pointer}
 .oo-sc-foot i{font-size:12px}
 .oo-sc-foot a{color:#5B4FCF;text-decoration:none;font-weight:600}
 .oo-sc-foot a:hover{text-decoration:underline}
+.oo-tot-strip{display:flex;gap:8px;flex-wrap:wrap;padding:16px 14px 6px}
+.oo-tot-cell{flex:1 1 0;min-width:64px;display:flex;flex-direction:column;align-items:center;gap:3px;padding:12px 6px;border-radius:12px;text-align:center}
+.oo-tot-cell .oo-tot-m{font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;opacity:.85}
+.oo-tot-cell .oo-tot-p{font-size:19px;font-weight:800;line-height:1}
+.oo-tot-cell.oo-tot-avg{outline:2px solid rgba(91,79,207,.35);outline-offset:-2px}
+@media(max-width:680px){.oo-tot-cell{min-width:54px;padding:10px 4px}.oo-tot-cell .oo-tot-p{font-size:16px}}
+.oo-snap-top{display:flex;gap:12px;padding:16px 14px 6px;flex-wrap:wrap}
+.oo-snap-big{flex:1 1 0;min-width:140px;background:var(--gray-50,#F8FAFC);border:1px solid var(--gray-100);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.oo-snap-lbl{font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--gray-500)}
+.oo-snap-val{font-size:30px;font-weight:800;line-height:1}
+.oo-loc-label{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--gray-400);padding:12px 16px 0}
+.oo-loc-row{display:flex;gap:8px;flex-wrap:wrap;padding:8px 14px 4px}
+.oo-loc-cell{flex:1 1 0;min-width:80px;display:flex;flex-direction:column;align-items:center;gap:3px;padding:12px 8px;border-radius:12px}
+.oo-loc-code{font-size:12px;font-weight:700;letter-spacing:.06em}
+.oo-loc-p{font-size:20px;font-weight:800;line-height:1}
+.oo-dept-list{padding:6px 14px 4px;display:flex;flex-direction:column;gap:6px;max-height:280px;overflow-y:auto}
+.oo-dept-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 12px;border-radius:10px;background:var(--gray-50,#F8FAFC)}
+.oo-dept-nm{font-size:13px;font-weight:600;color:var(--gray-700);display:flex;flex-direction:column}
+.oo-dept-sub2{font-size:11px;font-weight:500;color:var(--gray-400)}
+.oo-dept-chip{font-size:13px;font-weight:800;padding:4px 10px;border-radius:999px;min-width:54px;text-align:center}
 .oo-sc-msg{display:flex;align-items:center;gap:9px;flex-wrap:wrap;font-size:13px;color:var(--gray-600);line-height:1.5;padding:26px 22px}
 .oo-sc-msg b{color:var(--gray-800)}
 .oo-sc-msg .big{font-size:20px;color:var(--gray-400)}
@@ -1671,16 +1691,42 @@ select.rec-in{appearance:auto;cursor:pointer}
 .wc-cmp-arrow .d.down{color:var(--wc-green)}.wc-cmp-arrow .d.up{color:var(--wc-red)}
 .wc-cmp-arrow .d.flat{color:var(--gray-400)}
 .wc-cmp-arrow .cap{font-size:8.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--gray-400)}
-/* scorecard: horizontal period bars (overtime-style) */
-.wc-bars{display:flex;flex-direction:column;gap:7px;margin-top:4px}
-.wc-bar-row{display:grid;grid-template-columns:30px 1fr auto;align-items:center;gap:9px}
-.wc-bar-lab{font-size:11px;font-weight:700;color:var(--gray-600)}
-.wc-bar-track{height:13px;border-radius:7px;background:var(--gray-100);overflow:hidden}
-.wc-bar-fill{height:100%;border-radius:7px;background:linear-gradient(90deg,#E8635C,#C0392B);transition:width .2s}
-.wc-bar-row.cur .wc-bar-fill{background:linear-gradient(90deg,#F0A02A,#D9822B)}
-.wc-bar-val{font-size:11px;font-weight:800;color:var(--gray-800);min-width:42px;text-align:right}
+/* scorecard: horizontal period bars — labelled axis, colour encodes loss size */
+.wc-bars{display:flex;flex-direction:column;gap:5px;margin-top:6px}
+.wc-bars-head{display:grid;grid-template-columns:44px 1fr 58px;align-items:end;gap:9px;margin-bottom:3px;padding-bottom:5px;border-bottom:1px solid var(--gray-100)}
+.wc-bars-head .h{font-size:8.5px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--gray-400)}
+.wc-bars-head .h .hint{font-weight:600;letter-spacing:0;text-transform:none;color:var(--gray-300)}
+.wc-bars-head .h.r{text-align:right}
+.wc-bar-row{position:relative;display:grid;grid-template-columns:44px 1fr 58px;align-items:center;gap:9px;border-radius:7px;padding:2px 4px;margin:0 -4px;cursor:pointer;transition:background .12s}
+.wc-bar-row:hover{background:var(--gray-50)}
+.wc-bar-lab{font-size:11px;font-weight:700;color:var(--gray-600);white-space:nowrap}
+.wc-bar-row.cur .wc-bar-lab{color:#B4690E}
+.wc-bar-track{height:12px;border-radius:7px;background:var(--gray-100);overflow:hidden}
+.wc-bar-fill{height:100%;border-radius:7px;transition:width .2s}
+.wc-bar-fill.t-none{background:var(--gray-200)}
+.wc-bar-fill.t-low{background:linear-gradient(90deg,#37B49A,#1E8E76)}
+.wc-bar-fill.t-mid{background:linear-gradient(90deg,#F0B53C,#D98A1E)}
+.wc-bar-fill.t-high{background:linear-gradient(90deg,#EC7A4E,#D1542B)}
+.wc-bar-fill.t-peak{background:linear-gradient(90deg,#D5453B,#9B271B)}
+.wc-bar-row.cur .wc-bar-fill,.wc-bar-fill.cur{background:linear-gradient(90deg,#F0A02A,#D9822B)}
+.wc-bar-val{font-size:11px;font-weight:800;color:var(--gray-800);text-align:right}
 .wc-bar-row.cur .wc-bar-val{color:#B4690E}
+.wc-bars-legend{display:flex;flex-wrap:wrap;gap:5px 12px;margin-top:9px}
+.wc-bars-legend .k{display:inline-flex;align-items:center;gap:5px;font-size:9.5px;font-weight:600;color:var(--gray-500)}
+.wc-bars-legend .sw{width:9px;height:9px;border-radius:3px;flex-shrink:0}
 .wc-chart-cap{font-size:10px;font-weight:600;color:var(--gray-400);margin:8px 0 0;text-align:right}
+/* hover/tap detail tooltip for period bars */
+.wc-bar-tip{position:fixed;z-index:9999;max-width:264px;background:#1D2735;color:#fff;border-radius:11px;padding:11px 13px;box-shadow:0 14px 34px rgba(15,25,45,.34);font-size:11.5px;line-height:1.45;opacity:0;transform:translateY(4px);pointer-events:none;transition:opacity .14s ease,transform .14s ease}
+.wc-bar-tip.show{opacity:1;transform:translateY(0)}
+.wc-bar-tip .tip-pp{font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#9FB2CC}
+.wc-bar-tip .tip-sum{font-size:13px;font-weight:800;margin-top:3px;color:#fff}
+.wc-bar-tip .tip-sum .open{font-weight:700;color:#F2B05A;font-size:11px;margin-left:5px}
+.wc-bar-tip .tip-types{margin-top:8px;display:flex;flex-direction:column;gap:4px;border-top:1px solid rgba(255,255,255,.15);padding-top:8px}
+.wc-bar-tip .tip-trow{display:flex;justify-content:space-between;gap:16px}
+.wc-bar-tip .tip-trow .t{color:#D7E1EF;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wc-bar-tip .tip-trow .t .od{color:#F2B05A;font-weight:700}
+.wc-bar-tip .tip-trow .m{color:#fff;font-weight:700;white-space:nowrap}
+.wc-bar-tip .tip-empty{margin-top:5px;color:#9FB2CC}
 .wc-foot{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:11px;padding-top:11px;border-top:1px dashed var(--gray-200);font-size:11.5px;color:var(--gray-600)}
 .wc-foot b{color:var(--gray-900);font-weight:800}
 .wc-foot .sep{color:var(--gray-300)}
@@ -2134,9 +2180,6 @@ select.rec-in{appearance:auto;cursor:pointer}
           <!-- WORKERS' COMP · claims & losses this period -->
           <div class="stat-card wc" id="dash-wc-card" onclick="nav('workerscomp', document.querySelector('.nav-item[onclick*=workerscomp]'))" style="cursor:pointer"></div>
         </div>
-
-        <!-- ONE-ON-ONE COMPLETION SCORECARD (live from the One-on-One Log sheet) -->
-        <div class="oo-score-wrap" id="dash-1on1-score"></div>
 
         <!-- TASK SCORECARD (rendered by tasksScoreRender) -->
         <div class="tk-score-wrap" id="dash-tasks-score"></div>
@@ -2957,7 +3000,6 @@ function enterApp(user){
     if(typeof wcDashRender==='function') wcDashRender();
     if(typeof tkInitSync==='function') tkInitSync();
     if(typeof renderSafetyDash==='function'){ renderSafetyDash(); safetyLoadLive(); }
-    if(typeof renderOneOnOneScore==='function'){ renderOneOnOneScore(); ooLoadLive(); }
   },0);
   if(can('settings')) renderSettings();
 }
@@ -2984,7 +3026,7 @@ function nav(id, el){
   if(el) el.classList.add('active');
   const ct=document.querySelector('.content'); if(ct) ct.classList.toggle('wide', id==='recruiting');
   const pt=document.getElementById('page-title'); if(pt) pt.textContent = pageTitles[id] || 'HR Hub';
-  if(id==='dashboard'){ renderNotifications(); renderDashTurnover(); if(typeof dashRecRender==='function') dashRecRender(); if(typeof otDashRender==='function') otDashRender(); if(typeof tasksDashStat==='function') tasksDashStat(); if(typeof renderSafetyDash==='function'){ renderSafetyDash(); safetyLoadLive(); } if(typeof renderOneOnOneScore==='function'){ renderOneOnOneScore(); ooLoadLive(); } if(typeof wcDashRender==='function') wcDashRender(); }
+  if(id==='dashboard'){ renderNotifications(); renderDashTurnover(); if(typeof dashRecRender==='function') dashRecRender(); if(typeof otDashRender==='function') otDashRender(); if(typeof tasksDashStat==='function') tasksDashStat(); if(typeof renderSafetyDash==='function'){ renderSafetyDash(); safetyLoadLive(); } if(typeof wcDashRender==='function') wcDashRender(); }
   if(id==='turnover' && typeof trRender==='function') trRender();
   if(id==='recruiting' && typeof recRender==='function') recRender();
   if(id==='overtime' && typeof otRender==='function') otRender();
@@ -3527,10 +3569,12 @@ async function safetyLoadLive(){
    The sheet must be shared "Anyone with the link · Viewer". Nothing is stored; re-reads on open. */
 const OO_SHEET_ID  = '11Q1E1xukYoBA-3t4gY7k-ilp8CpzAGVGSz19gybq-sQ';
 const OO_SHEET_URL = 'https://docs.google.com/spreadsheets/d/'+OO_SHEET_ID+'/edit?usp=drivesdk';
+const OO_RANGE = 'B11:Q80';          // start at the header row to skip the merged title cells above it
 const OO_TTL_MS = 60000;             // skip re-fetch within this window unless forced
 const OO_MONTHS = ['january','february','march','april','may','june','july','august','september','october','november','december'];
 let ooData = null;                   // parsed scorecard | null
 let ooState = 'idle';                // 'idle' | 'loading' | 'ok' | 'error'
+let ooDiag = null;                   // last read diagnostics (for the on-card detail line)
 
 function ooCellText(cell){ if(!cell) return ''; if(cell.f!=null) return String(cell.f); if(cell.v!=null) return String(cell.v); return ''; }
 function ooCellPct(cell){
@@ -3540,62 +3584,114 @@ function ooCellPct(cell){
   if(cell.v!=null && String(cell.v).trim()!==''){ const n=parseFloat(String(cell.v).replace(/[^0-9.\-]/g,'')); return isNaN(n)?null:n; }
   return null;
 }
+function ooLocFromName(s){
+  if(!s) return '';
+  const t=String(s).toUpperCase().replace(/[^A-Z]/g,' ');
+  const m=t.match(/\b(CA|PA|MX)\b/);
+  return m?m[1]:'';
+}
 function ooParseScore(resp){
   if(!resp) throw new Error('empty');
-  if(resp.status==='error'){ const e=resp.errors&&resp.errors[0]; throw new Error((e&&(e.detailed_message||e.message))||'sheet error'); }
+  if(resp.status==='error'){ const e=resp.errors&&resp.errors[0]; const err=new Error((e&&(e.detailed_message||e.message))||'sheet error'); err.diag={error:(e&&(e.detailed_message||e.message))||'sheet returned an error'}; throw err; }
   const cols=(resp.table&&resp.table.cols)||[];
   const rows=(resp.table&&resp.table.rows)||[];
   const grid=rows.map(r=>(r&&r.c)||[]);
-  // gviz usually promotes the first text row into column LABELS (not data rows). If that
+  // gviz often promotes the first text row into column LABELS (not data rows). If that
   // captured our header, rebuild it as a header row so the scan below can find it.
   const colHeader=cols.map(c=>(c&&c.label!=null&&c.label!=='')?{v:String(c.label)}:null);
   const colHasHeader=colHeader.some(c=>{ const t=c?String(c.v).trim().toLowerCase():''; return t==='leadership member'||t==='department'||OO_MONTHS.indexOf(t)>=0; });
   if(colHasHeader) grid.unshift(colHeader);
-  // locate the header row (the one labelled "Leadership Member")
-  let hr=-1, memberCol=-1, deptCol=-1, activeCol=-1, avgCol=-1, year=null;
-  const monthCols={};
+  const diag={ rows:grid.length, headerRow:-1, monthCols:0, depts:0 };
+  // Anchor on the unique "Leadership Member" header (detail sub-tables say "Employee").
+  let hr=-1, memberCol=-1, deptCol=-1, headerVals=null, year=null, avgCol=-1, activeCol=-1;
   for(let i=0;i<grid.length;i++){
     const vals=grid[i].map(c=>ooCellText(c).trim().toLowerCase());
     const mi=vals.indexOf('leadership member');
     if(mi>=0){
-      hr=i; memberCol=mi;
+      hr=i; memberCol=mi; headerVals=vals;
+      const di=vals.indexOf('department'); deptCol=(di>=0?di:mi+1);
       vals.forEach((t,ci)=>{
-        if(t==='department') deptCol=ci;
-        else if(t.indexOf('active employee')===0) activeCol=ci;
-        else if(t.indexOf('average')>=0){ avgCol=ci; const ym=t.match(/(20\d{2})/); if(ym) year=+ym[1]; }
-        else { const m=OO_MONTHS.indexOf(t); if(m>=0) monthCols[m]=ci; }
+        if(t.indexOf('average')>=0){ avgCol=ci; const ym=t.match(/(20\d{2})/); if(ym) year=+ym[1]; }
+        if(t.indexOf('active employee')>=0) activeCol=ci;
       });
+      diag.headerRow=i;
+      diag.headerTexts=vals.map((t,ci)=>t?ci+':'+t:'').filter(Boolean).slice(0,20);
       break;
     }
   }
-  if(hr<0 || deptCol<0) throw new Error('layout');
-  // department rows: until the first blank (no member and no department)
-  const depts=[]; let i=hr+1;
-  for(; i<grid.length; i++){
-    const dept=ooCellText(grid[i][deptCol]).trim();
-    const member=ooCellText(grid[i][memberCol]).trim();
-    if(!dept && !member) break;
-    if(!dept) continue;
-    const months={};
-    for(let m=0;m<12;m++){ const ci=monthCols[m]; months[m]=(ci!=null)?ooCellPct(grid[i][ci]):null; }
-    depts.push({ member, dept, active:ooCellText(grid[i][activeCol]).trim(), months, avg:(avgCol>=0?ooCellPct(grid[i][avgCol]):null) });
+  if(hr<0){ const e=new Error('header not found'); e.diag=diag; throw e; }
+  // Month columns are contiguous & in calendar order. Some month names are buried inside longer
+  // header text (e.g. "percentage of 1on1's completed january", "…leadership log 2026 march"),
+  // so we match by substring and anchor the 12-wide block on the most common start = col − monthIndex.
+  let monthStart=-1;
+  if(headerVals){
+    const starts={};
+    headerVals.forEach((t,ci)=>{ OO_MONTHS.forEach((mn,m)=>{ if(t.indexOf(mn)>=0){ const s=ci-m; starts[s]=(starts[s]||0)+1; } }); });
+    const keys=Object.keys(starts);
+    if(keys.length) monthStart=+keys.sort((a,b)=>starts[b]-starts[a])[0];
   }
-  // overall totals row: next non-blank row that carries month values but no department
-  let overall=null;
+  if(monthStart<0) monthStart=deptCol+2;
+  const monthCols={}; for(let m=0;m<12;m++) monthCols[m]=monthStart+m;
+  if(activeCol<0) activeCol=monthStart-1;
+  if(avgCol<0) avgCol=monthStart+12;
+  const pctCount=row=>{ let n=0; for(let m=0;m<12;m++){ if(ooCellPct(grid[row][monthCols[m]])!=null) n++; } return n; };
+  diag.monthCols=12; diag.monthStart=monthStart;
+  diag.firstRows=[];
+  for(let k=hr+1;k<grid.length && diag.firstRows.length<6;k++){
+    const cells=grid[k].map((c,ci)=>{ const t=ooCellText(c); return t!==''?ci+':'+t:''; }).filter(Boolean);
+    if(cells.length) diag.firstRows.push(cells.slice(0,14));
+  }
+  const numFrom=s=>{ const n=parseInt(String(s).replace(/[^0-9]/g,''),10); return isNaN(n)?null:n; };
+  // Collect leadership/department rows: a row with a name AND at least one monthly % or an average.
+  // Stop at the company totals row (no name + several %) or at the detail sub-tables that follow.
+  const depts=[]; let i=hr+1, started=false, blanks=0, overall=null, lastDept='';
   for(; i<grid.length; i++){
-    const dept=ooCellText(grid[i][deptCol]).trim();
-    const member=ooCellText(grid[i][memberCol]).trim();
-    const anyMonth=Object.keys(monthCols).some(m=>ooCellPct(grid[i][monthCols[m]])!=null);
-    if(!dept && !member && anyMonth){
-      const months={}; for(let m=0;m<12;m++){ const ci=monthCols[m]; months[m]=(ci!=null)?ooCellPct(grid[i][ci]):null; }
-      overall={ months, avg:(avgCol>=0?ooCellPct(grid[i][avgCol]):null) }; break;
+    const deptRaw=ooCellText(grid[i][deptCol]).trim();
+    const member=memberCol>=0?ooCellText(grid[i][memberCol]).trim():'';
+    const name=deptRaw||member;
+    const lname=member.toLowerCase();
+    const n=pctCount(i);
+    const avg=ooCellPct(grid[i][avgCol]);
+    if(lname==='employee'){ break; } // reached a detail sub-table header
+    if(!name && n>=6){ // company totals row
+      const months={}; for(let m=0;m<12;m++) months[m]=ooCellPct(grid[i][monthCols[m]]);
+      overall={ months, avg }; i++; break;
     }
-    if(dept||member) break; // reached the next sub-table — stop looking
+    if(name && (n>0 || avg!=null)){
+      if(deptRaw) lastDept=deptRaw;
+      const dept=deptRaw||lastDept; // departments are often merged cells → carry the last one down
+      const months={}; for(let m=0;m<12;m++) months[m]=ooCellPct(grid[i][monthCols[m]]);
+      depts.push({ member, dept, active:numFrom(ooCellText(grid[i][activeCol])), months, avg });
+      started=true; blanks=0; continue;
+    }
+    if(started){
+      if(name && n===0 && avg==null) break; // a sub-table title like "PA- Production" → end of main table
+      if(!name){ if(++blanks>2) break; } // tolerate up to 2 blank spacer rows before the totals
+    }
   }
-  // months with data = any department non-zero that month
+  diag.depts=depts.length;
+  // If we broke before finding the totals row, look a few more rows ahead for it.
+  if(!overall){
+    for(let g=0; i<grid.length && g<5; i++, g++){
+      const dept=ooCellText(grid[i][deptCol]).trim();
+      const member=memberCol>=0?ooCellText(grid[i][memberCol]).trim():'';
+      const n=pctCount(i);
+      if(!dept && !member && n>=6){
+        const months={}; for(let m=0;m<12;m++) months[m]=ooCellPct(grid[i][monthCols[m]]);
+        overall={ months, avg:ooCellPct(grid[i][avgCol]) }; break;
+      }
+      if((member||dept) && member.toLowerCase()==='employee') break;
+    }
+  }
+  // latest month carrying data (from totals if present, else any department)
   let lastMonth=-1;
-  for(let m=0;m<12;m++){ if(depts.some(d=>d.months[m]!=null && d.months[m]>0)) lastMonth=m; }
-  return { depts, overall, lastMonth, hasAvg:avgCol>=0, year:year||new Date().getFullYear(), loadedAt:Date.now() };
+  for(let m=0;m<12;m++){
+    const oHit=overall && overall.months[m]!=null;
+    const dHit=depts.some(d=>d.months[m]!=null);
+    if(oHit||dHit) lastMonth=m;
+  }
+  const hasAvg = (overall && overall.avg!=null) || depts.some(d=>d.avg!=null);
+  return { depts, overall, lastMonth, hasAvg, year:year||new Date().getFullYear(), loadedAt:Date.now(), _diag:diag };
 }
 
 /* gviz fetch via JSONP <script>; calls done(resp, ok). */
@@ -3604,17 +3700,25 @@ function ooFetchGviz(sheetName, done){
   const script=document.createElement('script');
   let fin=false;
   const cleanup=()=>{ try{ delete window[cb]; }catch(e){ try{ window[cb]=undefined; }catch(_){} } if(script.parentNode) script.parentNode.removeChild(script); };
-  const timer=setTimeout(()=>{ if(fin) return; fin=true; cleanup(); done(null,false); }, 12000);
+  const timer=setTimeout(()=>{ if(fin) return; fin=true; cleanup(); done(null,false); }, 9000);
   window[cb]=function(resp){ if(fin) return; fin=true; clearTimeout(timer); cleanup(); done(resp, !(resp&&resp.status==='error')); };
   script.onerror=function(){ if(fin) return; fin=true; clearTimeout(timer); cleanup(); done(null,false); };
   let url='https://docs.google.com/spreadsheets/d/'+OO_SHEET_ID+'/gviz/tq?tqx=out:json;responseHandler:'+cb;
   if(sheetName) url+='&sheet='+encodeURIComponent(sheetName);
+  // Restrict to the scorecard block starting at the header row. The merged title cells above
+  // it ("Percentage of 1on1's Completed", the sheet title) make gviz null out the columns they
+  // span, which was dropping Jan–Oct from every row; excluding those rows returns all months.
+  url+='&range='+encodeURIComponent(OO_RANGE);
   script.src=url+'&_='+Date.now();   // cache-bust so sheet edits show
   document.head.appendChild(script);
 }
 function ooTryApply(resp){
-  try{ ooData=ooParseScore(resp); ooState='ok'; renderOneOnOneScore(); return true; }
-  catch(e){ return false; }
+  try{
+    const d=ooParseScore(resp);
+    ooDiag=d._diag;
+    if(!d.depts.length) return false;   // parsed but no departments — let the loader fall back / error
+    ooData=d; ooState='ok'; renderOneOnOneScore(); return true;
+  }catch(e){ ooDiag=(e&&e.diag)||{error:String((e&&e.message)||e)}; return false; }
 }
 function ooLoadLive(force){
   if(ooState==='loading') return;
@@ -3643,35 +3747,46 @@ function renderOneOnOneScore(){
   if(ooData && ooData.depts.length){
     const last=ooData.lastMonth;
     if(last<0){
-      inner=`<div class="oo-sc-msg"><i class="ti ti-calendar-stats big"></i> No completion data yet for ${yr}. Add entries to the sheet and they'll appear here.</div>`;
+      inner=`<div class="oo-sc-msg"><i class="ti ti-calendar-stats big"></i> <span>No completion data yet for ${yr}. Add entries to the sheet and they'll appear here.</span><button class="oo-sc-retry" onclick="ooLoadLive(true)"><i class="ti ti-refresh"></i> Retry</button>${ooDiagLine()}</div>`;
     } else {
-      const showAvg = yearEnded && ooData.hasAvg;
-      let mh=''; for(let m=0;m<=last;m++) mh+=`<th>${MONTHS[m].abbr}</th>`;
-      const head=`<tr><th class="oo-dept">Department</th>${mh}${showAvg?`<th class="oo-c-avg">${yr} Avg</th>`:''}</tr>`;
-      const body=ooData.depts.map(d=>{
-        let cells=''; for(let m=0;m<=last;m++){ const p=d.months[m]; cells+=`<td class="oo-cell ${ooPctClass(p)}">${ooPctTxt(p)}</td>`; }
-        const avgCell=showAvg?`<td class="oo-cell oo-c-avg">${ooPctTxt(d.avg)}</td>`:'';
-        return `<tr><td class="oo-dept"><div class="oo-dept-name">${ytEsc(d.dept)}</div>${d.member?`<div class="oo-dept-sub">${ytEsc(d.member)}${d.active?` · ${ytEsc(d.active)} staff`:''}</div>`:''}</td>${cells}${avgCell}</tr>`;
-      }).join('');
-      let foot='';
-      if(ooData.overall){
-        let fc=''; for(let m=0;m<=last;m++){ const p=ooData.overall.months[m]; fc+=`<td class="${ooPctClass(p)}">${ooPctTxt(p)}</td>`; }
-        const favg=showAvg?`<td class="oo-c-avg">${ooPctTxt(ooData.overall.avg)}</td>`:'';
-        foot=`<tfoot><tr><td class="oo-dept">Company</td>${fc}${favg}</tr></tfoot>`;
+      const meanOf=arr=>{ const v=arr.filter(x=>x!=null); return v.length? v.reduce((a,b)=>a+b,0)/v.length : null; };
+      const O=ooData.overall;
+      // feature the current calendar month; if it has no data yet, step back to the latest
+      // PRIOR month that does (never jump forward to a future month like December)
+      const hasMonthData = m => (O && O.months[m]!=null) || ooData.depts.some(d=>d.months[m]!=null);
+      let mIdx = now.getMonth();
+      if(!hasMonthData(mIdx)){ for(let m=mIdx-1; m>=0; m--){ if(hasMonthData(m)){ mIdx=m; break; } } }
+      const monthName = MONTHS[mIdx].name;
+      const col = p => p==null?['#F1F5F9','#64748B']: p>=90?['#DCFCE7','#15803D']: p>=70?['#DBEAFE','#1D4ED8']: p>=40?['#FEF3C7','#B45309']:['#FEE2E2','#B91C1C'];
+      const companyMonth = (O && O.months[mIdx]!=null) ? O.months[mIdx] : meanOf(ooData.depts.map(d=>d.months[mIdx]));
+      const companyYtd   = (O && O.avg!=null) ? O.avg : meanOf(ooData.depts.map(d=>d.avg));
+      const cMc=col(companyMonth), cYc=col(companyYtd);
+      let topHtml=`<div class="oo-snap-top">
+        <div class="oo-snap-big"><span class="oo-snap-lbl">Company · ${ytEsc(monthName)}</span><span class="oo-snap-val" style="color:${cMc[1]}">${ooPctTxt(companyMonth)}</span></div>
+        <div class="oo-snap-big"><span class="oo-snap-lbl">Company · ${yr} YTD Avg</span><span class="oo-snap-val" style="color:${cYc[1]}">${ooPctTxt(companyYtd)}</span></div>
+      </div>`;
+      // per-leader rows for the featured month (leader name + their department)
+      const dlist=ooData.depts.filter(d=>(d.dept||d.member)).map(d=>{ const p=d.months[mIdx]; const c=col(p); const nm=d.member||d.dept; const sub=d.member&&d.dept?d.dept:''; return {nm,sub,p,c}; })
+        .sort((a,b)=>(b.p==null?-1:b.p)-(a.p==null?-1:a.p));
+      let deptHtml='';
+      if(dlist.length){
+        deptHtml=`<div class="oo-loc-label">By leader / department · ${ytEsc(monthName)}</div><div class="oo-dept-list">`+
+          dlist.map(d=>`<div class="oo-dept-item"><span class="oo-dept-nm">${ytEsc(d.nm)}${d.sub?`<span class="oo-dept-sub2">${ytEsc(d.sub)}</span>`:''}</span><span class="oo-dept-chip" style="background:${d.c[0]};color:${d.c[1]}">${ooPctTxt(d.p)}</span></div>`).join('')+
+          `</div>`;
       }
       let updated=''; try{ updated=new Date(ooData.loadedAt).toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}); }catch(e){}
-      inner=`<div class="oo-sc-scroll"><table class="oo-sc-table"><thead>${head}</thead><tbody>${body}</tbody>${foot}</table></div>
+      const showDiag = ooData.depts.every(d=>!d.dept) || dlist.filter(d=>d.p!=null).length < 2;
+      inner=`${topHtml}${deptHtml}
         <div class="oo-sc-foot">
-          <span><i class="ti ti-refresh"></i> Updated ${updated||'just now'} · ${ooData.depts.length} departments · Jan–${MONTHS[last].abbr}${showAvg?'':` · ${yr} average shows in December`}</span>
+          <span><i class="ti ti-refresh"></i> Updated ${updated||'just now'} · ${monthName} ${yr}${ooData.depts.length?` · ${ooData.depts.length} leaders`:''}</span>
           <a href="#" onclick="event.preventDefault();window.open(OO_SHEET_URL,'_blank','noopener')">Open the log <i class="ti ti-external-link"></i></a>
-        </div>`;
+        </div>${showDiag?ooDiagLine():''}`;
     }
-  } else if(ooState==='loading'){
+  } else if(ooState==='loading' || ooState==='idle'){
     inner=`<div class="oo-sc-msg"><i class="ti ti-loader-2 oo-spin big"></i> Loading the scorecard from the sheet…</div>`;
-  } else if(ooState==='error'){
-    inner=`<div class="oo-sc-msg"><i class="ti ti-cloud-off big"></i> <span>Couldn\u2019t read the One-on-One Log. Make sure it\u2019s shared as <b>Anyone with the link \u00b7 Viewer</b>, then retry.</span> <button class="oo-sc-retry" onclick="ooLoadLive(true)"><i class="ti ti-refresh"></i> Retry</button></div>`;
   } else {
-    inner=`<div class="oo-sc-msg"><i class="ti ti-calendar-stats big"></i> Loading…</div>`;
+    // resolved but no usable data (error, or read succeeded but no departments found)
+    inner=`<div class="oo-sc-msg"><i class="ti ti-cloud-off big"></i> <span>Couldn\u2019t read the One-on-One Log scorecard. Confirm it\u2019s shared as <b>Anyone with the link \u00b7 Viewer</b>, then retry.</span> <button class="oo-sc-retry" onclick="ooLoadLive(true)"><i class="ti ti-refresh"></i> Retry</button>${ooDiagLine()}</div>`;
   }
   const ready = ooData && ooData.depts.length && ooData.lastMonth>=0;
   host.innerHTML=
@@ -3680,11 +3795,30 @@ function renderOneOnOneScore(){
        <div class="oo-sc-titles">
          <div class="oo-sc-eyebrow">Engagement</div>
          <div class="oo-sc-title">One-on-One Completion</div>
-         <div class="oo-sc-sub">Live \u00b7 ${yr}${ready?' \u00b7 completion % by department':''}${ooState==='loading'&&ooData?' \u00b7 refreshing…':''}</div>
+         <div class="oo-sc-sub">Live \u00b7 ${yr}${ready?' \u00b7 this-month snapshot':''}${ooState==='loading'&&ooData?' \u00b7 refreshing…':''}</div>
        </div>
        <button class="oo-sc-refresh" onclick="ooLoadLive(true)" title="Refresh from the sheet"><i class="ti ti-refresh"></i></button>
      </div>
      <div class="oo-sc-card">${inner}</div>`;
+}
+/* Small diagnostic line so a failed read tells us exactly what came back from the sheet. */
+function ooDiagLine(){
+  const d=ooDiag; if(!d) return '';
+  let bits;
+  if(d.error){ bits=[d.error]; }
+  else {
+    bits=[(d.rows||0)+' rows read', d.headerRow>=0?'header found':'header not found'];
+    if(d.headerRow>=0) bits.push((d.monthCols||0)+' month cols', (d.depts||0)+' departments');
+  }
+  let extra='';
+  // Surface the real layout (header + first rows) whenever we captured it.
+  if(d.headerRow>=0 && (d.headerTexts||d.firstRows)){
+    const lines=[];
+    if(d.headerTexts && d.headerTexts.length) lines.push('Header → '+d.headerTexts.join('  '));
+    if(d.firstRows) d.firstRows.forEach((r,ix)=>lines.push('Row'+(ix+1)+' → '+r.join('  ')));
+    if(lines.length) extra=`<div style="flex-basis:100%;font-size:10px;color:var(--gray-400);margin-top:2px;white-space:pre-wrap;word-break:break-word;line-height:1.5">${ytEsc(lines.join('\n'))}</div>`;
+  }
+  return `<div style="flex-basis:100%;font-size:11px;color:var(--gray-400);margin-top:2px">Detail: ${ytEsc(bits.join(' · '))}</div>${extra}`;
 }
 
 /* ── Dashboard: employee turnover (company-wide, monthly, voluntary/involuntary) ── */
@@ -9697,6 +9831,68 @@ function wcFmt0(n){ return '$'+Math.round(+n||0).toLocaleString('en-US'); }
 function wcFmt2(n){ return '$'+(+n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
 function wcCompact(n){ n=+n||0; if(n>=1e6) return '$'+(n/1e6).toFixed(n>=1e7?1:2).replace(/\.0+$/,'')+'M'; if(n>=1e3) return '$'+Math.round(n/1e3)+'k'; return '$'+Math.round(n); }
 function wcShortPP(pp){ const p=String(pp).split('-'); return (p[0]?p[0].slice(2):'')+'–'+(p[1]?p[1].slice(2):''); }
+function wcFullPP(pp){ const p=String(pp).split('-'); return (p[0]||'')+'–'+(p[1]?p[1].slice(2):''); }
+
+/* ── per-period claim breakdown (for dashboard bar tooltips) ── */
+function wcPeriodDetail(pp){
+  const claims=wcAllClaims().filter(c=>c.pp===pp);
+  const m={};
+  claims.forEach(c=>{ const t=c.type||'Other'; if(!m[t]) m[t]={type:t,n:0,loss:0,open:0}; m[t].n++; m[t].loss+=(+c.amount||0); if(c.open) m[t].open++; });
+  const types=Object.values(m).sort((a,b)=> b.loss-a.loss || b.n-a.n);
+  return { pp, n:claims.length, open:claims.filter(c=>c.open).length, loss:claims.reduce((a,c)=>a+(+c.amount||0),0), types };
+}
+/* colour tier by loss size relative to the largest bar shown */
+function wcLossTier(losses,bMax,isCur){
+  if(isCur) return 'cur';
+  if(losses<=0) return 't-none';
+  const r=losses/(bMax||1);
+  if(r>=0.85) return 't-peak';
+  if(r>=0.55) return 't-high';
+  if(r>=0.25) return 't-mid';
+  return 't-low';
+}
+
+/* ── floating tooltip for the dashboard period bars ── */
+function wcTipEl(){
+  let el=document.getElementById('wc-bar-tip');
+  if(!el){ el=document.createElement('div'); el.id='wc-bar-tip'; el.className='wc-bar-tip'; document.body.appendChild(el); }
+  return el;
+}
+function wcTipHTML(pp){
+  const d=wcPeriodDetail(pp);
+  if(!d.n) return `<div class="tip-pp">${wcFullPP(pp)} policy year</div><div class="tip-empty">No claims recorded yet</div>`;
+  const rows=d.types.map(t=>`<div class="tip-trow"><span class="t">${wcEsc(t.type)}${t.open?` <span class="od">· ${t.open} open</span>`:''}</span><span class="m">${t.n} · ${wcCompact(t.loss)}</span></div>`).join('');
+  return `<div class="tip-pp">${wcFullPP(pp)} policy year</div>
+    <div class="tip-sum">${wcCompact(d.loss)} incurred · ${d.n} claim${d.n===1?'':'s'}${d.open?`<span class="open">${d.open} open</span>`:''}</div>
+    <div class="tip-types">${rows}</div>`;
+}
+function wcTipShow(pp,anchor){
+  const el=wcTipEl();
+  el.dataset.pp=pp;
+  el.innerHTML=wcTipHTML(pp);
+  el.classList.add('show');
+  const r=anchor.getBoundingClientRect();
+  const tw=el.offsetWidth, th=el.offsetHeight;
+  let left=r.left + r.width/2 - tw/2;
+  left=Math.max(8, Math.min(left, window.innerWidth - tw - 8));
+  let top=r.top - th - 9;                 // prefer above the row
+  if(top<8) top=r.bottom + 9;             // flip below if no room
+  el.style.left=left+'px'; el.style.top=top+'px';
+}
+function wcTipHide(){ const el=document.getElementById('wc-bar-tip'); if(el) el.classList.remove('show'); }
+function wcBindBarTips(host){
+  if(!window.__wcTipInit){ window.__wcTipInit=true;
+    document.addEventListener('click',wcTipHide);
+    window.addEventListener('scroll',wcTipHide,true);
+    window.addEventListener('resize',wcTipHide);
+  }
+  host.querySelectorAll('.wc-bar-row[data-pp]').forEach(row=>{
+    const pp=row.getAttribute('data-pp');
+    row.addEventListener('mouseenter',()=>wcTipShow(pp,row));
+    row.addEventListener('mouseleave',wcTipHide);
+    row.addEventListener('click',e=>{ e.stopPropagation(); wcTipShow(pp,row); });  // tap support on touch
+  });
+}
 
 function wcInit(){
   try{ WC_HISTORY=JSON.parse(localStorage.getItem(WC_HIST_KEY)||'null'); }catch(e){ WC_HISTORY=null; }
@@ -10202,9 +10398,10 @@ function wcDashRender(){
   const bars=recent.map(p=>{
     const isCur=p.pp===WC_CUR_PERIOD;
     const w=p.losses>0?Math.max(3,Math.round(100*p.losses/bMax)):0;
-    return `<div class="wc-bar-row ${isCur?'cur':''}">
+    const tier=wcLossTier(p.losses,bMax,isCur);
+    return `<div class="wc-bar-row ${isCur?'cur':''}" data-pp="${p.pp}">
       <div class="wc-bar-lab">${wcShortPP(p.pp)}</div>
-      <div class="wc-bar-track"><div class="wc-bar-fill" style="width:${w}%"></div></div>
+      <div class="wc-bar-track"><div class="wc-bar-fill ${tier}" style="width:${w}%"></div></div>
       <div class="wc-bar-val">${p.losses>0?wcCompact(p.losses):'—'}</div></div>`;
   }).join('');
 
@@ -10235,14 +10432,26 @@ function wcDashRender(){
           <div class="wc-cmp-sub">${cur.claims} claim${cur.claims===1?'':'s'} · ${cur.open} open</div>
         </div>
       </div>
+      <div class="wc-bars-head">
+        <div class="h">Policy year</div>
+        <div class="h">Incurred losses <span class="hint">— hover or tap a year for detail</span></div>
+        <div class="h r">Total</div>
+      </div>
       <div class="wc-bars">${bars}</div>
-      <div class="wc-chart-cap">incurred losses by plan year</div>
+      <div class="wc-bars-legend">
+        <span class="k"><span class="sw" style="background:linear-gradient(90deg,#37B49A,#1E8E76)"></span>Lower</span>
+        <span class="k"><span class="sw" style="background:linear-gradient(90deg,#F0B53C,#D98A1E)"></span>Moderate</span>
+        <span class="k"><span class="sw" style="background:linear-gradient(90deg,#EC7A4E,#D1542B)"></span>High</span>
+        <span class="k"><span class="sw" style="background:linear-gradient(90deg,#D5453B,#9B271B)"></span>Peak</span>
+        <span class="k"><span class="sw" style="background:linear-gradient(90deg,#F0A02A,#D9822B)"></span>In progress</span>
+      </div>
       <div class="wc-foot">
         <span>Since 2018: <b>${wcCompact(s.totalLosses)}</b> · ${s.totalClaims} claims</span>
         <span class="sep">|</span>
         <span>Most common: <b>${wcEsc(s.topType.type)}</b> (${s.topType.claims})</span>
       </div>
     </div>`;
+  wcBindBarTips(host);
 }
 
 /* ── CSV export ── */
