@@ -981,6 +981,47 @@ select.rec-in{appearance:auto;cursor:pointer}
 .stat-card.safety::before{background:linear-gradient(180deg,#4A8BE6,#1E54C0)}
 .stat-card.safety .stat-eyebrow{color:#1E5BC6}
 .stat-badge.safety{background:linear-gradient(135deg,#4A8BE6,#1E54C0)}
+
+/* ── One-on-One Completion scorecard (live from the One-on-One Log sheet) ── */
+.oo-score-wrap{margin-bottom:22px}
+.oo-sc-head{display:flex;align-items:center;gap:10px;margin:0 2px 12px}
+.oo-sc-badge{width:34px;height:34px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;background:linear-gradient(135deg,#7A6BEA,#5042C8);box-shadow:0 4px 11px rgba(80,66,200,.28)}
+.oo-sc-titles{flex:1;min-width:0}
+.oo-sc-eyebrow{font-size:10.5px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:#5B4FCF}
+.oo-sc-title{font-size:16px;font-weight:800;color:var(--gray-900);letter-spacing:-.2px}
+.oo-sc-sub{font-size:12px;color:var(--gray-500);margin-top:1px}
+.oo-sc-refresh{flex-shrink:0;width:32px;height:32px;border-radius:9px;border:1px solid var(--gray-200);background:#fff;color:var(--gray-500);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all .15s}
+.oo-sc-refresh:hover{border-color:#6D5DE0;color:#5B4FCF}
+.oo-sc-card{background:#fff;border:var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-card);overflow:hidden}
+.oo-sc-scroll{overflow-x:auto}
+.oo-sc-table{border-collapse:separate;border-spacing:0;width:100%;font-size:12.5px;min-width:520px}
+.oo-sc-table th,.oo-sc-table td{padding:9px 10px;text-align:center;white-space:nowrap;border-bottom:1px solid var(--gray-100)}
+.oo-sc-table thead th{position:sticky;top:0;background:var(--gray-50);font-size:10px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;color:var(--gray-500);z-index:2}
+.oo-sc-table th.oo-dept,.oo-sc-table td.oo-dept{text-align:left;position:sticky;left:0;background:#fff;z-index:1;min-width:170px;box-shadow:1px 0 0 var(--gray-100)}
+.oo-sc-table thead th.oo-dept{background:var(--gray-50);z-index:3}
+.oo-dept-name{font-weight:700;color:var(--gray-900)}
+.oo-dept-sub{font-size:10.5px;color:var(--gray-400);font-weight:500;margin-top:1px}
+.oo-sc-table tbody tr:hover td{background:var(--gray-50)}
+.oo-sc-table tbody tr:hover td.oo-dept{background:var(--gray-50)}
+.oo-cell{font-weight:700;font-variant-numeric:tabular-nums}
+.oo-c-hi{color:var(--green-pop-deep);background:rgba(18,161,80,.10)}
+.oo-c-mid{color:#1763A6;background:rgba(55,138,221,.10)}
+.oo-c-lo{color:var(--amber-800);background:rgba(180,105,14,.12)}
+.oo-c-zero{color:var(--gray-400)}
+.oo-c-avg{font-weight:800;color:var(--gray-900);background:#F4F2FC;border-left:2px solid #C9C0F2}
+.oo-sc-table tfoot td{padding:11px 10px;font-weight:800;color:var(--gray-900);background:#F7F8FA;border-top:2px solid var(--gray-200);border-bottom:none}
+.oo-sc-table tfoot td.oo-dept{background:#F7F8FA;color:var(--gray-700);text-transform:uppercase;font-size:10.5px;letter-spacing:.4px}
+.oo-sc-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:10px 14px;font-size:11px;color:var(--gray-500);border-top:1px solid var(--gray-100)}
+.oo-sc-foot i{font-size:12px}
+.oo-sc-foot a{color:#5B4FCF;text-decoration:none;font-weight:600}
+.oo-sc-foot a:hover{text-decoration:underline}
+.oo-sc-msg{display:flex;align-items:center;gap:9px;flex-wrap:wrap;font-size:13px;color:var(--gray-600);line-height:1.5;padding:26px 22px}
+.oo-sc-msg b{color:var(--gray-800)}
+.oo-sc-msg .big{font-size:20px;color:var(--gray-400)}
+.oo-sc-retry{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1px solid var(--gray-200);border-radius:16px;padding:6px 12px;font-size:12px;font-weight:600;color:var(--gray-600);cursor:pointer;font-family:inherit}
+.oo-sc-retry:hover{border-color:#6D5DE0;color:#5B4FCF}
+.oo-spin{display:inline-block;animation:ooSpin 1s linear infinite}
+@keyframes ooSpin{to{transform:rotate(360deg)}}
 .sf-sec{font-size:10.5px;font-weight:800;letter-spacing:1.1px;text-transform:uppercase;color:var(--gray-400);margin:1px 0 13px}
 .sf-lanes{display:flex;flex-direction:column;gap:13px}
 .sf-lane{display:grid;grid-template-columns:118px 1fr auto auto;align-items:center;gap:12px}
@@ -1903,6 +1944,7 @@ select.rec-in{appearance:auto;cursor:pointer}
       <div class="nav-item nav-ext-link" onclick="window.open('https://joseh-ctrl.github.io/safety-inspector/','_blank','noopener');closeSidebar()"><i class="ti ti-shield-check"></i>Safety Inspector<i class="ti ti-external-link nav-ext"></i></div>
       <div class="nav-item nav-ext-link" onclick="window.open('https://joseh-ctrl.github.io/leadership-portal/','_blank','noopener');closeSidebar()"><i class="ti ti-users-group"></i>Leadership Resource Center<i class="ti ti-external-link nav-ext"></i></div>
       <div class="nav-item nav-ext-link" onclick="window.open('https://docs.google.com/spreadsheets/d/1SQiPD0YaQCDCuHx7ej8Hm2g1Q_H4irzqCJ6GM4ic3y8/edit?usp=drivesdk','_blank','noopener');closeSidebar()"><i class="ti ti-school"></i>Department Training Log<i class="ti ti-external-link nav-ext"></i></div>
+      <div class="nav-item nav-ext-link" onclick="window.open('https://docs.google.com/spreadsheets/d/11Q1E1xukYoBA-3t4gY7k-ilp8CpzAGVGSz19gybq-sQ/edit?usp=drivesdk','_blank','noopener');closeSidebar()"><i class="ti ti-messages"></i>One-on-One Log<i class="ti ti-external-link nav-ext"></i></div>
     </div>
 
     <div class="nav-group">
@@ -2092,6 +2134,9 @@ select.rec-in{appearance:auto;cursor:pointer}
           <!-- WORKERS' COMP · claims & losses this period -->
           <div class="stat-card wc" id="dash-wc-card" onclick="nav('workerscomp', document.querySelector('.nav-item[onclick*=workerscomp]'))" style="cursor:pointer"></div>
         </div>
+
+        <!-- ONE-ON-ONE COMPLETION SCORECARD (live from the One-on-One Log sheet) -->
+        <div class="oo-score-wrap" id="dash-1on1-score"></div>
 
         <!-- TASK SCORECARD (rendered by tasksScoreRender) -->
         <div class="tk-score-wrap" id="dash-tasks-score"></div>
@@ -2912,6 +2957,7 @@ function enterApp(user){
     if(typeof wcDashRender==='function') wcDashRender();
     if(typeof tkInitSync==='function') tkInitSync();
     if(typeof renderSafetyDash==='function'){ renderSafetyDash(); safetyLoadLive(); }
+    if(typeof renderOneOnOneScore==='function'){ renderOneOnOneScore(); ooLoadLive(); }
   },0);
   if(can('settings')) renderSettings();
 }
@@ -2938,7 +2984,7 @@ function nav(id, el){
   if(el) el.classList.add('active');
   const ct=document.querySelector('.content'); if(ct) ct.classList.toggle('wide', id==='recruiting');
   const pt=document.getElementById('page-title'); if(pt) pt.textContent = pageTitles[id] || 'HR Hub';
-  if(id==='dashboard'){ renderNotifications(); renderDashTurnover(); if(typeof dashRecRender==='function') dashRecRender(); if(typeof otDashRender==='function') otDashRender(); if(typeof tasksDashStat==='function') tasksDashStat(); if(typeof renderSafetyDash==='function'){ renderSafetyDash(); safetyLoadLive(); } if(typeof wcDashRender==='function') wcDashRender(); }
+  if(id==='dashboard'){ renderNotifications(); renderDashTurnover(); if(typeof dashRecRender==='function') dashRecRender(); if(typeof otDashRender==='function') otDashRender(); if(typeof tasksDashStat==='function') tasksDashStat(); if(typeof renderSafetyDash==='function'){ renderSafetyDash(); safetyLoadLive(); } if(typeof renderOneOnOneScore==='function'){ renderOneOnOneScore(); ooLoadLive(); } if(typeof wcDashRender==='function') wcDashRender(); }
   if(id==='turnover' && typeof trRender==='function') trRender();
   if(id==='recruiting' && typeof recRender==='function') recRender();
   if(id==='overtime' && typeof otRender==='function') otRender();
@@ -3468,6 +3514,171 @@ async function safetyLoadLive(){
     const next = safetyAggregate(rows);
     if(next){ safetyData = next; renderSafetyDash(); }
   }catch(e){ /* keep the seed snapshot on any error */ }
+}
+
+/* ══════════════ ONE-ON-ONE COMPLETION SCORECARD (live from the One-on-One Log) ══════════════
+   The sheet is a department scorecard: each row is a leadership member + department +
+   active-employee count + a monthly completion % (Jan–Dec) + a year-average column, plus an
+   overall totals row. We read it live via Google's gviz endpoint (loaded as a <script>, so no
+   CORS), show every department, only the months that have data, and reveal the year average
+   once December arrives. To stay future-proof it targets the workbook tab named after the
+   current year (e.g. "2027"), falling back to the first tab. The header row, month columns and
+   average column are located by their labels — not fixed positions — so layout shifts are fine.
+   The sheet must be shared "Anyone with the link · Viewer". Nothing is stored; re-reads on open. */
+const OO_SHEET_ID  = '11Q1E1xukYoBA-3t4gY7k-ilp8CpzAGVGSz19gybq-sQ';
+const OO_SHEET_URL = 'https://docs.google.com/spreadsheets/d/'+OO_SHEET_ID+'/edit?usp=drivesdk';
+const OO_TTL_MS = 60000;             // skip re-fetch within this window unless forced
+const OO_MONTHS = ['january','february','march','april','may','june','july','august','september','october','november','december'];
+let ooData = null;                   // parsed scorecard | null
+let ooState = 'idle';                // 'idle' | 'loading' | 'ok' | 'error'
+
+function ooCellText(cell){ if(!cell) return ''; if(cell.f!=null) return String(cell.f); if(cell.v!=null) return String(cell.v); return ''; }
+function ooCellPct(cell){
+  if(!cell) return null;
+  if(cell.f!=null && /%/.test(cell.f)){ const n=parseFloat(String(cell.f).replace(/[^0-9.\-]/g,'')); return isNaN(n)?null:n; }
+  if(typeof cell.v==='number') return cell.v<=1.5 ? cell.v*100 : cell.v;   // percent-formatted fraction vs. plain number
+  if(cell.v!=null && String(cell.v).trim()!==''){ const n=parseFloat(String(cell.v).replace(/[^0-9.\-]/g,'')); return isNaN(n)?null:n; }
+  return null;
+}
+function ooParseScore(resp){
+  if(!resp) throw new Error('empty');
+  if(resp.status==='error'){ const e=resp.errors&&resp.errors[0]; throw new Error((e&&(e.detailed_message||e.message))||'sheet error'); }
+  const rows=(resp.table&&resp.table.rows)||[];
+  const grid=rows.map(r=>(r&&r.c)||[]);
+  // locate the header row (the one labelled "Leadership Member")
+  let hr=-1, memberCol=-1, deptCol=-1, activeCol=-1, avgCol=-1, year=null;
+  const monthCols={};
+  for(let i=0;i<grid.length;i++){
+    const vals=grid[i].map(c=>ooCellText(c).trim().toLowerCase());
+    const mi=vals.indexOf('leadership member');
+    if(mi>=0){
+      hr=i; memberCol=mi;
+      vals.forEach((t,ci)=>{
+        if(t==='department') deptCol=ci;
+        else if(t.indexOf('active employee')===0) activeCol=ci;
+        else if(t.indexOf('average')>=0){ avgCol=ci; const ym=t.match(/(20\d{2})/); if(ym) year=+ym[1]; }
+        else { const m=OO_MONTHS.indexOf(t); if(m>=0) monthCols[m]=ci; }
+      });
+      break;
+    }
+  }
+  if(hr<0 || deptCol<0) throw new Error('layout');
+  // department rows: until the first blank (no member and no department)
+  const depts=[]; let i=hr+1;
+  for(; i<grid.length; i++){
+    const dept=ooCellText(grid[i][deptCol]).trim();
+    const member=ooCellText(grid[i][memberCol]).trim();
+    if(!dept && !member) break;
+    if(!dept) continue;
+    const months={};
+    for(let m=0;m<12;m++){ const ci=monthCols[m]; months[m]=(ci!=null)?ooCellPct(grid[i][ci]):null; }
+    depts.push({ member, dept, active:ooCellText(grid[i][activeCol]).trim(), months, avg:(avgCol>=0?ooCellPct(grid[i][avgCol]):null) });
+  }
+  // overall totals row: next non-blank row that carries month values but no department
+  let overall=null;
+  for(; i<grid.length; i++){
+    const dept=ooCellText(grid[i][deptCol]).trim();
+    const member=ooCellText(grid[i][memberCol]).trim();
+    const anyMonth=Object.keys(monthCols).some(m=>ooCellPct(grid[i][monthCols[m]])!=null);
+    if(!dept && !member && anyMonth){
+      const months={}; for(let m=0;m<12;m++){ const ci=monthCols[m]; months[m]=(ci!=null)?ooCellPct(grid[i][ci]):null; }
+      overall={ months, avg:(avgCol>=0?ooCellPct(grid[i][avgCol]):null) }; break;
+    }
+    if(dept||member) break; // reached the next sub-table — stop looking
+  }
+  // months with data = any department non-zero that month
+  let lastMonth=-1;
+  for(let m=0;m<12;m++){ if(depts.some(d=>d.months[m]!=null && d.months[m]>0)) lastMonth=m; }
+  return { depts, overall, lastMonth, hasAvg:avgCol>=0, year:year||new Date().getFullYear(), loadedAt:Date.now() };
+}
+
+/* gviz fetch via JSONP <script>; calls done(resp, ok). */
+function ooFetchGviz(sheetName, done){
+  const cb='__ooGviz_'+Date.now()+'_'+Math.floor(Math.random()*1e4);
+  const script=document.createElement('script');
+  let fin=false;
+  const cleanup=()=>{ try{ delete window[cb]; }catch(e){ try{ window[cb]=undefined; }catch(_){} } if(script.parentNode) script.parentNode.removeChild(script); };
+  const timer=setTimeout(()=>{ if(fin) return; fin=true; cleanup(); done(null,false); }, 12000);
+  window[cb]=function(resp){ if(fin) return; fin=true; clearTimeout(timer); cleanup(); done(resp, !(resp&&resp.status==='error')); };
+  script.onerror=function(){ if(fin) return; fin=true; clearTimeout(timer); cleanup(); done(null,false); };
+  let url='https://docs.google.com/spreadsheets/d/'+OO_SHEET_ID+'/gviz/tq?tqx=out:json;responseHandler:'+cb+'&headers=0';
+  if(sheetName) url+='&sheet='+encodeURIComponent(sheetName);
+  script.src=url+'&_='+Date.now();   // cache-bust so sheet edits show
+  document.head.appendChild(script);
+}
+function ooApply(resp){
+  try{ ooData=ooParseScore(resp); ooState='ok'; }
+  catch(e){ if(!ooData) ooState='error'; }
+  renderOneOnOneScore();
+}
+function ooLoadLive(force){
+  if(ooState==='loading') return;
+  if(!force && ooData && (Date.now()-ooData.loadedAt)<OO_TTL_MS){ renderOneOnOneScore(); return; }
+  ooState='loading'; renderOneOnOneScore();
+  const year=String(new Date().getFullYear());
+  // prefer the current-year tab; fall back to the first tab if that tab doesn't exist yet
+  ooFetchGviz(year, (r1,ok1)=>{
+    if(ok1 && r1){ ooApply(r1); return; }
+    ooFetchGviz(null, (r2,ok2)=>{
+      if(ok2 && r2){ ooApply(r2); }
+      else { if(!ooData) ooState='error'; renderOneOnOneScore(); }
+    });
+  });
+}
+
+function ooPctClass(p){ if(p==null||p<=0) return 'oo-c-zero'; if(p>=90) return 'oo-c-hi'; if(p>=70) return 'oo-c-mid'; return 'oo-c-lo'; }
+function ooPctTxt(p){ if(p==null) return '—'; return (Math.round(p*10)/10)+'%'; }
+function renderOneOnOneScore(){
+  const host=document.getElementById('dash-1on1-score'); if(!host) return;
+  const now=new Date();
+  const yr=(ooData && ooData.year) || now.getFullYear();
+  const yearEnded = (now.getFullYear()>yr) || (now.getFullYear()===yr && now.getMonth()>=11); // December onward, or a past year
+  let inner;
+  if(ooData && ooData.depts.length){
+    const last=ooData.lastMonth;
+    if(last<0){
+      inner=`<div class="oo-sc-msg"><i class="ti ti-calendar-stats big"></i> No completion data yet for ${yr}. Add entries to the sheet and they'll appear here.</div>`;
+    } else {
+      const showAvg = yearEnded && ooData.hasAvg;
+      let mh=''; for(let m=0;m<=last;m++) mh+=`<th>${MONTHS[m].abbr}</th>`;
+      const head=`<tr><th class="oo-dept">Department</th>${mh}${showAvg?`<th class="oo-c-avg">${yr} Avg</th>`:''}</tr>`;
+      const body=ooData.depts.map(d=>{
+        let cells=''; for(let m=0;m<=last;m++){ const p=d.months[m]; cells+=`<td class="oo-cell ${ooPctClass(p)}">${ooPctTxt(p)}</td>`; }
+        const avgCell=showAvg?`<td class="oo-cell oo-c-avg">${ooPctTxt(d.avg)}</td>`:'';
+        return `<tr><td class="oo-dept"><div class="oo-dept-name">${ytEsc(d.dept)}</div>${d.member?`<div class="oo-dept-sub">${ytEsc(d.member)}${d.active?` · ${ytEsc(d.active)} staff`:''}</div>`:''}</td>${cells}${avgCell}</tr>`;
+      }).join('');
+      let foot='';
+      if(ooData.overall){
+        let fc=''; for(let m=0;m<=last;m++){ const p=ooData.overall.months[m]; fc+=`<td class="${ooPctClass(p)}">${ooPctTxt(p)}</td>`; }
+        const favg=showAvg?`<td class="oo-c-avg">${ooPctTxt(ooData.overall.avg)}</td>`:'';
+        foot=`<tfoot><tr><td class="oo-dept">Company</td>${fc}${favg}</tr></tfoot>`;
+      }
+      let updated=''; try{ updated=new Date(ooData.loadedAt).toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}); }catch(e){}
+      inner=`<div class="oo-sc-scroll"><table class="oo-sc-table"><thead>${head}</thead><tbody>${body}</tbody>${foot}</table></div>
+        <div class="oo-sc-foot">
+          <span><i class="ti ti-refresh"></i> Updated ${updated||'just now'} · ${ooData.depts.length} departments · Jan–${MONTHS[last].abbr}${showAvg?'':` · ${yr} average shows in December`}</span>
+          <a href="#" onclick="event.preventDefault();window.open(OO_SHEET_URL,'_blank','noopener')">Open the log <i class="ti ti-external-link"></i></a>
+        </div>`;
+    }
+  } else if(ooState==='loading'){
+    inner=`<div class="oo-sc-msg"><i class="ti ti-loader-2 oo-spin big"></i> Loading the scorecard from the sheet…</div>`;
+  } else if(ooState==='error'){
+    inner=`<div class="oo-sc-msg"><i class="ti ti-cloud-off big"></i> <span>Couldn\u2019t read the One-on-One Log. Make sure it\u2019s shared as <b>Anyone with the link \u00b7 Viewer</b>, then retry.</span> <button class="oo-sc-retry" onclick="ooLoadLive(true)"><i class="ti ti-refresh"></i> Retry</button></div>`;
+  } else {
+    inner=`<div class="oo-sc-msg"><i class="ti ti-calendar-stats big"></i> Loading…</div>`;
+  }
+  const ready = ooData && ooData.depts.length && ooData.lastMonth>=0;
+  host.innerHTML=
+    `<div class="oo-sc-head">
+       <div class="oo-sc-badge"><i class="ti ti-messages"></i></div>
+       <div class="oo-sc-titles">
+         <div class="oo-sc-eyebrow">Engagement</div>
+         <div class="oo-sc-title">One-on-One Completion</div>
+         <div class="oo-sc-sub">Live \u00b7 ${yr}${ready?' \u00b7 completion % by department':''}${ooState==='loading'&&ooData?' \u00b7 refreshing…':''}</div>
+       </div>
+       <button class="oo-sc-refresh" onclick="ooLoadLive(true)" title="Refresh from the sheet"><i class="ti ti-refresh"></i></button>
+     </div>
+     <div class="oo-sc-card">${inner}</div>`;
 }
 
 /* ── Dashboard: employee turnover (company-wide, monthly, voluntary/involuntary) ── */
