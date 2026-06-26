@@ -1737,6 +1737,71 @@ select.rec-in{appearance:auto;cursor:pointer}
 .wc-del{background:none;border:none;color:var(--gray-300);cursor:pointer;font-size:15px;padding:4px;border-radius:6px;transition:all .14s}
 .wc-del:hover{color:var(--wc-red);background:var(--wc-red-soft)}
 @media(max-width:760px){.wc-seg-btn{padding:7px 11px;font-size:12px}.wc-seg-btn span.lbl{display:none}.wc-seg-btn i{font-size:17px}}
+
+/* ══════════════ APPROVED VENDORS ══════════════ */
+.vnd-toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:20px 0 16px}
+.vnd-search{position:relative;flex:1;min-width:200px;max-width:380px}
+.vnd-search>i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--gray-400);font-size:16px}
+.vnd-search input{width:100%;border:1px solid var(--gray-200);border-radius:22px;padding:9px 32px 9px 36px;font-size:13px;font-family:inherit;background:#fff;color:var(--gray-900);outline:none;transition:all .15s}
+.vnd-search input:focus{border-color:var(--blue-400);box-shadow:0 0 0 3px rgba(55,138,221,.12)}
+.vnd-search-clear{position:absolute;right:7px;top:50%;transform:translateY(-50%);border:none;background:none;color:var(--gray-400);font-size:18px;cursor:pointer;line-height:1;padding:2px 6px}
+.vnd-ghost{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--gray-200);border-radius:20px;padding:8px 14px;font-size:12.5px;font-weight:600;color:var(--gray-600);cursor:pointer;font-family:inherit;transition:all .15s}
+.vnd-ghost:hover{border-color:var(--blue-400);color:var(--blue-600)}
+.vnd-summary{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.vnd-summary:empty{display:none}
+.vnd-stat{flex:1;min-width:120px;background:#fff;border:var(--border);border-radius:var(--radius-lg);padding:12px 14px;box-shadow:var(--shadow-card)}
+.vnd-stat .vs-n{font-size:21px;font-weight:800;color:var(--gray-900);line-height:1}
+.vnd-stat .vs-l{font-size:11.5px;color:var(--gray-500);margin-top:4px;font-weight:600}
+.vnd-stat.warn .vs-n{color:var(--amber-800)}
+.vnd-stat.bad .vs-n{color:var(--red-600)}
+.vnd-tablewrap{background:#fff;border:var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-card);overflow:hidden}
+.vnd-table{width:100%;border-collapse:collapse;font-size:13px}
+.vnd-table th{background:var(--gray-50);text-align:left;font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--gray-500);padding:11px 14px;border-bottom:var(--border)}
+.vnd-table td{padding:12px 14px;border-bottom:1px solid var(--gray-100);vertical-align:top}
+.vnd-table tr:last-child td{border-bottom:none}
+.vnd-table tbody tr{transition:background .12s}
+.vnd-table tbody tr:hover{background:var(--gray-50)}
+.vnd-biz{font-weight:700;color:var(--gray-900)}
+.vnd-svc{font-size:12px;color:var(--gray-500);margin-top:2px}
+.vnd-contact-line{font-size:12.5px;color:var(--gray-600);display:flex;align-items:center;gap:5px;margin-top:2px}
+.vnd-contact-line:first-child{margin-top:0}
+.vnd-contact-line a{color:var(--blue-600);text-decoration:none}
+.vnd-contact-line a:hover{text-decoration:underline}
+.vnd-contact-line i{font-size:13px;color:var(--gray-400);flex-shrink:0}
+.vnd-pill{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap}
+.vnd-pill.ok{background:var(--green-pop-bg);color:var(--green-pop-deep)}
+.vnd-pill.soon{background:#FAEEDA;color:var(--amber-800)}
+.vnd-pill.bad{background:#FCEBEB;color:var(--red-600)}
+.vnd-pill.none{background:var(--gray-100);color:var(--gray-500)}
+.vnd-pill.info{background:var(--blue-50);color:var(--blue-600)}
+.vnd-pill i{font-size:13px}
+.vnd-coi-exp{font-size:11.5px;color:var(--gray-500);margin-top:4px}
+.vnd-coi-file{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;color:var(--blue-600);margin-top:5px;cursor:pointer;background:none;border:none;font-family:inherit;padding:0}
+.vnd-coi-file:hover{text-decoration:underline}
+.vnd-status{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:var(--gray-700)}
+.vnd-status .dot{width:7px;height:7px;border-radius:50%;background:var(--green-pop)}
+.vnd-status.off{color:var(--gray-400)}
+.vnd-status.off .dot{background:var(--gray-400)}
+.vnd-act{display:flex;gap:6px;justify-content:flex-end}
+.vnd-iconbtn{width:31px;height:31px;border-radius:8px;border:1px solid var(--gray-200);background:#fff;color:var(--gray-500);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:15px;transition:all .15s}
+.vnd-iconbtn:hover{border-color:var(--blue-400);color:var(--blue-600)}
+.vnd-iconbtn.del:hover{border-color:var(--red-600);color:var(--red-600);background:#FCEBEB}
+.vnd-empty{background:#fff;border:1px dashed var(--gray-200);border-radius:var(--radius-lg);padding:48px 28px;text-align:center;box-shadow:var(--shadow)}
+.vnd-empty .ve-ic{width:54px;height:54px;border-radius:14px;background:var(--blue-50);color:var(--blue-600);display:flex;align-items:center;justify-content:center;font-size:27px;margin:0 auto 14px}
+.vnd-empty h3{font-size:15px;color:var(--gray-800);font-weight:700;margin-bottom:6px}
+.vnd-empty p{font-size:13px;color:var(--gray-500);max-width:430px;margin:0 auto 16px;line-height:1.5}
+.vnd-filepick{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.vnd-filebtn{display:inline-flex;align-items:center;gap:6px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:8px;padding:8px 13px;font-size:12.5px;font-weight:600;color:var(--gray-600);cursor:pointer;font-family:inherit}
+.vnd-filebtn:hover{border-color:var(--blue-400);color:var(--blue-600)}
+.vnd-fileinfo{font-size:12.5px;color:var(--gray-700);display:inline-flex;align-items:center;gap:6px}
+.vnd-fileinfo .vf-x{border:none;background:none;color:var(--red-600);cursor:pointer;font-size:15px;padding:0 2px;display:inline-flex}
+@media(max-width:760px){
+  .vnd-table thead{display:none}
+  .vnd-table,.vnd-table tbody,.vnd-table tr,.vnd-table td{display:block;width:100%}
+  .vnd-table tr{border-bottom:7px solid var(--gray-100);padding:6px 0}
+  .vnd-table td{border:none;padding:7px 14px}
+  .vnd-act{justify-content:flex-start;padding-top:2px}
+}
 </style>
 </head>
 <body>
@@ -1830,6 +1895,7 @@ select.rec-in{appearance:auto;cursor:pointer}
       <div class="nav-item" onclick="nav('benefits',this)"><i class="ti ti-heart-handshake"></i>Benefits Eligibility</div>
       <div class="nav-item" onclick="nav('timesheet',this)"><i class="ti ti-clock-search"></i>Timesheet Assistant</div>
       <div class="nav-item" onclick="nav('giftcards',this)"><i class="ti ti-gift"></i>Birthday &amp; Gift Cards</div>
+      <div class="nav-item" onclick="nav('vendors',this)"><i class="ti ti-building-store"></i>Approved Vendors</div>
     </div>
 
     <div class="nav-group">
@@ -1937,6 +2003,19 @@ select.rec-in{appearance:auto;cursor:pointer}
         </div>
         <div class="pm-body" id="bm-body"></div>
         <div class="pm-foot" id="bm-foot"></div>
+      </div>
+    </div>
+
+    <!-- Approved vendor add/edit modal -->
+    <div class="pto-modal" id="vnd-modal" onclick="if(event.target===this)vndCloseModal()">
+      <div class="pm-card">
+        <div class="pm-head">
+          <span class="pm-ic"><i class="ti ti-building-store"></i></span>
+          <div><h3 id="vnd-m-title">Add vendor</h3><div class="pm-sub">Approved vendor &amp; COI record</div></div>
+          <button class="pm-close" aria-label="Close" onclick="vndCloseModal()"><i class="ti ti-x"></i></button>
+        </div>
+        <div class="pm-body" id="vnd-m-body"></div>
+        <div class="pm-foot" id="vnd-m-foot"></div>
       </div>
     </div>
 
@@ -2484,6 +2563,27 @@ select.rec-in{appearance:auto;cursor:pointer}
         <div id="gc-body"></div>
       </div>
 
+      <!-- APPROVED VENDORS -->
+      <div class="screen" id="screen-vendors">
+        <div class="screen-eyebrow">Compliance</div>
+        <div class="screen-title">Approved Vendors</div>
+        <p class="screen-lede">Our approved vendors and service providers, with their certificate of insurance (COI) on file. Each COI is reviewed and renewed annually — the list flags any that are expiring soon or already expired so coverage never lapses unnoticed.</p>
+
+        <div class="vnd-toolbar">
+          <div class="vnd-search">
+            <i class="ti ti-search"></i>
+            <input id="vnd-search" type="text" autocomplete="off" placeholder="Search vendors…" oninput="vndRender()">
+            <button class="vnd-search-clear" onclick="var s=document.getElementById('vnd-search');s.value='';vndRender();s.focus()" aria-label="Clear search">&times;</button>
+          </div>
+          <button class="vnd-ghost" id="vnd-export" onclick="vndExportCsv()" style="display:none"><i class="ti ti-file-spreadsheet"></i> Export CSV</button>
+          <button class="rec-add" id="vnd-add-btn" onclick="vndOpenModal()"><i class="ti ti-plus"></i> Add vendor</button>
+          <span class="tr-readonly-note" id="vnd-readonly" style="display:none"><i class="ti ti-eye"></i> View only · ask HR to edit</span>
+        </div>
+
+        <div class="vnd-summary" id="vnd-summary"></div>
+        <div id="vnd-body"></div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -2646,7 +2746,8 @@ const PERM_CAPS = [
   {id:'editRecruiting', label:'Edit recruiting logs & rejections'},
   {id:'editPto', label:'Edit PTO roster & balances'},
   {id:'editBenefits', label:'Edit benefits eligibility tracker'},
-  {id:'editWC', label:'Edit workers-comp claims & near misses'}
+  {id:'editWC', label:'Edit workers-comp claims & near misses'},
+  {id:'editVendors', label:'Add & edit approved vendors'}
 ];
 // Seed accounts — always available so they exist on a fresh device.
 const SEED_USERS = [
@@ -2655,10 +2756,10 @@ const SEED_USERS = [
     role:'admin', access:{}, caps:{} },
   { id:'u_anahi', name:'Anahi Torres', email:'anahi@wsdisplay.com',
     passHash:'0c9dbda57c1c3d9f4c5ff7ad78af8751337e6d4a4f0e8a3b4e2fbc68e402176e',
-    role:'member', access:{yearly:true,turnover:true,recruiting:true,overtime:true,workerscomp:true,pto:true}, caps:{editTasks:true,editRecruiting:true,editPto:true,editBenefits:true,editWC:true} },
+    role:'member', access:{yearly:true,turnover:true,recruiting:true,overtime:true,workerscomp:true,pto:true}, caps:{editTasks:true,editRecruiting:true,editPto:true,editBenefits:true,editWC:true,editVendors:true} },
   { id:'u_steph', name:'Stephanie Bryan', email:'stephanie.b@wsdisplay.com',
     passHash:'0c9dbda57c1c3d9f4c5ff7ad78af8751337e6d4a4f0e8a3b4e2fbc68e402176e',
-    role:'member', access:{yearly:true,turnover:true,recruiting:true,overtime:true,workerscomp:true,pto:true}, caps:{editTasks:true,editRecruiting:true,editPto:true,editBenefits:true,editWC:true} }
+    role:'member', access:{yearly:true,turnover:true,recruiting:true,overtime:true,workerscomp:true,pto:true}, caps:{editTasks:true,editRecruiting:true,editPto:true,editBenefits:true,editWC:true,editVendors:true} }
 ];
 const ADMIN_SEED = SEED_USERS[0];
 let CURRENT = null;
@@ -2723,6 +2824,7 @@ function can(key){
   if(key==='tasks') return true; // every user has a My Tasks view
   if(key==='giftcards') return true; // whole HR team needs gift card / birthday visibility
   if(key==='benefits') return true; // whole HR team needs benefits-eligibility visibility
+  if(key==='vendors') return true; // whole HR team can view the approved-vendor list
   if(PERM_CAPS.some(c=>c.id===key)) return !!(CURRENT.caps && CURRENT.caps[key]);
   return !!(CURRENT.access && CURRENT.access[key]); // section
 }
@@ -2826,7 +2928,7 @@ async function doLogout(){
 
 /* ══════════════ NAV ══════════════ */
 const pageTitles = {
-  dashboard:'Dashboard', yearly:'Yearly Tasks', turnover:'Turnover Rates', recruiting:'Recruiting', overtime:'Overtime by Department', workerscomp:"Workers' Comp", pto:'PTO Tracker', benefits:'Benefits Eligibility', timesheet:'Timesheet Assistant', tasks:'My Tasks', giftcards:'Birthday & Gift Cards', settings:'Settings'
+  dashboard:'Dashboard', yearly:'Yearly Tasks', turnover:'Turnover Rates', recruiting:'Recruiting', overtime:'Overtime by Department', workerscomp:"Workers' Comp", pto:'PTO Tracker', benefits:'Benefits Eligibility', timesheet:'Timesheet Assistant', tasks:'My Tasks', giftcards:'Birthday & Gift Cards', vendors:'Approved Vendors', settings:'Settings'
 };
 function nav(id, el){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -2845,6 +2947,7 @@ function nav(id, el){
   if(id==='benefits' && typeof benRender==='function') benRender();
   if(id==='timesheet' && typeof tsRender==='function') tsRender();
   if(id==='giftcards' && typeof gcRender==='function') gcRender();
+  if(id==='vendors' && typeof vndRender==='function') vndRender();
   if(id==='tasks' && typeof tasksRender==='function'){ tasksRender(); if(typeof tkConfigured==='function' && tkConfigured()) tkPull(false); }
   if(id==='settings' && typeof renderSettings==='function') renderSettings();
   window.scrollTo(0,0);
@@ -3710,6 +3813,7 @@ function notifDismissVisible(){
   if(typeof tkNotifCollect==='function'){ tkNotifCollect(notifMode).forEach(it=>s.add(it.dkey)); }
   if(typeof huNotifCollect==='function'){ huNotifCollect().forEach(it=>s.add(it.dkey)); }
   if(typeof holNotifCollect==='function'){ holNotifCollect().forEach(it=>s.add(it.dkey)); }
+  if(typeof oshaNotifCollect==='function'){ oshaNotifCollect().forEach(it=>s.add(it.dkey)); }
   if(typeof gcNotifCollect==='function'){ gcNotifCollect().forEach(it=>s.add(it.dkey)); }
   try{ localStorage.setItem(NOTIF_DISMISS_KEY, JSON.stringify([...s])); }catch(e){}
   notifSyncAfterDismiss();
@@ -3750,7 +3854,8 @@ function renderNotifications(){
   const holItems = (typeof holNotifCollect==='function') ? holNotifCollect() : [];
   const gcItems = (typeof gcNotifCollect==='function') ? gcNotifCollect() : [];
   const benItems = (typeof benNotifCollect==='function') ? benNotifCollect() : [];
-  const total = items.length + celebs.length + tkItems.length + huItems.length + holItems.length + gcItems.length + benItems.length;
+  const oshaItems = (typeof oshaNotifCollect==='function') ? oshaNotifCollect() : [];
+  const total = items.length + celebs.length + tkItems.length + huItems.length + holItems.length + gcItems.length + benItems.length + oshaItems.length;
   const cnt = document.getElementById('dn-count'); if(cnt) cnt.textContent = total;
   const hint = document.getElementById('nt-hint');
   if(hint) hint.textContent = total ? `${total} update${total===1?'':'s'} · tap to view` : "You're all caught up.";
@@ -3769,7 +3874,8 @@ function renderNotifModal(){
   const holItems = (typeof holNotifCollect==='function') ? holNotifCollect() : [];
   const gcItems = (typeof gcNotifCollect==='function') ? gcNotifCollect() : [];
   const benItems = (typeof benNotifCollect==='function') ? benNotifCollect() : [];
-  const total = items.length+celebs.length+tkItems.length+huItems.length+holItems.length+gcItems.length+benItems.length;
+  const oshaItems = (typeof oshaNotifCollect==='function') ? oshaNotifCollect() : [];
+  const total = items.length+celebs.length+tkItems.length+huItems.length+holItems.length+gcItems.length+benItems.length+oshaItems.length;
   if(sub) sub.textContent = total+' update'+(total===1?'':'s')+' · '+(notifMode==='mine'?'your tasks & celebrations':'all tasks & celebrations');
   if(!total){ body.innerHTML='<div class="nm-empty"><i class="ti ti-circle-check"></i>You\u2019re all caught up — no new updates.</div>'; return; }
   const clearBar = `<div class="nm-clear"><button onclick="notifDismissVisible()"><i class="ti ti-checks"></i> Clear all</button></div>`;
@@ -3815,6 +3921,21 @@ function renderNotifModal(){
       </div>
     </div>`;
     }).join('');
+  }
+  // 📌 OSHA Form 300A posting reminders (post Feb 1, take down after Apr 30)
+  if(oshaItems.length){
+    html += `<div class="nm-group"><span class="nm-grp-emoji">\uD83D\uDCCC</span> OSHA Form 300A</div>`;
+    html += oshaItems.map(it=>`
+    <div class="nm-item">
+      <span class="nm-ic2"><i class="ti ${it.kind==='post'?'ti-pin':'ti-clipboard-x'}"></i></span>
+      <div class="nm-info">
+        <div class="nm-name">${ytEsc(it.title)}</div>
+        <div class="nm-meta">${ytEsc(it.meta)}</div>
+      </div>
+      <div class="nm-actions">
+        <button class="nm-del" title="Dismiss" aria-label="Dismiss" onclick="notifDismiss('${it.dkey}')"><i class="ti ti-x"></i></button>
+      </div>
+    </div>`).join('');
   }
   // 📣 HR updates (posted in Settings, targeted to the Hub)
   if(huItems.length){
@@ -3915,6 +4036,291 @@ function ytOpenTask(year){
   const navEl=document.querySelector('.nav-item[onclick*="yearly"]');
   nav('yearly', navEl);
   if(year && year!==ytYear) ytSetYear(year);
+}
+
+/* ══════════════ APPROVED VENDORS ══════════════
+   Approved vendor / service-provider list with COI tracking. Stored under
+   hrhub_vendors (rides the universal cloud sync); each COI document is kept in
+   its own hrhub_vendor_coi_<id> blob so the list stays light. Viewable by the
+   whole team; editing is gated behind admin or the "editVendors" capability.
+   COI status is derived from the expiration date, surfacing annual renewals. */
+const VND_KEY = 'hrhub_vendors';
+const VND_SOON_DAYS = 45;            // "expiring soon" lead window before the COI expiration
+/* Per-vendor document blobs (COI, W-9) each live in their own hrhub_* key so the
+   main list stays light. nameKey/typeKey are the record fields that flag presence. */
+const VND_FILE_CFG = {
+  coi: { prefix:'hrhub_vendor_coi_', nameKey:'coiFileName', typeKey:'coiFileType', label:'COI' },
+  w9:  { prefix:'hrhub_vendor_w9_',  nameKey:'w9FileName',  typeKey:'w9FileType',  label:'W-9' }
+};
+let vndEditId = null;
+let vndPending = { coi:undefined, w9:undefined };   // per-doc: undefined = no change · null = remove · {name,type,dataUrl} = new upload
+
+function vndCanEdit(){ return !!CURRENT && (isAdmin() || can('editVendors')); }
+function vndLoad(){ let a=[]; try{ a=JSON.parse(localStorage.getItem(VND_KEY)||'[]'); }catch(e){ a=[]; } return Array.isArray(a)?a:[]; }
+function vndStore(arr){ try{ localStorage.setItem(VND_KEY, JSON.stringify(arr)); }catch(e){ alert('Couldn\u2019t save — the browser storage may be full.'); } }
+function vndBytes(n){ if(n<1024) return n+' B'; if(n<1048576) return Math.round(n/1024)+' KB'; return (n/1048576).toFixed(1)+' MB'; }
+function vndAddDaysISO(iso,n){ const d=ptoParse(iso); if(!d) return iso; return ptoISO(ptoAddDays(d,n)); }
+
+/* COI status from on-file flag + expiration date */
+function vndCoiStatus(v){
+  const hasCoi = !!(v.coiOnFile || v.coiFileName || v.coiExp);
+  if(!hasCoi) return {key:'none', cls:'none', label:'No COI'};
+  if(v.coiExp){
+    const today = huTodayISO();
+    if(v.coiExp < today) return {key:'expired', cls:'bad', label:'Expired'};
+    if(v.coiExp <= vndAddDaysISO(today, VND_SOON_DAYS)) return {key:'soon', cls:'soon', label:'Expiring soon'};
+    return {key:'valid', cls:'ok', label:'Valid'};
+  }
+  return {key:'onfile', cls:'info', label:'On file'};
+}
+
+function vndRender(){
+  const host=document.getElementById('vnd-body'); if(!host) return;
+  const ed=vndCanEdit();
+  const addBtn=document.getElementById('vnd-add-btn'); if(addBtn) addBtn.style.display = ed?'':'none';
+  const ro=document.getElementById('vnd-readonly'); if(ro) ro.style.display = ed?'none':'';
+  const all=vndLoad();
+
+  // summary cards
+  let nOk=0,nSoon=0,nBad=0;
+  all.forEach(v=>{ const k=vndCoiStatus(v).key; if(k==='valid'||k==='onfile') nOk++; else if(k==='soon') nSoon++; else nBad++; });
+  const sum=document.getElementById('vnd-summary');
+  if(sum) sum.innerHTML = all.length ? (
+    `<div class="vnd-stat"><div class="vs-n">${all.length}</div><div class="vs-l">Approved vendors</div></div>`+
+    `<div class="vnd-stat"><div class="vs-n">${nOk}</div><div class="vs-l">COI valid / on file</div></div>`+
+    `<div class="vnd-stat warn"><div class="vs-n">${nSoon}</div><div class="vs-l">Expiring soon (\u2264${VND_SOON_DAYS}d)</div></div>`+
+    `<div class="vnd-stat bad"><div class="vs-n">${nBad}</div><div class="vs-l">Expired / missing</div></div>`
+  ) : '';
+  const exp=document.getElementById('vnd-export'); if(exp) exp.style.display = all.length?'':'none';
+
+  // empty state
+  if(!all.length){
+    host.innerHTML = `<div class="vnd-empty"><div class="ve-ic"><i class="ti ti-building-store"></i></div>
+      <h3>No approved vendors yet</h3>
+      <p>Add your approved vendors and service providers here, with their certificate of insurance on file. The list tracks COI expirations and flags anything due for its annual renewal.</p>
+      ${ed?`<button class="rec-add" onclick="vndOpenModal()"><i class="ti ti-plus"></i> Add your first vendor</button>`:`<span class="tr-readonly-note"><i class="ti ti-eye"></i> View only \u00b7 ask HR to add vendors</span>`}</div>`;
+    return;
+  }
+
+  // search + sort (most-urgent COI first, then name)
+  const q=((document.getElementById('vnd-search')||{}).value||'').trim().toLowerCase();
+  let list=all.slice();
+  if(q) list=list.filter(v=>[v.name,v.service,v.contactName,v.email,v.phone].some(x=>(x||'').toLowerCase().indexOf(q)!==-1));
+  const rank={expired:0,soon:1,none:2,onfile:3,valid:4};
+  list.sort((a,b)=>{ const ra=rank[vndCoiStatus(a).key], rb=rank[vndCoiStatus(b).key];
+    if((ra==null?9:ra)!==(rb==null?9:rb)) return (ra==null?9:ra)-(rb==null?9:rb);
+    return (a.name||'').localeCompare(b.name||''); });
+
+  if(!list.length){ host.innerHTML = `<div class="vnd-empty"><div class="ve-ic"><i class="ti ti-search"></i></div><h3>No matches</h3><p>No vendors match \u201c${ytEsc(q)}\u201d.</p></div>`; return; }
+
+  const rows=list.map(v=>{
+    const s=vndCoiStatus(v);
+    const contact = [
+      v.contactName?`<div class="vnd-contact-line"><i class="ti ti-user"></i> ${ytEsc(v.contactName)}</div>`:'',
+      v.email?`<div class="vnd-contact-line"><i class="ti ti-mail"></i> <a href="mailto:${ytEsc(v.email)}">${ytEsc(v.email)}</a></div>`:'',
+      v.phone?`<div class="vnd-contact-line"><i class="ti ti-phone"></i> <a href="tel:${ytEsc(v.phone)}">${ytEsc(v.phone)}</a></div>`:''
+    ].join('') || '<span style="color:var(--gray-400)">\u2014</span>';
+    const ic = s.key==='expired'?'ti-alert-triangle':s.key==='soon'?'ti-clock-exclamation':s.key==='none'?'ti-file-off':'ti-shield-check';
+    const coi = [`<span class="vnd-pill ${s.cls}"><i class="ti ${ic}"></i> ${s.label}</span>`];
+    if(v.coiCarrier) coi.push(`<div class="vnd-coi-exp">${ytEsc(v.coiCarrier)}</div>`);
+    if(v.coiExp) coi.push(`<div class="vnd-coi-exp">${s.key==='expired'?'Expired':'Expires'} ${ytEsc(huFmtDate(v.coiExp))}</div>`);
+    if(v.coiFileName) coi.push(`<button class="vnd-coi-file" onclick="vndViewFile('${v.id}','coi')"><i class="ti ti-paperclip"></i> View COI</button>`);
+    const statusCell = `<div class="vnd-status ${v.status==='inactive'?'off':''}"><span class="dot"></span> ${v.status==='inactive'?'Inactive':v.status==='pending'?'Pending':'Active'}</div>`
+      + (v.w9?`<div class="vnd-coi-exp"><i class="ti ti-check" style="color:var(--green-600)"></i> W-9 on file</div>`:'')
+      + (v.w9FileName?`<button class="vnd-coi-file" onclick="vndViewFile('${v.id}','w9')"><i class="ti ti-paperclip"></i> View W-9</button>`:'');
+    const actions = ed ? `<div class="vnd-act">
+        <button class="vnd-iconbtn" title="Edit" onclick="vndOpenModal('${v.id}')"><i class="ti ti-edit"></i></button>
+        <button class="vnd-iconbtn del" title="Delete" onclick="vndDelete('${v.id}')"><i class="ti ti-trash"></i></button>
+      </div>` : '';
+    return `<tr>
+      <td><div class="vnd-biz">${ytEsc(v.name)}</div>${v.service?`<div class="vnd-svc">${ytEsc(v.service)}</div>`:''}${v.account?`<div class="vnd-svc">Acct #${ytEsc(v.account)}</div>`:''}</td>
+      <td>${contact}</td>
+      <td>${coi.join('')}</td>
+      <td>${statusCell}</td>
+      <td>${actions}</td>
+    </tr>`;
+  }).join('');
+
+  host.innerHTML = `<div class="vnd-tablewrap"><table class="vnd-table">
+    <thead><tr><th>Vendor</th><th>Contact</th><th>Insurance (COI)</th><th>Status</th><th></th></tr></thead>
+    <tbody>${rows}</tbody></table></div>`;
+}
+
+function vndModalBody(v){
+  const st=v.status||'active';
+  const opt=(val,label)=>`<option value="${val}" ${st===val?'selected':''}>${label}</option>`;
+  return `<div class="pm-grid">
+    <div class="pm-section">Vendor</div>
+    <div class="sf-field full"><label>Business name *</label><input id="vnd-name" value="${ytEsc(v.name||'')}" placeholder="e.g. Acme Janitorial Services"></div>
+    <div class="sf-field"><label>Type of service</label><input id="vnd-service" value="${ytEsc(v.service||'')}" placeholder="e.g. Janitorial \u00b7 Electrical \u00b7 Staffing"></div>
+    <div class="sf-field"><label>Status</label><select id="vnd-status">${opt('active','Active')}${opt('inactive','Inactive')}${opt('pending','Pending')}</select></div>
+    <div class="sf-field"><label>Account # <span class="pm-hint" style="display:inline">(optional)</span></label><input id="vnd-account" value="${ytEsc(v.account||'')}" placeholder="Optional"></div>
+    <div class="sf-field"><label>Approved on <span class="pm-hint" style="display:inline">(optional)</span></label><input type="date" id="vnd-approved" value="${ytEsc(v.approvedOn||'')}"></div>
+
+    <div class="pm-section">Contact</div>
+    <div class="sf-field"><label>Contact name</label><input id="vnd-contact" value="${ytEsc(v.contactName||'')}" placeholder="Primary contact"></div>
+    <div class="sf-field"><label>Phone</label><input id="vnd-phone" value="${ytEsc(v.phone||'')}" placeholder="(555) 555-5555"></div>
+    <div class="sf-field"><label>Email</label><input id="vnd-email" type="email" value="${ytEsc(v.email||'')}" placeholder="name@vendor.com"></div>
+    <div class="sf-field"><label>Address <span class="pm-hint" style="display:inline">(optional)</span></label><input id="vnd-address" value="${ytEsc(v.address||'')}" placeholder="Optional"></div>
+
+    <div class="pm-section">Certificate of insurance (COI)</div>
+    <div class="sf-field full"><label class="pm-check"><input type="checkbox" id="vnd-coi-onfile" ${v.coiOnFile?'checked':''}> COI on file</label></div>
+    <div class="sf-field"><label>Insurance carrier</label><input id="vnd-coi-carrier" value="${ytEsc(v.coiCarrier||'')}" placeholder="e.g. The Hartford"></div>
+    <div class="sf-field"><label>Policy # <span class="pm-hint" style="display:inline">(optional)</span></label><input id="vnd-coi-policy" value="${ytEsc(v.coiPolicy||'')}" placeholder="Optional"></div>
+    <div class="sf-field"><label>COI effective date</label><input type="date" id="vnd-coi-eff" value="${ytEsc(v.coiEff||'')}"></div>
+    <div class="sf-field"><label>COI expiration date</label><input type="date" id="vnd-coi-exp" value="${ytEsc(v.coiExp||'')}"><div class="pm-hint">Renews annually \u2014 flagged ${VND_SOON_DAYS} days before this date.</div></div>
+    <div class="sf-field full"><label>COI document</label><div class="vnd-filepick" id="vnd-file-row-coi"></div><div class="pm-hint">Stored in the Hub and synced across devices. Keep files under 2.5 MB \u2014 a single-page PDF is ideal.</div></div>
+
+    <div class="pm-section">Other</div>
+    <div class="sf-field full"><label class="pm-check"><input type="checkbox" id="vnd-w9" ${v.w9?'checked':''}> W-9 on file</label></div>
+    <div class="sf-field full"><label>W-9 document</label><div class="vnd-filepick" id="vnd-file-row-w9"></div><div class="pm-hint">Attach the vendor\u2019s completed W-9 (PDF or image). Stored in the Hub and synced.</div></div>
+    <div class="sf-field full"><label>Notes</label><textarea id="vnd-notes" placeholder="Optional \u2014 scope, terms, anything to remember">${ytEsc(v.notes||'')}</textarea></div>
+  </div>`;
+}
+
+function vndOpenModal(id){
+  if(!vndCanEdit()) return;
+  vndEditId = id||null;
+  vndPending = { coi:undefined, w9:undefined };
+  const v = id ? (vndLoad().find(x=>x.id===id)||{}) : {};
+  document.getElementById('vnd-m-title').textContent = id ? 'Edit vendor' : 'Add vendor';
+  document.getElementById('vnd-m-body').innerHTML = vndModalBody(v);
+  document.getElementById('vnd-m-foot').innerHTML =
+    (id?`<button class="pm-del" onclick="vndDelete()"><i class="ti ti-trash"></i> Delete</button>`:'')
+    + `<button class="pm-cancel" onclick="vndCloseModal()">Cancel</button>`
+    + `<button class="rec-add" onclick="vndSave()"><i class="ti ti-check"></i> ${id?'Save changes':'Add vendor'}</button>`;
+  vndRenderFileRow('coi');
+  vndRenderFileRow('w9');
+  document.getElementById('vnd-modal').classList.add('open');
+  setTimeout(()=>{ const n=document.getElementById('vnd-name'); if(n) n.focus(); }, 50);
+}
+function vndCloseModal(){ const m=document.getElementById('vnd-modal'); if(m) m.classList.remove('open'); vndEditId=null; vndPending={coi:undefined,w9:undefined}; }
+
+/* ── Document file rows inside the modal (COI / W-9), driven by VND_FILE_CFG ── */
+function vndRenderFileRow(kind){
+  const cfg=VND_FILE_CFG[kind]; if(!cfg) return;
+  const host=document.getElementById('vnd-file-row-'+kind); if(!host) return;
+  const rec = vndEditId ? (vndLoad().find(x=>x.id===vndEditId)||null) : null;
+  const pend = vndPending[kind];
+  const isNew = !!(pend && pend.name);
+  const removed = (pend===null);
+  const existingName = isNew ? pend.name : (!removed && rec && rec[cfg.nameKey]) ? rec[cfg.nameKey] : '';
+  const hasStored = !isNew && !removed && !!(rec && rec[cfg.nameKey]);
+  const inputId='vnd-file-input-'+kind;
+  let html = '<input type="file" id="'+inputId+'" accept="application/pdf,image/*" style="display:none" onchange="vndPickFile(this,\''+kind+'\')">';
+  if(existingName){
+    html += `<span class="vnd-fileinfo"><i class="ti ti-paperclip"></i> ${ytEsc(existingName)}${isNew?' <span style="color:var(--green-600);font-weight:600">(new)</span>':''}`
+         +  ` <button type="button" class="vf-x" title="Remove" onclick="vndClearFile('${kind}')"><i class="ti ti-x"></i></button></span>`;
+    if(hasStored) html += `<button type="button" class="vnd-filebtn" onclick="vndViewFile('${vndEditId}','${kind}')"><i class="ti ti-eye"></i> View</button>`;
+    html += `<button type="button" class="vnd-filebtn" onclick="document.getElementById('${inputId}').click()"><i class="ti ti-refresh"></i> Replace</button>`;
+  } else {
+    html += `<button type="button" class="vnd-filebtn" onclick="document.getElementById('${inputId}').click()"><i class="ti ti-paperclip"></i> Attach ${cfg.label} (PDF or image)</button>`;
+  }
+  host.innerHTML = html;
+}
+function vndPickFile(input, kind){
+  if(!VND_FILE_CFG[kind]) return;
+  const f = input.files && input.files[0]; if(!f) return;
+  if(f.size > 2.5*1024*1024){
+    alert('That file is '+vndBytes(f.size)+'. Please keep files under 2.5 MB \u2014 most single-page documents are well under that. You can compress the PDF, or store larger files in the shared drive.');
+    input.value=''; return;
+  }
+  const r=new FileReader();
+  r.onload=function(){ vndPending[kind]={name:f.name, type:f.type||'application/octet-stream', dataUrl:String(r.result)}; vndRenderFileRow(kind); };
+  r.onerror=function(){ alert('Could not read that file.'); };
+  r.readAsDataURL(f);
+}
+function vndClearFile(kind){ if(VND_FILE_CFG[kind]){ vndPending[kind]=null; vndRenderFileRow(kind); } }
+function vndViewFile(id, kind){
+  const cfg=VND_FILE_CFG[kind]; if(!cfg) return;
+  let dataUrl=null; try{ dataUrl=localStorage.getItem(cfg.prefix+id); }catch(e){}
+  if(!dataUrl){ alert('No '+cfg.label+' file is stored for this vendor.'); return; }
+  try{
+    const comma=dataUrl.indexOf(','); const meta=dataUrl.slice(0,comma); const b64=dataUrl.slice(comma+1);
+    const mime=(meta.match(/data:([^;]+)/)||[])[1]||'application/octet-stream';
+    const bin=atob(b64); const arr=new Uint8Array(bin.length);
+    for(let i=0;i<bin.length;i++) arr[i]=bin.charCodeAt(i);
+    const url=URL.createObjectURL(new Blob([arr],{type:mime}));
+    window.open(url,'_blank','noopener');
+    setTimeout(()=>{ try{ URL.revokeObjectURL(url); }catch(e){} }, 60000);
+  }catch(e){ alert('Could not open the '+cfg.label+' file.'); }
+}
+
+function vndSave(){
+  if(!vndCanEdit()) return;
+  const name=(document.getElementById('vnd-name').value||'').trim();
+  if(!name){ alert('Enter the business name.'); document.getElementById('vnd-name').focus(); return; }
+  const arr=vndLoad();
+  let v = vndEditId ? arr.find(x=>x.id===vndEditId) : null;
+  if(!v){ v={ id:'v_'+Date.now().toString(36)+Math.random().toString(36).slice(2,7), ts:Date.now() }; arr.push(v); }
+  v.name=name;
+  v.service=(document.getElementById('vnd-service').value||'').trim();
+  v.status=document.getElementById('vnd-status').value||'active';
+  v.account=(document.getElementById('vnd-account').value||'').trim();
+  v.approvedOn=document.getElementById('vnd-approved').value||'';
+  v.contactName=(document.getElementById('vnd-contact').value||'').trim();
+  v.phone=(document.getElementById('vnd-phone').value||'').trim();
+  v.email=(document.getElementById('vnd-email').value||'').trim();
+  v.address=(document.getElementById('vnd-address').value||'').trim();
+  v.coiOnFile=document.getElementById('vnd-coi-onfile').checked;
+  v.coiCarrier=(document.getElementById('vnd-coi-carrier').value||'').trim();
+  v.coiPolicy=(document.getElementById('vnd-coi-policy').value||'').trim();
+  v.coiEff=document.getElementById('vnd-coi-eff').value||'';
+  v.coiExp=document.getElementById('vnd-coi-exp').value||'';
+  v.w9=document.getElementById('vnd-w9').checked;
+  v.notes=(document.getElementById('vnd-notes').value||'').trim();
+  v.updated=Date.now();
+  // document changes (COI + W-9)
+  ['coi','w9'].forEach(kind=>{
+    const cfg=VND_FILE_CFG[kind]; const pend=vndPending[kind];
+    if(pend===null){
+      try{ localStorage.removeItem(cfg.prefix+v.id); }catch(e){}
+      v[cfg.nameKey]=''; v[cfg.typeKey]='';
+    } else if(pend){
+      try{
+        localStorage.setItem(cfg.prefix+v.id, pend.dataUrl);
+        v[cfg.nameKey]=pend.name; v[cfg.typeKey]=pend.type;
+      }catch(e){
+        alert('Couldn\u2019t store the '+cfg.label+' file \u2014 the browser storage may be full. The vendor was saved without the attached file; you can keep the document in the shared drive instead.');
+        v[cfg.nameKey]=v[cfg.nameKey]||''; v[cfg.typeKey]=v[cfg.typeKey]||'';
+      }
+    }
+  });
+  if(v.coiFileName) v.coiOnFile=true;   // an attached file implies the doc is on file
+  if(v.w9FileName) v.w9=true;
+  vndStore(arr);
+  vndCloseModal();
+  vndRender();
+}
+
+function vndDelete(id){
+  if(!vndCanEdit()) return;
+  const target = id || vndEditId; if(!target) return;
+  const arr=vndLoad(); const v=arr.find(x=>x.id===target); if(!v) return;
+  if(!confirm('Delete \u201c'+(v.name||'this vendor')+'\u201d? This also removes its stored COI and W-9 files and can\u2019t be undone.')) return;
+  try{ localStorage.removeItem(VND_FILE_CFG.coi.prefix+target); }catch(e){}
+  try{ localStorage.removeItem(VND_FILE_CFG.w9.prefix+target); }catch(e){}
+  vndStore(arr.filter(x=>x.id!==target));
+  vndCloseModal();
+  vndRender();
+}
+
+function vndExportCsv(){
+  const all=vndLoad(); if(!all.length){ alert('No vendors to export yet.'); return; }
+  const cols=['Business name','Type of service','Contact','Email','Phone','Address','Status','COI on file','COI carrier','COI policy #','COI effective','COI expiration','COI status','COI file','W-9 on file','W-9 file','Approved on','Notes'];
+  const esc=s=>{ s=(s==null?'':String(s)); return /[",\n]/.test(s) ? '"'+s.replace(/"/g,'""')+'"' : s; };
+  const statusTxt=v=>v.status==='inactive'?'Inactive':v.status==='pending'?'Pending':'Active';
+  const lines=[cols.map(esc).join(',')];
+  all.forEach(v=>{
+    const s=vndCoiStatus(v);
+    lines.push([v.name,v.service,v.contactName,v.email,v.phone,v.address,statusTxt(v),
+      (v.coiOnFile?'Yes':'No'),v.coiCarrier,v.coiPolicy,v.coiEff,v.coiExp,s.label,
+      (v.coiFileName||''),(v.w9?'Yes':'No'),(v.w9FileName||''),v.approvedOn,v.notes].map(esc).join(','));
+  });
+  const url=URL.createObjectURL(new Blob(['\ufeff'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'}));
+  const a=document.createElement('a'); a.href=url; a.download='approved-vendors-'+huTodayISO()+'.csv';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>{ try{ URL.revokeObjectURL(url); }catch(e){} }, 2000);
 }
 
 /* ══════════════ SETTINGS (user management) ══════════════ */
@@ -7105,6 +7511,41 @@ function holNotifCollect(){
     out.push({name:h.name, date:hd, dateISO:ptoISO(hd), when:celebWhen(hd), dkey});
   }));
   out.sort((a,b)=> a.dateISO<b.dateISO?-1:(a.dateISO>b.dateISO?1:0));
+  return out;
+}
+/* ══════════════ OSHA FORM 300A REMINDERS (dashboard) ══════════════
+   Employers must post the Form 300A Annual Summary in a conspicuous spot
+   from Feb 1 through Apr 30 of the year following the records' year. Two
+   yearly reminders surface on the dashboard bell:
+     • "Post"   — appears a week before Feb 1, auto-clears on Feb 2
+     • "Remove" — appears a week before Apr 30, auto-clears on May 1
+   Either can be dismissed early by anyone; if not, it disappears on its
+   own. Keyed per calendar year, so a fresh reminder returns each cycle. */
+const OSHA_LEAD_DAYS = 7;
+function oshaNotifCollect(){
+  if(!CURRENT) return [];
+  const today = ptoParse(ptoTodayISO()); if(!today) return [];
+  const Y = today.getFullYear();
+  const dismissed = (typeof notifDismissedSet==='function') ? notifDismissedSet() : new Set();
+  const out = [];
+  // ── Post reminder: a week before Feb 1, gone on Feb 2 ──
+  const feb1 = new Date(Y,1,1);
+  if(today>=ptoAddDays(feb1,-OSHA_LEAD_DAYS) && today<=feb1){
+    const dkey='osha:post:'+Y;
+    if(!dismissed.has(dkey)) out.push({kind:'post', dkey,
+      title:'Post the OSHA Form 300A annual summary',
+      date:feb1, dateISO:ptoISO(feb1),
+      meta:'Post by '+celebWhen(feb1)+' · covers '+(Y-1)+' records · keep up through Apr 30'});
+  }
+  // ── Remove reminder: a week before Apr 30, gone on May 1 ──
+  const apr30 = new Date(Y,3,30);
+  if(today>=ptoAddDays(apr30,-OSHA_LEAD_DAYS) && today<=apr30){
+    const dkey='osha:remove:'+Y;
+    if(!dismissed.has(dkey)) out.push({kind:'remove', dkey,
+      title:'Take down the OSHA Form 300A summary',
+      date:apr30, dateISO:ptoISO(apr30),
+      meta:'Posting period ends '+celebWhen(apr30)+' · OK to remove May 1'});
+  }
   return out;
 }
 function celebCollect(){
