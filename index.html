@@ -3543,8 +3543,14 @@ function ooCellPct(cell){
 function ooParseScore(resp){
   if(!resp) throw new Error('empty');
   if(resp.status==='error'){ const e=resp.errors&&resp.errors[0]; throw new Error((e&&(e.detailed_message||e.message))||'sheet error'); }
+  const cols=(resp.table&&resp.table.cols)||[];
   const rows=(resp.table&&resp.table.rows)||[];
   const grid=rows.map(r=>(r&&r.c)||[]);
+  // gviz usually promotes the first text row into column LABELS (not data rows). If that
+  // captured our header, rebuild it as a header row so the scan below can find it.
+  const colHeader=cols.map(c=>(c&&c.label!=null&&c.label!=='')?{v:String(c.label)}:null);
+  const colHasHeader=colHeader.some(c=>{ const t=c?String(c.v).trim().toLowerCase():''; return t==='leadership member'||t==='department'||OO_MONTHS.indexOf(t)>=0; });
+  if(colHasHeader) grid.unshift(colHeader);
   // locate the header row (the one labelled "Leadership Member")
   let hr=-1, memberCol=-1, deptCol=-1, activeCol=-1, avgCol=-1, year=null;
   const monthCols={};
@@ -3601,27 +3607,27 @@ function ooFetchGviz(sheetName, done){
   const timer=setTimeout(()=>{ if(fin) return; fin=true; cleanup(); done(null,false); }, 12000);
   window[cb]=function(resp){ if(fin) return; fin=true; clearTimeout(timer); cleanup(); done(resp, !(resp&&resp.status==='error')); };
   script.onerror=function(){ if(fin) return; fin=true; clearTimeout(timer); cleanup(); done(null,false); };
-  let url='https://docs.google.com/spreadsheets/d/'+OO_SHEET_ID+'/gviz/tq?tqx=out:json;responseHandler:'+cb+'&headers=0';
+  let url='https://docs.google.com/spreadsheets/d/'+OO_SHEET_ID+'/gviz/tq?tqx=out:json;responseHandler:'+cb;
   if(sheetName) url+='&sheet='+encodeURIComponent(sheetName);
   script.src=url+'&_='+Date.now();   // cache-bust so sheet edits show
   document.head.appendChild(script);
 }
-function ooApply(resp){
-  try{ ooData=ooParseScore(resp); ooState='ok'; }
-  catch(e){ if(!ooData) ooState='error'; }
-  renderOneOnOneScore();
+function ooTryApply(resp){
+  try{ ooData=ooParseScore(resp); ooState='ok'; renderOneOnOneScore(); return true; }
+  catch(e){ return false; }
 }
 function ooLoadLive(force){
   if(ooState==='loading') return;
   if(!force && ooData && (Date.now()-ooData.loadedAt)<OO_TTL_MS){ renderOneOnOneScore(); return; }
   ooState='loading'; renderOneOnOneScore();
   const year=String(new Date().getFullYear());
-  // prefer the current-year tab; fall back to the first tab if that tab doesn't exist yet
+  // prefer the current-year tab; if it doesn't exist or doesn't parse, fall back to the first tab
   ooFetchGviz(year, (r1,ok1)=>{
-    if(ok1 && r1){ ooApply(r1); return; }
+    if(ok1 && r1 && ooTryApply(r1)) return;
     ooFetchGviz(null, (r2,ok2)=>{
-      if(ok2 && r2){ ooApply(r2); }
-      else { if(!ooData) ooState='error'; renderOneOnOneScore(); }
+      if(ok2 && r2 && ooTryApply(r2)) return;
+      if(!ooData) ooState='error';
+      renderOneOnOneScore();
     });
   });
 }
