@@ -1522,11 +1522,6 @@ select.rec-in{appearance:auto;cursor:pointer}
 .gc-rm-eyebrow{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--cyan-bright);margin-bottom:5px;display:flex;align-items:center;gap:7px}
 .gc-rm-title{font-size:18px;font-weight:800;letter-spacing:-.2px;margin-bottom:3px}
 .gc-rm-sub{font-size:12.5px;color:rgba(226,238,250,.8)}
-.gc-rm-actions{display:flex;gap:8px;flex-wrap:wrap}
-.gc-rm-btn{display:inline-flex;align-items:center;gap:7px;border:none;border-radius:20px;padding:9px 15px;font-size:12.5px;font-weight:700;font-family:inherit;cursor:pointer;transition:filter .15s,transform .05s}
-.gc-rm-btn.primary{background:var(--cyan-bright);color:#062033}
-.gc-rm-btn.ghost{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.22)}
-.gc-rm-btn:hover{filter:brightness(1.08)}.gc-rm-btn:active{transform:scale(.97)}
 .gc-rm-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:15px}
 .gc-rm-chip{display:inline-flex;align-items:center;gap:9px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:8px 12px;font-size:12.5px}
 .gc-rm-chip b{font-weight:700}
@@ -1591,8 +1586,6 @@ select.rec-in{appearance:auto;cursor:pointer}
 
 @media(max-width:640px){
   .gc-reminder{padding:16px}
-  .gc-rm-actions{width:100%}
-  .gc-rm-actions .gc-rm-btn{flex:1;justify-content:center}
 }
 
 /* inline-editable Type / Card # cells in the birthday table */
@@ -1608,6 +1601,142 @@ select.rec-in{appearance:auto;cursor:pointer}
 .gc-nm-loc{font-size:9.5px;font-weight:700;letter-spacing:.4px;padding:1px 7px;border-radius:20px;background:var(--gray-100);color:var(--gray-600)}
 .gc-nm-sent{font-size:9.5px;font-weight:700;letter-spacing:.3px;padding:1px 7px;border-radius:20px;background:var(--green-pop-bg);color:var(--green-pop-deep)}
 
+/* ══════════════ WORKERS' COMP ══════════════ */
+:root{--wc-red:#C0392B;--wc-red-d:#9B271B;--wc-red-soft:#FCEBEB;--wc-amber:#B4690E;--wc-amber-soft:#FAEEDA;--wc-green:#15924F;--wc-green-soft:#E6F4EC;--wc-slate:#3C4858}
+.stat-card.wc{background:linear-gradient(160deg,#FCEFEF 0%,#FFFFFF 66%);border-color:#F3DDDD}
+.stat-card.wc::before{background:linear-gradient(180deg,#E8635C,#C0392B)}
+.stat-card.wc .stat-eyebrow{color:#C0392B}
+.stat-badge.wc{background:linear-gradient(135deg,#E8635C,#C0392B)}
+.wc-dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.wc-dash-stat{background:var(--gray-50);border:1px solid #EEF2F6;border-radius:11px;padding:11px 12px}
+.wc-dash-stat .lab{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--gray-500);margin-bottom:4px}
+.wc-dash-stat .val{font-size:22px;font-weight:800;line-height:1;color:var(--gray-900)}
+.wc-dash-stat .val.red{color:var(--wc-red)}
+.wc-dash-stat .sub{font-size:11px;color:var(--gray-400);margin-top:4px}
+.wc-dash-trend{display:inline-flex;align-items:center;gap:4px;font-weight:700}
+.wc-dash-trend.down{color:var(--wc-green)}.wc-dash-trend.up{color:var(--wc-red)}
+.wc-dash-bars{margin-top:11px}
+/* scorecard: last-plan-year vs current comparison */
+.wc-cmp{display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;gap:10px;margin-top:2px}
+.wc-cmp-cell{background:var(--gray-50);border:1px solid #EEF2F6;border-radius:11px;padding:10px 12px;min-width:0}
+.wc-cmp-cell.cur{background:linear-gradient(160deg,#FCEFEF,#FFFFFF 80%);border-color:#F3DDDD}
+.wc-cmp-lab{font-size:9.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--gray-500);display:flex;align-items:center;gap:5px}
+.wc-cmp-lab .pp{color:var(--gray-400);font-weight:700}
+.wc-cmp-val{font-size:21px;font-weight:800;line-height:1.05;color:var(--gray-900);margin-top:5px}
+.wc-cmp-cell.cur .wc-cmp-val{color:var(--wc-red)}
+.wc-cmp-sub{font-size:11px;color:var(--gray-500);margin-top:3px}
+.wc-cmp-arrow{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--gray-400)}
+.wc-cmp-arrow .d{font-size:12px;font-weight:800;display:inline-flex;align-items:center;gap:2px}
+.wc-cmp-arrow .d.down{color:var(--wc-green)}.wc-cmp-arrow .d.up{color:var(--wc-red)}
+.wc-cmp-arrow .d.flat{color:var(--gray-400)}
+.wc-cmp-arrow .cap{font-size:8.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--gray-400)}
+/* scorecard: horizontal period bars (overtime-style) */
+.wc-bars{display:flex;flex-direction:column;gap:7px;margin-top:4px}
+.wc-bar-row{display:grid;grid-template-columns:30px 1fr auto;align-items:center;gap:9px}
+.wc-bar-lab{font-size:11px;font-weight:700;color:var(--gray-600)}
+.wc-bar-track{height:13px;border-radius:7px;background:var(--gray-100);overflow:hidden}
+.wc-bar-fill{height:100%;border-radius:7px;background:linear-gradient(90deg,#E8635C,#C0392B);transition:width .2s}
+.wc-bar-row.cur .wc-bar-fill{background:linear-gradient(90deg,#F0A02A,#D9822B)}
+.wc-bar-val{font-size:11px;font-weight:800;color:var(--gray-800);min-width:42px;text-align:right}
+.wc-bar-row.cur .wc-bar-val{color:#B4690E}
+.wc-chart-cap{font-size:10px;font-weight:600;color:var(--gray-400);margin:8px 0 0;text-align:right}
+.wc-foot{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:11px;padding-top:11px;border-top:1px dashed var(--gray-200);font-size:11.5px;color:var(--gray-600)}
+.wc-foot b{color:var(--gray-900);font-weight:800}
+.wc-foot .sep{color:var(--gray-300)}
+/* overview: location cost split */
+.wc-loc-split{display:flex;flex-direction:column;gap:11px}
+.wc-loc-row{display:grid;grid-template-columns:38px 1fr auto;align-items:center;gap:12px}
+.wc-loc-key{font-size:12px;font-weight:800;color:var(--gray-700)}
+.wc-loc-track{height:16px;border-radius:8px;background:var(--gray-100);overflow:hidden}
+.wc-loc-fill{height:100%;border-radius:8px}
+.wc-loc-fill.ca{background:linear-gradient(90deg,#2C8BD4,#1D6FB8)}
+.wc-loc-fill.pa{background:linear-gradient(90deg,#27C7B4,#16A695)}
+.wc-loc-meta{font-size:12px;color:var(--gray-600);min-width:118px;text-align:right}
+.wc-loc-meta b{color:var(--gray-900);font-weight:800}
+.wc-seg{display:inline-flex;flex-wrap:wrap;background:var(--gray-100);border-radius:24px;padding:3px;margin-bottom:20px;gap:2px}
+.wc-seg-btn{border:none;background:none;font-family:inherit;font-size:13px;font-weight:600;color:var(--gray-600);padding:8px 16px;border-radius:20px;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:6px}
+.wc-seg-btn i{font-size:15px}
+.wc-seg-btn.active{background:#fff;color:var(--wc-red);box-shadow:0 1px 4px rgba(16,40,80,.12)}
+.wc-seg-btn .wc-seg-count{font-size:11px;font-weight:700;background:var(--gray-200);color:var(--gray-600);border-radius:10px;padding:1px 7px}
+.wc-seg-btn.active .wc-seg-count{background:var(--wc-red-soft);color:var(--wc-red)}
+.wc-sub{display:none}.wc-sub.active{display:block}
+.wc-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.wc-kpi{background:#fff;border:var(--border);border-radius:var(--radius-lg);padding:15px 16px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.wc-kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--gray-200)}
+.wc-kpi.red::before{background:linear-gradient(180deg,#E8635C,#C0392B)}
+.wc-kpi.amber::before{background:linear-gradient(180deg,#F0A93C,#B4690E)}
+.wc-kpi.green::before{background:linear-gradient(180deg,#34D08A,#15924F)}
+.wc-kpi.slate::before{background:linear-gradient(180deg,#6B7A8D,#3C4858)}
+.wc-kpi-lab{font-size:10.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--gray-500);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.wc-kpi-lab i{font-size:14px}
+.wc-kpi.red .wc-kpi-lab i{color:var(--wc-red)}.wc-kpi.amber .wc-kpi-lab i{color:var(--wc-amber)}.wc-kpi.green .wc-kpi-lab i{color:var(--wc-green)}.wc-kpi.slate .wc-kpi-lab i{color:var(--wc-slate)}
+.wc-kpi-val{font-size:25px;font-weight:800;color:var(--gray-900);line-height:1;letter-spacing:-.3px}
+.wc-kpi-sub{font-size:11.5px;color:var(--gray-400);margin-top:6px;line-height:1.4}
+.wc-delta{font-weight:700}.wc-delta.down{color:var(--wc-green)}.wc-delta.up{color:var(--wc-red)}
+@media(max-width:880px){.wc-kpis{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.wc-kpis{grid-template-columns:1fr}.wc-dash-grid{grid-template-columns:1fr}}
+.wc-improve{position:relative;overflow:hidden;border-radius:16px;padding:20px 22px;margin-bottom:22px;color:#fff;background:radial-gradient(600px 300px at 90% -30%,rgba(255,255,255,.18),transparent 60%),linear-gradient(135deg,#15A463 0%,#0E7C49 60%,#0B5E38 100%);box-shadow:0 10px 30px rgba(13,110,68,.22);display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.wc-improve.flat{background:radial-gradient(600px 300px at 90% -30%,rgba(255,255,255,.16),transparent 60%),linear-gradient(135deg,#5B6675 0%,#3C4858 70%);box-shadow:0 10px 30px rgba(40,55,75,.2)}
+.wc-improve.up{background:radial-gradient(600px 300px at 90% -30%,rgba(255,255,255,.16),transparent 60%),linear-gradient(135deg,#E0654C 0%,#C0392B 70%);box-shadow:0 10px 30px rgba(160,45,30,.22)}
+.wc-improve-ico{flex-shrink:0;width:56px;height:56px;border-radius:16px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:30px}
+.wc-improve-main{flex:1;min-width:220px}
+.wc-improve-eyebrow{font-size:11px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;opacity:.82;margin-bottom:5px}
+.wc-improve h2{font-size:22px;font-weight:800;letter-spacing:-.3px;line-height:1.2;margin-bottom:6px}
+.wc-improve h2 .big{font-size:30px}
+.wc-improve p{font-size:13px;line-height:1.5;opacity:.92;max-width:620px}
+.wc-improve-stats{display:flex;gap:26px;flex-wrap:wrap}
+.wc-improve-stat .n{font-size:24px;font-weight:800;line-height:1}
+.wc-improve-stat .l{font-size:11px;opacity:.85;margin-top:3px;letter-spacing:.3px}
+.wc-grid2{display:grid;grid-template-columns:1.35fr 1fr;gap:18px;margin-bottom:22px}
+@media(max-width:920px){.wc-grid2{grid-template-columns:1fr}}
+.wc-panel{background:#fff;border:var(--border);border-radius:var(--radius-lg);padding:18px 20px;box-shadow:var(--shadow);margin-bottom:22px}
+.wc-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.wc-panel-head h2{font-size:16px;font-weight:700;color:var(--gray-900)}
+.wc-panel-head .wc-panel-sub{font-size:12px;color:var(--gray-500);margin-top:2px}
+.wc-inj{display:flex;flex-direction:column;gap:11px}
+.wc-inj-row{display:grid;grid-template-columns:130px 1fr auto;align-items:center;gap:12px}
+.wc-inj-name{font-size:12.5px;font-weight:600;color:var(--gray-800);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wc-inj-track{height:16px;background:var(--gray-100);border-radius:8px;overflow:hidden}
+.wc-inj-fill{height:100%;border-radius:8px;background:linear-gradient(90deg,#E8635C,#C0392B);min-width:3px;transition:width .5s ease}
+.wc-inj-amt{font-size:12.5px;font-weight:700;color:var(--gray-900);white-space:nowrap;font-variant-numeric:tabular-nums}
+.wc-inj-cnt{font-size:11px;color:var(--gray-400);font-weight:600}
+@media(max-width:560px){.wc-inj-row{grid-template-columns:96px 1fr auto}}
+.wc-tbl-wrap{overflow-x:auto}
+.wc-tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.wc-tbl th{text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--gray-500);padding:9px 12px;border-bottom:2px solid var(--gray-200);white-space:nowrap}
+.wc-tbl th.num,.wc-tbl td.num{text-align:right;font-variant-numeric:tabular-nums}
+.wc-tbl td{padding:10px 12px;border-bottom:1px solid var(--gray-100);color:var(--gray-800);white-space:nowrap}
+.wc-tbl tbody tr:hover{background:var(--gray-50,#f8f9fb)}
+.wc-tbl tbody tr.cur td{background:#FFF8F1}
+.wc-tbl tfoot td{border-top:2px solid var(--gray-200);border-bottom:none;font-weight:800;color:var(--gray-900);padding-top:12px}
+.wc-tbl .yr{font-weight:700;color:var(--gray-900)}
+.wc-mini-bar{display:inline-block;height:8px;border-radius:5px;background:linear-gradient(90deg,#E8635C,#C0392B);vertical-align:middle;min-width:2px}
+.wc-peak-tag{font-size:9px;font-weight:800;letter-spacing:.3px;text-transform:uppercase;padding:1px 6px;border-radius:9px;background:var(--wc-red-soft);color:var(--wc-red);margin-left:6px}
+.wc-low-tag{font-size:9px;font-weight:800;letter-spacing:.3px;text-transform:uppercase;padding:1px 6px;border-radius:9px;background:var(--wc-green-soft);color:var(--wc-green);margin-left:6px}
+.wc-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap}
+.wc-badge.open{background:var(--wc-amber-soft);color:var(--wc-amber)}
+.wc-badge.closed{background:var(--gray-100);color:var(--gray-600)}
+.wc-badge.denied{background:var(--wc-red-soft);color:var(--wc-red)}
+.wc-badge.duty{background:var(--wc-green-soft);color:var(--wc-green)}
+.wc-loc-tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:6px;background:#EEF3FB;color:var(--blue-800)}
+.wc-loc-tag.pa{background:#E6F4F1;color:#0E8C7F}
+.wc-toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:#fff;border:var(--border);border-radius:var(--radius-lg);padding:12px 16px;box-shadow:var(--shadow);margin-bottom:16px}
+.wc-toolbar .wc-search{flex:1;min-width:200px;display:flex;align-items:center;gap:8px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:20px;padding:7px 14px}
+.wc-toolbar .wc-search i{color:var(--gray-400)}
+.wc-toolbar .wc-search input{border:none;background:none;outline:none;font-family:inherit;font-size:13px;width:100%;color:var(--gray-900)}
+.wc-filter{border:1px solid var(--gray-200);background:var(--gray-50);border-radius:20px;padding:7px 12px;font-family:inherit;font-size:12.5px;color:var(--gray-700);cursor:pointer;outline:none}
+.wc-filter:focus{border-color:var(--blue-400)}
+.rec-in.wc-money{text-align:right;font-variant-numeric:tabular-nums}
+.wc-yeargroup-row td{background:linear-gradient(135deg,var(--hero-1),#103a68);color:#dbeafc;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:8px 12px}
+.wc-yeargroup-row .gt{float:right;font-weight:800;color:#fff;text-transform:none;letter-spacing:0;font-size:12px}
+.wc-readonly-note{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--amber-800);background:#FAEEDA;border:1px solid #FAC775;border-radius:20px;padding:7px 13px}
+.wc-empty{text-align:center;padding:42px 20px;color:var(--gray-400)}
+.wc-empty i{font-size:38px;color:var(--gray-200);display:block;margin-bottom:10px}
+.wc-empty .t{font-size:14px;font-weight:600;color:var(--gray-600);margin-bottom:4px}
+.wc-empty .s{font-size:12.5px}
+.wc-del{background:none;border:none;color:var(--gray-300);cursor:pointer;font-size:15px;padding:4px;border-radius:6px;transition:all .14s}
+.wc-del:hover{color:var(--wc-red);background:var(--wc-red-soft)}
+@media(max-width:760px){.wc-seg-btn{padding:7px 11px;font-size:12px}.wc-seg-btn span.lbl{display:none}.wc-seg-btn i{font-size:17px}}
 </style>
 </head>
 <body>
@@ -1696,6 +1825,7 @@ select.rec-in{appearance:auto;cursor:pointer}
       <div class="nav-item" onclick="nav('turnover',this)"><i class="ti ti-arrows-exchange"></i>Turnover Rates</div>
       <div class="nav-item" onclick="nav('recruiting',this)"><i class="ti ti-user-search"></i>Recruiting</div>
       <div class="nav-item" onclick="nav('overtime',this)"><i class="ti ti-clock-dollar"></i>Overtime by Department</div>
+      <div class="nav-item" onclick="nav('workerscomp',this)"><i class="ti ti-report-medical"></i>Workers' Comp</div>
       <div class="nav-item" onclick="nav('pto',this)"><i class="ti ti-beach"></i>PTO Tracker</div>
       <div class="nav-item" onclick="nav('benefits',this)"><i class="ti ti-heart-handshake"></i>Benefits Eligibility</div>
       <div class="nav-item" onclick="nav('timesheet',this)"><i class="ti ti-clock-search"></i>Timesheet Assistant</div>
@@ -1879,6 +2009,9 @@ select.rec-in{appearance:auto;cursor:pointer}
 
           <!-- SAFETY · inspections this month (live from Safety Inspector) -->
           <div class="stat-card safety" id="dash-safety-card"></div>
+
+          <!-- WORKERS' COMP · claims & losses this period -->
+          <div class="stat-card wc" id="dash-wc-card" onclick="nav('workerscomp', document.querySelector('.nav-item[onclick*=workerscomp]'))" style="cursor:pointer"></div>
         </div>
 
         <!-- TASK SCORECARD (rendered by tasksScoreRender) -->
@@ -2087,6 +2220,24 @@ select.rec-in{appearance:auto;cursor:pointer}
 
         <!-- DASHBOARD -->
         <div id="ot-dash"></div>
+      </div>
+
+      <!-- WORKERS' COMP -->
+      <div class="screen" id="screen-workerscomp">
+        <div class="screen-eyebrow">Safety &amp; Risk</div>
+        <div class="screen-title">Workers' Comp</div>
+        <p class="screen-lede">Every claim from 2018 forward in one place — losses by policy period and injury type, the trend over time, the current period's open claims, and the near misses we caught before anyone got hurt. New claims you log in the current period roll straight into the trend.</p>
+
+        <div class="wc-seg" id="wc-seg"></div>
+
+        <!-- OVERVIEW / REPORT -->
+        <div class="wc-sub active" id="wc-sub-overview"></div>
+        <!-- CLAIMS LOG (historical) -->
+        <div class="wc-sub" id="wc-sub-log"></div>
+        <!-- ACTIVE CLAIMS (current period) -->
+        <div class="wc-sub" id="wc-sub-active"></div>
+        <!-- NEAR MISSES -->
+        <div class="wc-sub" id="wc-sub-near"></div>
       </div>
 
       <!-- PTO TRACKER -->
@@ -2484,6 +2635,7 @@ const PERM_SECTIONS = [
   {id:'turnover', label:'Turnover Rates'},
   {id:'recruiting', label:'Recruiting'},
   {id:'overtime', label:'Overtime by Department'},
+  {id:'workerscomp', label:"Workers' Comp"},
   {id:'pto', label:'PTO Tracker'}
 ];
 const PERM_CAPS = [
@@ -2493,7 +2645,8 @@ const PERM_CAPS = [
   {id:'editTurnover', label:'Edit turnover numbers'},
   {id:'editRecruiting', label:'Edit recruiting logs & rejections'},
   {id:'editPto', label:'Edit PTO roster & balances'},
-  {id:'editBenefits', label:'Edit benefits eligibility tracker'}
+  {id:'editBenefits', label:'Edit benefits eligibility tracker'},
+  {id:'editWC', label:'Edit workers-comp claims & near misses'}
 ];
 // Seed accounts — always available so they exist on a fresh device.
 const SEED_USERS = [
@@ -2502,10 +2655,10 @@ const SEED_USERS = [
     role:'admin', access:{}, caps:{} },
   { id:'u_anahi', name:'Anahi Torres', email:'anahi@wsdisplay.com',
     passHash:'0c9dbda57c1c3d9f4c5ff7ad78af8751337e6d4a4f0e8a3b4e2fbc68e402176e',
-    role:'member', access:{yearly:true,turnover:true,recruiting:true,overtime:true,pto:true}, caps:{editTasks:true,editRecruiting:true,editPto:true,editBenefits:true} },
+    role:'member', access:{yearly:true,turnover:true,recruiting:true,overtime:true,workerscomp:true,pto:true}, caps:{editTasks:true,editRecruiting:true,editPto:true,editBenefits:true,editWC:true} },
   { id:'u_steph', name:'Stephanie Bryan', email:'stephanie.b@wsdisplay.com',
     passHash:'0c9dbda57c1c3d9f4c5ff7ad78af8751337e6d4a4f0e8a3b4e2fbc68e402176e',
-    role:'member', access:{yearly:true,turnover:true,recruiting:true,overtime:true,pto:true}, caps:{editTasks:true,editRecruiting:true,editPto:true,editBenefits:true} }
+    role:'member', access:{yearly:true,turnover:true,recruiting:true,overtime:true,workerscomp:true,pto:true}, caps:{editTasks:true,editRecruiting:true,editPto:true,editBenefits:true,editWC:true} }
 ];
 const ADMIN_SEED = SEED_USERS[0];
 let CURRENT = null;
@@ -2647,6 +2800,7 @@ function enterApp(user){
   if(typeof ptoInit==='function') ptoInit();
   if(typeof benInit==='function') benInit();
   if(typeof gcInit==='function') gcInit();
+  if(typeof wcInit==='function') wcInit();
   renderNotifications();
   setTimeout(function(){
     if(typeof enhanceHeaders==='function') enhanceHeaders();
@@ -2671,7 +2825,7 @@ async function doLogout(){
 
 /* ══════════════ NAV ══════════════ */
 const pageTitles = {
-  dashboard:'Dashboard', yearly:'Yearly Tasks', turnover:'Turnover Rates', recruiting:'Recruiting', overtime:'Overtime by Department', pto:'PTO Tracker', benefits:'Benefits Eligibility', timesheet:'Timesheet Assistant', tasks:'My Tasks', giftcards:'Birthday & Gift Cards', settings:'Settings'
+  dashboard:'Dashboard', yearly:'Yearly Tasks', turnover:'Turnover Rates', recruiting:'Recruiting', overtime:'Overtime by Department', workerscomp:"Workers' Comp", pto:'PTO Tracker', benefits:'Benefits Eligibility', timesheet:'Timesheet Assistant', tasks:'My Tasks', giftcards:'Birthday & Gift Cards', settings:'Settings'
 };
 function nav(id, el){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -2681,10 +2835,11 @@ function nav(id, el){
   if(el) el.classList.add('active');
   const ct=document.querySelector('.content'); if(ct) ct.classList.toggle('wide', id==='recruiting');
   const pt=document.getElementById('page-title'); if(pt) pt.textContent = pageTitles[id] || 'HR Hub';
-  if(id==='dashboard'){ renderNotifications(); renderDashTurnover(); if(typeof dashRecRender==='function') dashRecRender(); if(typeof otDashRender==='function') otDashRender(); if(typeof tasksDashStat==='function') tasksDashStat(); if(typeof renderSafetyDash==='function'){ renderSafetyDash(); safetyLoadLive(); } }
+  if(id==='dashboard'){ renderNotifications(); renderDashTurnover(); if(typeof dashRecRender==='function') dashRecRender(); if(typeof otDashRender==='function') otDashRender(); if(typeof tasksDashStat==='function') tasksDashStat(); if(typeof renderSafetyDash==='function'){ renderSafetyDash(); safetyLoadLive(); } if(typeof wcDashRender==='function') wcDashRender(); }
   if(id==='turnover' && typeof trRender==='function') trRender();
   if(id==='recruiting' && typeof recRender==='function') recRender();
   if(id==='overtime' && typeof otRender==='function') otRender();
+  if(id==='workerscomp' && typeof wcRender==='function') wcRender();
   if(id==='pto' && typeof ptoRender==='function') ptoRender();
   if(id==='benefits' && typeof benRender==='function') benRender();
   if(id==='timesheet' && typeof tsRender==='function') tsRender();
@@ -8304,7 +8459,7 @@ spawnWaves(document.getElementById('hero-waves'), {
    Stored under an hrhub_* key, so it auto-syncs to Supabase across devices.
    ══════════════════════════════════════════════════════════════════════ */
 const GC_KEY = 'hrhub_giftcards_v1';
-const GC_ANAHI_EMAIL = 'anahi@wsdisplay.com';
+
 let GC = null;
 let gcView = 'birthday';
 let gcFilter = { q:'', loc:'all', status:'all' };
@@ -8480,13 +8635,6 @@ function gcRenderReminder(){
         <div class="gc-rm-title">Birthdays this week</div>
         <div class="gc-rm-sub">${gcEsc(range)} · ${wk.length} ${wk.length===1?'birthday':'birthdays'}</div>
       </div>`;
-  if(wk.length){
-    inner += `
-      <div class="gc-rm-actions">
-        <button class="gc-rm-btn primary" onclick="gcEmailAnahi()"><i class="ti ti-mail"></i> Email Anahi</button>
-        <button class="gc-rm-btn ghost" onclick="gcCopyReminder(this)"><i class="ti ti-copy"></i> Copy</button>
-      </div>`;
-  }
   inner += `</div>`;
   if(wk.length){
     inner += `<div class="gc-rm-list">` + wk.map(p=>`
@@ -8501,41 +8649,6 @@ function gcRenderReminder(){
   }
   host.className='gc-reminder';
   host.innerHTML = inner;
-}
-
-function gcReminderText(){
-  const wk = gcWeekBirthdays();
-  const today = ptoParse(ptoTodayISO());
-  const end = ptoAddDays(today, 6);
-  const range = ptoFmtLong(today) + ' – ' + ptoFmtLong(end);
-  let lines = ['Hi Anahi,', '', `Here are this week's birthdays (${range}) — please purchase and send a gift card for each:`, ''];
-  if(!wk.length){ lines.push('• No birthdays this week.'); }
-  else {
-    wk.forEach(p=>{
-      const day = p.date.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'});
-      lines.push(`• ${p.name}${p.loc?' ('+p.loc+')':''} — ${day}${p.given?'  [already sent]':''}`);
-    });
-  }
-  lines.push('', 'Thanks!');
-  return lines.join('\n');
-}
-
-function gcEmailAnahi(){
-  const today = ptoParse(ptoTodayISO());
-  const end = ptoAddDays(today, 6);
-  const subj = `Gift cards — birthdays this week (${ptoFmt(today)}–${ptoFmt(end)})`;
-  const url = 'mailto:'+encodeURIComponent(GC_ANAHI_EMAIL)+'?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(gcReminderText());
-  window.location.href = url;
-}
-
-function gcCopyReminder(btn){
-  const text = gcReminderText();
-  const done = ()=>{ if(btn){ const o=btn.innerHTML; btn.innerHTML='<i class="ti ti-check"></i> Copied'; setTimeout(()=>btn.innerHTML=o,1500); } };
-  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(done).catch(()=>gcFallbackCopy(text,done)); }
-  else gcFallbackCopy(text, done);
-}
-function gcFallbackCopy(text, cb){
-  try{ const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); cb&&cb(); }catch(e){}
 }
 
 /* ════════ BODY ROUTER ════════ */
@@ -8817,6 +8930,689 @@ function gcRafDelete(id){
   const r=GC.raffle.find(x=>x.id===id);
   if(!confirm('Delete this raffle entry'+(r&&r.recipient?' for '+r.recipient:'')+'?')) return;
   GC.raffle = GC.raffle.filter(x=>x.id!==id); gcSave(); gcRenderBody();
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   WORKERS' COMP  —  losses by period & injury type, claims log,
+   current-period active tracker, and near-miss log.
+   All three datasets live under hrhub_wc_* and auto-sync to Supabase.
+   ══════════════════════════════════════════════════════════════════════════ */
+const WC_HIST_KEY='hrhub_wc_history', WC_ACT_KEY='hrhub_wc_active', WC_NEAR_KEY='hrhub_wc_near';
+const WC_PERIODS=['2018-2019','2019-2020','2020-2021','2021-2022','2022-2023','2023-2024','2024-2025','2025-2026'];
+const WC_CUR_PERIOD='2025-2026';   // claims logged in the Active tab belong here
+
+// Historical settled claims, transcribed from the 2018–2025 loss runs.
+// Amounts reconcile to the official policy-period totals.
+const WC_HISTORY_SEED=[
+  // 2018–2019  (total $657,770.26)
+  {pp:'2018-2019',name:'Celedonia Huerta',loc:'CA',type:'Amputation/Finger',amount:135991.45,open:false},
+  {pp:'2018-2019',name:'Claudia Fernandez',loc:'CA',type:'Fall/Strain',amount:3203.20,open:false},
+  {pp:'2018-2019',name:'Jamie Simpson',loc:'CA',type:'Laceration',amount:903.81,open:false},
+  {pp:'2018-2019',name:'Shafiq Zaman',loc:'CA',type:'Laceration',amount:151.11,open:false},
+  {pp:'2018-2019',name:'Jamie Simpson',loc:'CA',type:'Motor Vehicle NOC',amount:126329.00,open:true},
+  {pp:'2018-2019',name:'Maria Felix',loc:'CA',type:'Repetitive Motion',amount:94928.74,open:false},
+  {pp:'2018-2019',name:'Gabriela Palacios',loc:'CA',type:'Repetitive Motion',amount:16156.44,open:false},
+  {pp:'2018-2019',name:'Hugo Sotelo',loc:'CA',type:'Repetitive Motion',amount:4520.98,open:false},
+  {pp:'2018-2019',name:'Casaul Colleen',loc:'PA',type:'Repetitive Motion',amount:57639.29,open:false},
+  {pp:'2018-2019',name:'Richard Coronado',loc:'CA',type:'Strain/Lifting',amount:21114.54,open:false},
+  {pp:'2018-2019',name:'Jerron Blackwell',loc:'CA',type:'Strain/Lifting',amount:20894.09,open:false},
+  {pp:'2018-2019',name:'Robert Currier',loc:'CA',type:'Strain/Lifting',amount:2158.55,open:false},
+  {pp:'2018-2019',name:'Rodolfo Manuel',loc:'CA',type:'Strain/Lifting',amount:591.04,open:false},
+  {pp:'2018-2019',name:'Damaris Fuentes',loc:'CA',type:'Strain/Lifting',amount:1377.29,open:false},
+  {pp:'2018-2019',name:'Sergio Salas',loc:'CA',type:'Strain/Not Lifting',amount:62471.40,open:false},
+  {pp:'2018-2019',name:'Jesse Lugo',loc:'CA',type:'Strain/Not Lifting',amount:68575.63,open:false},
+  {pp:'2018-2019',name:'Guadalupe Solorio',loc:'CA',type:'Strain/Not Lifting',amount:40763.70,open:false},
+  // 2019–2020  (total $219,098.81)
+  {pp:'2019-2020',name:'Yomaira Diaz',loc:'PA',type:'Allergies/Reactions',amount:261.53,open:false},
+  {pp:'2019-2020',name:'Jennifer Brown',loc:'PA',type:'Allergies/Reactions',amount:446.62,open:false},
+  {pp:'2019-2020',name:'Norma Bazan',loc:'PA',type:'Allergies/Reactions',amount:843.29,open:false},
+  {pp:'2019-2020',name:'Katrina Saltsburg',loc:'PA',type:'Allergies/Reactions',amount:1260.19,open:false},
+  {pp:'2019-2020',name:'Jennifer Brown',loc:'PA',type:'Injury NOC',amount:1224.61,open:false},
+  {pp:'2019-2020',name:'Vicky Cintron',loc:'PA',type:'Insect Bite',amount:331.45,open:false},
+  {pp:'2019-2020',name:'Blanca Medina',loc:'PA',type:'Laceration',amount:564.10,open:false},
+  {pp:'2019-2020',name:'Jenny Medina',loc:'PA',type:'Laceration',amount:191.88,open:false},
+  {pp:'2019-2020',name:'Hugo Sotelo',loc:'CA',type:'Repetitive Motion',amount:64581.00,open:false},
+  {pp:'2019-2020',name:'Elvira Lopez',loc:'CA',type:'Repetitive Motion',amount:15508.77,open:false},
+  {pp:'2019-2020',name:'Leticia Rincon',loc:'CA',type:'Repetitive Motion',amount:29252.26,open:false},
+  {pp:'2019-2020',name:'Josue Garcia',loc:'CA',type:'Strain/Lifting',amount:976.64,open:false},
+  {pp:'2019-2020',name:'Leovigilda Ceja',loc:'CA',type:'Strain/Not Lifting',amount:101452.38,open:true},
+  {pp:'2019-2020',name:'Kyle Lyttle',loc:'CA',type:'Strain/Not Lifting',amount:2204.09,open:false},
+  // 2020–2021  (total $5,664.41 — reduced operations / workforce during COVID)
+  {pp:'2020-2021',name:'Omar Sangines',loc:'CA',type:'Burn',amount:438.98,open:false},
+  {pp:'2020-2021',name:'Kevin Gonzalez',loc:'CA',type:'Strain/Not Lifting',amount:4678.82,open:false},
+  {pp:'2020-2021',name:'Yolanda Solorio',loc:'CA',type:'Strain/Not Lifting',amount:274.68,open:false},
+  {pp:'2020-2021',name:'Hazel Thompson',loc:'PA',type:'Insect Bite',amount:271.93,open:false},
+  // 2021–2022  (total $202,343.51)
+  {pp:'2021-2022',name:'Yolanda Solorio',loc:'CA',type:'Exposure NOC',amount:31205.00,open:false},
+  {pp:'2021-2022',name:'Maria Carmona',loc:'PA',type:'Eye Injury',amount:146.83,open:false},
+  {pp:'2021-2022',name:'Frank Mata',loc:'CA',type:'Laceration',amount:485.38,open:false},
+  {pp:'2021-2022',name:'Mohammad Rasouli',loc:'PA',type:'Laceration',amount:15118.64,open:false},
+  {pp:'2021-2022',name:'Guadalupe Solorio',loc:'CA',type:'Repetitive Motion',amount:4564.23,open:false},
+  {pp:'2021-2022',name:'Rosa Cuellar',loc:'CA',type:'Repetitive Motion',amount:50092.00,open:false},
+  {pp:'2021-2022',name:'Bertha Flores',loc:'CA',type:'Repetitive Motion',amount:90000.00,open:false},
+  {pp:'2021-2022',name:'Andrew Garcia',loc:'CA',type:'Strain/Lifting',amount:3858.95,open:false},
+  {pp:'2021-2022',name:'Kevin Gonzalez',loc:'CA',type:'Strain/Not Lifting',amount:43.00,open:false},
+  {pp:'2021-2022',name:'Suzette Lizarraga',loc:'CA',type:'Strain/Not Lifting',amount:5597.87,open:false},
+  {pp:'2021-2022',name:'Francisco Sotelo',loc:'CA',type:'Strain/Not Lifting',amount:591.17,open:false},
+  {pp:'2021-2022',name:'Norma Sanchez',loc:'PA',type:'Strike/Step on Object',amount:640.44,open:false},
+  // 2022–2023  (total $66,494.00)
+  {pp:'2022-2023',name:'Jason Obregon',loc:'CA',type:'Strain/Not Lifting',amount:9760.00,open:false},
+  {pp:'2022-2023',name:'Atagracia Hazim',loc:'PA',type:'Strain/Not Lifting',amount:10343.00,open:false},
+  {pp:'2022-2023',name:'Norma Bazan',loc:'PA',type:'Fall',amount:46391.00,open:false},
+  // 2023–2024  (total $40,727.79)
+  {pp:'2023-2024',name:'Deysi Galicia',loc:'PA',type:'Strain/Not Lifting',amount:35459.50,open:true},
+  {pp:'2023-2024',name:'Leovigilda Ceja',loc:'CA',type:'Strain/Not Lifting',amount:3857.55,open:false},
+  {pp:'2023-2024',name:'Teodomira May',loc:'CA',type:'Puncture',amount:430.00,open:false},
+  {pp:'2023-2024',name:'Viviana Cuevas',loc:'CA',type:'Puncture',amount:133.87,open:false},
+  {pp:'2023-2024',name:'Todd Macon',loc:'PA',type:'Laceration',amount:846.87,open:false},
+  // 2024–2025  (total $76,052.55)
+  {pp:'2024-2025',name:'Teresa Carrillo',loc:'CA',type:'Strain/Not Lifting',amount:71935.00,open:false},
+  {pp:'2024-2025',name:'Gopal Gautman',loc:'PA',type:'Fall/Slip',amount:612.19,open:false},
+  {pp:'2024-2025',name:'Rodolfo Manuel',loc:'CA',type:'Lumbar Strain',amount:554.94,open:false},
+  {pp:'2024-2025',name:'Michael Dias',loc:'CA',type:'Foreign Body in Eye',amount:548.11,open:false},
+  {pp:'2024-2025',name:'Aida Rivera',loc:'PA',type:'Caught in/Btwn Machinery',amount:1694.87,open:false},
+  {pp:'2024-2025',name:'Kyle Hinton',loc:'PA',type:'Strain/Lifting',amount:305.94,open:false},
+  {pp:'2024-2025',name:'Tyler Snipes',loc:'CA',type:'Contusion/Knee',amount:401.50,open:false}
+];
+
+// Current-period active claims, transcribed from the 2025–2026 claims log.
+const WC_ACTIVE_SEED=[
+  {name:'Prem P',loc:'PA',dept:'Finishing',date:'2026-03-12',status:'Open',claimType:'Medical Only',provider:'CNA',description:'Wrist strain, puncture wound',bodyPart:'Left hand/wrist',notes:'Cleared of all restrictions & returned to full duty 03/17/2026.',incurred:0},
+  {name:'Santiago Donoe',loc:'CA',dept:'Printing',date:'2026-04-10',status:'Closed',claimType:'Medical Only',provider:'CNA',description:'Open wound / cut',bodyPart:'Left middle finger',notes:'Modified duties — no use of left middle finger.',incurred:0},
+  {name:'Leo Ceja',loc:'CA',dept:'Finishing',date:'2026-04-17',status:'Open',claimType:'Medical Only',provider:'CNA',description:'Slipped and fell in the breakroom',bodyPart:'Right knee',notes:'Back to full duty 04/22/2026. Claim should be closing soon.',incurred:0},
+  {name:'Segifredo Escobedo',loc:'CA',dept:'Warehouse',date:'2026-04-21',status:'Open',claimType:'Medical Only',provider:'CNA',description:'Fall while unloading a container',bodyPart:'Right shin/ankle',notes:'Currently on a modified job description.',incurred:0},
+  {name:'Brittany Miller',loc:'PA',dept:'Finishing',date:'2026-04-20',status:'Closed',claimType:'Medical Only',provider:'CNA',description:'Lifting a roll alone and dropped it (too heavy)',bodyPart:'Back',notes:'',incurred:0},
+  {name:'Michael Manuel Diaz',loc:'CA',dept:'Finishing',date:'2026-05-04',status:'Open',claimType:'Medical Only',provider:'CNA',description:'',bodyPart:'',notes:'Expected to close by end of month.',incurred:0},
+  {name:'Kyle N',loc:'PA',dept:'Finishing',date:'2026-05-06',status:'Denied',claimType:'Medical Only',provider:'CNA',description:'',bodyPart:'',notes:'Claim denied. Expected to close 06/22.',incurred:0},
+  {name:'Lupe Solorio',loc:'CA',dept:'Finishing',date:'2026-05-11',status:'Denied',claimType:'Medical Only',provider:'CNA',description:'Fainted on the production floor',bodyPart:'N/A',notes:'Denied — not a work-related injury.',incurred:0}
+];
+
+let WC_HISTORY=[], WC_ACTIVE=[], WC_NEAR=[];
+let wcTab='overview';
+let wcLogFilter={q:'',loc:'all',type:'all'};
+
+function wcUid(p){ return (p||'wc')+'_'+Date.now().toString(36)+Math.floor(Math.random()*1e4).toString(36); }
+function wcCanEdit(){ return typeof can==='function' ? can('editWC') : true; }
+function wcEsc(s){ return (typeof recEsc==='function') ? recEsc(s) : String(s==null?'':s); }
+function wcFmt0(n){ return '$'+Math.round(+n||0).toLocaleString('en-US'); }
+function wcFmt2(n){ return '$'+(+n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function wcCompact(n){ n=+n||0; if(n>=1e6) return '$'+(n/1e6).toFixed(n>=1e7?1:2).replace(/\.0+$/,'')+'M'; if(n>=1e3) return '$'+Math.round(n/1e3)+'k'; return '$'+Math.round(n); }
+function wcShortPP(pp){ const p=String(pp).split('-'); return (p[0]?p[0].slice(2):'')+'–'+(p[1]?p[1].slice(2):''); }
+
+function wcInit(){
+  try{ WC_HISTORY=JSON.parse(localStorage.getItem(WC_HIST_KEY)||'null'); }catch(e){ WC_HISTORY=null; }
+  if(!Array.isArray(WC_HISTORY)){ WC_HISTORY=WC_HISTORY_SEED.map(c=>Object.assign({id:wcUid('h')},c)); wcSaveHist(); }
+  try{ WC_ACTIVE=JSON.parse(localStorage.getItem(WC_ACT_KEY)||'null'); }catch(e){ WC_ACTIVE=null; }
+  if(!Array.isArray(WC_ACTIVE)){ WC_ACTIVE=WC_ACTIVE_SEED.map(c=>Object.assign({id:wcUid('a')},c)); wcSaveAct(); }
+  try{ WC_NEAR=JSON.parse(localStorage.getItem(WC_NEAR_KEY)||'null'); }catch(e){ WC_NEAR=null; }
+  if(!Array.isArray(WC_NEAR)){ WC_NEAR=[]; wcSaveNear(); }
+}
+function wcSaveHist(){ try{ localStorage.setItem(WC_HIST_KEY, JSON.stringify(WC_HISTORY)); }catch(e){} }
+function wcSaveAct(){ try{ localStorage.setItem(WC_ACT_KEY, JSON.stringify(WC_ACTIVE)); }catch(e){} }
+function wcSaveNear(){ try{ localStorage.setItem(WC_NEAR_KEY, JSON.stringify(WC_NEAR)); }catch(e){} }
+
+/* ── aggregation ── */
+function wcActiveAsClaims(){
+  return WC_ACTIVE.map(a=>({ id:a.id, pp:WC_CUR_PERIOD, name:a.name, loc:a.loc, type:(a.description||a.claimType||'Claim'),
+    amount:(+a.incurred||0), open:(a.status||'').toLowerCase()==='open', active:true, status:a.status }));
+}
+function wcAllClaims(){ return WC_HISTORY.concat(wcActiveAsClaims()); }
+
+function wcPeriodAgg(){
+  const m={}; WC_PERIODS.forEach(p=>m[p]={pp:p,claims:0,losses:0,open:0});
+  wcAllClaims().forEach(c=>{ const p=c.pp; if(!m[p]) m[p]={pp:p,claims:0,losses:0,open:0};
+    m[p].claims++; m[p].losses+=(+c.amount||0); if(c.open) m[p].open++; });
+  return WC_PERIODS.map(p=>m[p]);
+}
+function wcInjuryAgg(){
+  const m={};
+  WC_HISTORY.forEach(c=>{ const t=c.type||'Other'; if(!m[t]) m[t]={type:t,claims:0,losses:0}; m[t].claims++; m[t].losses+=(+c.amount||0); });
+  // include active claims' incurred under a normalized label if any cost
+  wcActiveAsClaims().forEach(c=>{ if((+c.amount||0)<=0) return; const t=c.type||'Other'; if(!m[t]) m[t]={type:t,claims:0,losses:0}; m[t].claims++; m[t].losses+=(+c.amount||0); });
+  return Object.values(m).sort((a,b)=>b.losses-a.losses);
+}
+function wcLocAgg(){
+  const m={};
+  wcAllClaims().forEach(c=>{ const l=(c.loc||'—').toUpperCase(); if(!m[l]) m[l]={loc:l,claims:0,losses:0}; m[l].claims++; m[l].losses+=(+c.amount||0); });
+  return Object.values(m).sort((a,b)=>b.losses-a.losses);
+}
+function wcStats(){
+  const per=wcPeriodAgg();
+  const completed=per.filter(p=>p.pp!==WC_CUR_PERIOD);
+  const cur=per.find(p=>p.pp===WC_CUR_PERIOD)||{claims:0,losses:0,open:0};
+  const totalLosses=per.reduce((a,p)=>a+p.losses,0);
+  const totalClaims=per.reduce((a,p)=>a+p.claims,0);
+  let peak=completed[0]||{pp:'',losses:0};
+  completed.forEach(p=>{ if(p.losses>peak.losses) peak=p; });
+  const withLoss=completed.filter(p=>p.losses>0);
+  let low=withLoss[0]||completed[0]||{pp:'',losses:0};
+  withLoss.forEach(p=>{ if(p.losses<low.losses) low=p; });
+  const latest=completed[completed.length-1]||{pp:'',losses:0,claims:0,open:0};
+  const pctBelowPeak=peak.losses>0?Math.round(100*(peak.losses-latest.losses)/peak.losses):0;
+  const avgCompleted=completed.length?totalCompletedLosses(completed)/completed.length:0;
+  // most-occurring injury type, ranked by claim count (losses break ties)
+  const byCount=wcInjuryAgg().slice().sort((a,b)=> b.claims-a.claims || b.losses-a.losses );
+  const topType=byCount[0]||{type:'—',claims:0,losses:0};
+  return {per,completed,cur,totalLosses,totalClaims,peak,low,latest,pctBelowPeak,avgCompleted,topType};
+}
+function totalCompletedLosses(c){ return c.reduce((a,p)=>a+p.losses,0); }
+
+/* ── segment / tab switching ── */
+function wcRender(){
+  if(!WC_HISTORY.length && !WC_ACTIVE.length) wcInit();
+  wcRenderSeg();
+  wcRenderOverview(); wcRenderLog(); wcRenderActive(); wcRenderNear();
+  wcShowTab(wcTab);
+}
+function wcRenderSeg(){
+  const host=document.getElementById('wc-seg'); if(!host) return;
+  const counts={ overview:'', log:WC_HISTORY.length, active:WC_ACTIVE.length, near:WC_NEAR.length };
+  const tabs=[
+    {id:'overview',ic:'ti-chart-histogram',lbl:'Overview'},
+    {id:'log',ic:'ti-list-details',lbl:'Claims Log'},
+    {id:'active',ic:'ti-activity-heartbeat',lbl:'Active Claims'},
+    {id:'near',ic:'ti-alert-triangle',lbl:'Near Misses'}
+  ];
+  host.innerHTML=tabs.map(t=>`<button class="wc-seg-btn ${wcTab===t.id?'active':''}" onclick="wcShowTab('${t.id}')">
+    <i class="ti ${t.ic}"></i><span class="lbl">${t.lbl}</span>${counts[t.id]!==''?`<span class="wc-seg-count">${counts[t.id]}</span>`:''}</button>`).join('');
+}
+function wcShowTab(t){
+  wcTab=t;
+  document.querySelectorAll('#screen-workerscomp .wc-sub').forEach(s=>s.classList.remove('active'));
+  const el=document.getElementById('wc-sub-'+t); if(el) el.classList.add('active');
+  wcRenderSeg();
+  window.scrollTo(0,0);
+}
+
+/* ── OVERVIEW (the report) ── */
+function wcRenderOverview(){
+  const host=document.getElementById('wc-sub-overview'); if(!host) return;
+  const s=wcStats();
+  const improving=s.latest.losses<s.peak.losses;
+  const banner=`
+    <div class="wc-improve ${improving?'':'flat'}">
+      <div class="wc-improve-ico"><i class="ti ti-${improving?'trending-down':'trending-up'}"></i></div>
+      <div class="wc-improve-main">
+        <div class="wc-improve-eyebrow">Trend · 2018–${WC_CUR_PERIOD.split('-')[1]}</div>
+        <h2>Losses are <span class="big">${s.pctBelowPeak}%</span> below our ${wcShortPP(s.peak.pp)} peak</h2>
+        <p>The ${wcShortPP(s.peak.pp)} period cost ${wcFmt0(s.peak.losses)} across ${s.peak.claims} claims. The most recent closed period (${wcShortPP(s.latest.pp)}) came in at ${wcFmt0(s.latest.losses)} over ${s.latest.claims} claims — and the current period is tracking lighter still, with most claims medical-only.</p>
+      </div>
+      <div class="wc-improve-stats">
+        <div class="wc-improve-stat"><div class="n">${wcCompact(s.low.losses)}</div><div class="l">Best year (${wcShortPP(s.low.pp)})</div></div>
+        <div class="wc-improve-stat"><div class="n">${wcCompact(s.avgCompleted)}</div><div class="l">Avg / closed year</div></div>
+      </div>
+    </div>`;
+
+  const curOpen=s.cur.open, curClaims=s.cur.claims;
+  const kpis=`
+    <div class="wc-kpis">
+      <div class="wc-kpi slate">
+        <div class="wc-kpi-lab"><i class="ti ti-folders"></i> Total since 2018</div>
+        <div class="wc-kpi-val">${wcFmt0(s.totalLosses)}</div>
+        <div class="wc-kpi-sub">${s.totalClaims} claims across ${s.completed.length} closed periods</div>
+      </div>
+      <div class="wc-kpi red">
+        <div class="wc-kpi-lab"><i class="ti ti-flame"></i> Peak year</div>
+        <div class="wc-kpi-val">${wcFmt0(s.peak.losses)}</div>
+        <div class="wc-kpi-sub">${wcShortPP(s.peak.pp)} · ${s.peak.claims} claims</div>
+      </div>
+      <div class="wc-kpi green">
+        <div class="wc-kpi-lab"><i class="ti ti-arrow-down-right"></i> Last closed year</div>
+        <div class="wc-kpi-val">${wcFmt0(s.latest.losses)}</div>
+        <div class="wc-kpi-sub"><span class="wc-delta down">▼ ${s.pctBelowPeak}%</span> vs peak</div>
+      </div>
+      <div class="wc-kpi amber">
+        <div class="wc-kpi-lab"><i class="ti ti-activity-heartbeat"></i> Current period</div>
+        <div class="wc-kpi-val">${curClaims}</div>
+        <div class="wc-kpi-sub">${curOpen} open · ${wcFmt0(s.cur.losses)} incurred</div>
+      </div>
+    </div>`;
+
+  // trend chart (losses per period)
+  const trendData=s.per.map(p=>({ label:wcShortPP(p.pp), value:p.losses,
+    display:p.losses>0?wcCompact(p.losses):'—', highlight:p.pp===WC_CUR_PERIOD }));
+  const trend=`
+    <div class="tr-chart-card">
+      <div class="tr-chart-head">
+        <div><h2>Losses by policy period</h2><div class="tr-chart-sub">Incurred losses for each policy year · current period highlighted</div></div>
+      </div>
+      <div>${(typeof barChartSVG==='function')?barChartSVG(trendData,{maxBarW:46,ariaLabel:'Workers compensation losses by policy period'}):''}</div>
+    </div>`;
+
+  // injury breakdown (top types) + period table side by side
+  const inj=wcInjuryAgg();
+  const injMax=inj.length?inj[0].losses:1;
+  const injTop=inj.slice(0,10);
+  const injBody=injTop.map(r=>`
+    <div class="wc-inj-row">
+      <div class="wc-inj-name" title="${wcEsc(r.type)}">${wcEsc(r.type)}</div>
+      <div class="wc-inj-track"><div class="wc-inj-fill" style="width:${Math.max(3,Math.round(100*r.losses/injMax))}%"></div></div>
+      <div><span class="wc-inj-amt">${wcFmt0(r.losses)}</span> <span class="wc-inj-cnt">· ${r.claims}</span></div>
+    </div>`).join('');
+  const injCard=`
+    <div class="wc-panel" style="margin-bottom:0">
+      <div class="wc-panel-head"><div><h2>Where the money goes</h2><div class="wc-panel-sub">Total incurred by injury type, all years</div></div></div>
+      <div class="wc-inj">${injBody}</div>
+    </div>`;
+
+  const pMax=Math.max(1,...s.per.map(p=>p.losses));
+  const rows=s.per.map(p=>{
+    const isCur=p.pp===WC_CUR_PERIOD;
+    const tag=p.pp===s.peak.pp?'<span class="wc-peak-tag">Peak</span>':(p.pp===s.low.pp?'<span class="wc-low-tag">Lowest</span>':'');
+    const barW=Math.max(2,Math.round(120*p.losses/pMax));
+    return `<tr class="${isCur?'cur':''}">
+      <td class="yr">${p.pp}${isCur?' <span class="wc-low-tag" style="background:#FFF1E2;color:#B4690E">In progress</span>':''}${tag}</td>
+      <td class="num">${p.claims}</td>
+      <td class="num">${p.open||''}</td>
+      <td class="num">${wcFmt0(p.losses)}</td>
+      <td><span class="wc-mini-bar" style="width:${barW}px"></span></td>
+    </tr>`;
+  }).join('');
+  const tableCard=`
+    <div class="wc-panel" style="margin-bottom:0">
+      <div class="wc-panel-head">
+        <div><h2>Policy period summary</h2><div class="wc-panel-sub">Claims and incurred losses by year</div></div>
+        <button class="rec-exp" onclick="wcExport('periods')"><i class="ti ti-file-spreadsheet"></i> CSV</button>
+      </div>
+      <div class="wc-tbl-wrap"><table class="wc-tbl">
+        <thead><tr><th>Policy period</th><th class="num">Claims</th><th class="num">Open</th><th class="num">Incurred</th><th></th></tr></thead>
+        <tbody>${rows}</tbody>
+        <tfoot><tr><td>Total</td><td class="num">${s.totalClaims}</td><td class="num">${s.per.reduce((a,p)=>a+p.open,0)||''}</td><td class="num">${wcFmt0(s.totalLosses)}</td><td></td></tr></tfoot>
+      </table></div>
+    </div>`;
+
+  // location cost split (CA vs PA) — name-free
+  const locs=wcLocAgg();
+  const locMax=Math.max(1,...locs.map(l=>l.losses));
+  const locTotal=locs.reduce((a,l)=>a+l.losses,0)||1;
+  const locBody=locs.map(l=>{
+    const cls=l.loc==='CA'?'ca':(l.loc==='PA'?'pa':'ca');
+    const w=Math.max(3,Math.round(100*l.losses/locMax));
+    const share=Math.round(100*l.losses/locTotal);
+    return `<div class="wc-loc-row">
+      <div class="wc-loc-key">${wcEsc(l.loc)}</div>
+      <div class="wc-loc-track"><div class="wc-loc-fill ${cls}" style="width:${w}%"></div></div>
+      <div class="wc-loc-meta"><b>${wcFmt0(l.losses)}</b> · ${l.claims} claims · ${share}%</div></div>`;
+  }).join('');
+  const locCard=`
+    <div class="wc-panel" style="margin-top:18px;margin-bottom:0">
+      <div class="wc-panel-head"><div><h2>By location</h2><div class="wc-panel-sub">Incurred losses split by site, all years</div></div></div>
+      <div class="wc-loc-split">${locBody}</div>
+    </div>`;
+
+  host.innerHTML=banner+kpis+trend+`<div class="wc-grid2">${injCard}${tableCard}</div>`+locCard;
+}
+
+/* ── CLAIMS LOG (historical, editable) ── */
+function wcRenderLog(){
+  const host=document.getElementById('wc-sub-log'); if(!host) return;
+  const editable=wcCanEdit();
+  const types=[...new Set(WC_HISTORY.map(c=>c.type))].sort();
+  const q=wcLogFilter.q.toLowerCase();
+  let rows=WC_HISTORY.filter(c=>{
+    if(wcLogFilter.loc!=='all' && c.loc!==wcLogFilter.loc) return false;
+    if(wcLogFilter.type!=='all' && c.type!==wcLogFilter.type) return false;
+    if(q && !((c.name||'').toLowerCase().includes(q)||(c.type||'').toLowerCase().includes(q)||(c.pp||'').includes(q))) return false;
+    return true;
+  });
+  // group by period (desc)
+  const byP={}; rows.forEach(c=>{ (byP[c.pp]=byP[c.pp]||[]).push(c); });
+  const periodsDesc=WC_PERIODS.filter(p=>byP[p]).reverse();
+  const filteredTotal=rows.reduce((a,c)=>a+(+c.amount||0),0);
+
+  let body='';
+  if(!rows.length){
+    body=`<tr><td colspan="${editable?6:5}"><div class="wc-empty"><i class="ti ti-search-off"></i><div class="t">No claims match these filters</div><div class="s">Try clearing the search or location filter.</div></div></td></tr>`;
+  } else {
+    periodsDesc.forEach(p=>{
+      const grp=byP[p]; const gt=grp.reduce((a,c)=>a+(+c.amount||0),0);
+      body+=`<tr class="wc-yeargroup-row"><td colspan="${editable?6:5}">${p}<span class="gt">${grp.length} claims · ${wcFmt0(gt)}</span></td></tr>`;
+      grp.forEach(c=>{
+        if(editable){
+          body+=`<tr data-id="${c.id}">
+            <td><input class="rec-in wide" data-f="name" value="${wcEsc(c.name)}" placeholder="Employee"></td>
+            <td><select class="rec-in" data-f="loc"><option ${c.loc==='CA'?'selected':''}>CA</option><option ${c.loc==='PA'?'selected':''}>PA</option><option ${c.loc==='MX'?'selected':''}>MX</option></select></td>
+            <td><input class="rec-in wide" data-f="type" list="wc-type-list" value="${wcEsc(c.type)}" placeholder="Injury type"></td>
+            <td><input class="rec-in wc-money" data-f="amount" inputmode="decimal" value="${(+c.amount||0).toFixed(2)}"></td>
+            <td style="text-align:center"><input type="checkbox" data-f="open" ${c.open?'checked':''} title="Claim still open"></td>
+            <td><button class="wc-del" title="Delete claim" onclick="wcHistDel('${c.id}')"><i class="ti ti-trash"></i></button></td>
+          </tr>`;
+        } else {
+          body+=`<tr>
+            <td>${wcEsc(c.name)}</td>
+            <td><span class="wc-loc-tag ${c.loc==='PA'?'pa':''}">${wcEsc(c.loc)}</span></td>
+            <td>${wcEsc(c.type)}</td>
+            <td class="num">${wcFmt2(c.amount)}</td>
+            <td>${c.open?'<span class="wc-badge open">Open</span>':'<span class="wc-badge closed">Closed</span>'}</td>
+          </tr>`;
+        }
+      });
+    });
+  }
+
+  host.innerHTML=`
+    <div class="wc-toolbar">
+      <div class="wc-search"><i class="ti ti-search"></i><input id="wc-log-q" placeholder="Search name, injury, year…" value="${wcEsc(wcLogFilter.q)}" oninput="wcLogSearch(this.value)"></div>
+      <select class="wc-filter" onchange="wcLogSetLoc(this.value)">
+        <option value="all" ${wcLogFilter.loc==='all'?'selected':''}>All locations</option>
+        <option value="CA" ${wcLogFilter.loc==='CA'?'selected':''}>California</option>
+        <option value="PA" ${wcLogFilter.loc==='PA'?'selected':''}>Pennsylvania</option>
+      </select>
+      <select class="wc-filter" onchange="wcLogSetType(this.value)">
+        <option value="all">All injury types</option>
+        ${types.map(t=>`<option ${wcLogFilter.type===t?'selected':''}>${wcEsc(t)}</option>`).join('')}
+      </select>
+      <span style="font-size:12px;color:var(--gray-500);font-weight:600">${rows.length} shown · ${wcFmt0(filteredTotal)}</span>
+    </div>
+    <div class="wc-panel" style="padding:0;overflow:hidden">
+      <div class="wc-panel-head" style="padding:16px 18px 4px;margin-bottom:0">
+        <div><h2>Claims log</h2><div class="wc-panel-sub">Every recorded claim, grouped by policy period${editable?' · edit any field inline':''}</div></div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <button class="rec-exp" onclick="wcExport('claims')"><i class="ti ti-file-spreadsheet"></i> CSV</button>
+          ${editable?`<button class="rec-add sm" onclick="wcHistAdd()"><i class="ti ti-plus"></i> Add claim</button>`:`<span class="wc-readonly-note"><i class="ti ti-eye"></i> View only</span>`}
+        </div>
+      </div>
+      <div class="rec-tbl-wrap" style="box-shadow:none;border:none;border-radius:0;margin-bottom:0">
+        <table class="rec-tbl"><thead><tr>
+          <th>Employee</th><th>Loc</th><th>Injury type</th><th style="text-align:right">Incurred</th><th>Open</th>${editable?'<th></th>':''}
+        </tr></thead><tbody>${body}</tbody></table>
+      </div>
+    </div>
+    <datalist id="wc-type-list">${types.map(t=>`<option value="${wcEsc(t)}"></option>`).join('')}</datalist>`;
+
+  if(editable){
+    host.querySelectorAll('tr[data-id]').forEach(tr=>{
+      const id=tr.getAttribute('data-id');
+      tr.querySelectorAll('[data-f]').forEach(inp=>{
+        const ev=inp.type==='checkbox'?'change':'change';
+        inp.addEventListener(ev,()=>wcHistField(id, inp.getAttribute('data-f'), inp.type==='checkbox'?inp.checked:inp.value));
+      });
+    });
+  }
+}
+function wcLogSearch(v){ wcLogFilter.q=v; const host=document.getElementById('wc-sub-log');
+  // re-render but keep focus on the search box
+  wcRenderLog(); const i=document.getElementById('wc-log-q'); if(i){ i.focus(); i.setSelectionRange(i.value.length,i.value.length); } }
+function wcLogSetLoc(v){ wcLogFilter.loc=v; wcRenderLog(); }
+function wcLogSetType(v){ wcLogFilter.type=v; wcRenderLog(); }
+function wcHistField(id,f,v){
+  const c=WC_HISTORY.find(x=>x.id===id); if(!c) return;
+  if(f==='amount'){ c.amount=parseFloat(String(v).replace(/[^0-9.\-]/g,''))||0; }
+  else if(f==='open'){ c.open=!!v; }
+  else c[f]=v;
+  wcSaveHist();
+  if(f==='amount'||f==='open'||f==='type'){ wcRenderOverview(); wcDashRender(); }
+}
+function wcHistAdd(){
+  if(!wcCanEdit()) return;
+  WC_HISTORY.push({id:wcUid('h'),pp:WC_PERIODS[WC_PERIODS.length-2],name:'',loc:'CA',type:'',amount:0,open:false});
+  wcSaveHist(); wcRenderLog(); wcRenderOverview(); wcRenderSeg();
+  setTimeout(()=>{ const rows=document.querySelectorAll('#wc-sub-log tr[data-id]'); const last=rows[rows.length-1]; if(last){ const inp=last.querySelector('input'); if(inp) inp.focus(); last.scrollIntoView({block:'center'}); } },30);
+}
+function wcHistDel(id){
+  if(!wcCanEdit()) return;
+  const c=WC_HISTORY.find(x=>x.id===id);
+  if(!confirm('Delete this claim'+(c&&c.name?' for '+c.name:'')+'?')) return;
+  WC_HISTORY=WC_HISTORY.filter(x=>x.id!==id);
+  wcSaveHist(); wcRenderLog(); wcRenderOverview(); wcDashRender(); wcRenderSeg();
+}
+
+/* ── ACTIVE CLAIMS (current period tracker) ── */
+function wcStatusBadge(st){ const k=(st||'').toLowerCase();
+  if(k==='open') return '<span class="wc-badge open"><i class="ti ti-clock"></i> Open</span>';
+  if(k==='closed') return '<span class="wc-badge closed"><i class="ti ti-check"></i> Closed</span>';
+  if(k==='denied') return '<span class="wc-badge denied"><i class="ti ti-ban"></i> Denied</span>';
+  return '<span class="wc-badge closed">'+wcEsc(st||'—')+'</span>'; }
+function wcRenderActive(){
+  const host=document.getElementById('wc-sub-active'); if(!host) return;
+  const editable=wcCanEdit();
+  const list=WC_ACTIVE.slice().sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+  const openN=WC_ACTIVE.filter(a=>(a.status||'').toLowerCase()==='open').length;
+  const closedN=WC_ACTIVE.filter(a=>(a.status||'').toLowerCase()==='closed').length;
+  const deniedN=WC_ACTIVE.filter(a=>(a.status||'').toLowerCase()==='denied').length;
+
+  let body='';
+  if(!list.length){
+    body=`<tr><td colspan="${editable?9:8}"><div class="wc-empty"><i class="ti ti-clipboard-plus"></i><div class="t">No active claims yet</div><div class="s">${editable?'Add a claim as soon as one is reported — it rolls into the trend automatically.':'Nothing logged for the current period.'}</div></div></td></tr>`;
+  } else if(editable){
+    list.forEach(a=>{
+      body+=`<tr data-id="${a.id}">
+        <td><input class="rec-in date" type="date" data-f="date" value="${wcEsc(a.date)}"></td>
+        <td><input class="rec-in wide" data-f="name" value="${wcEsc(a.name)}" placeholder="Employee"></td>
+        <td><select class="rec-in" data-f="loc"><option ${a.loc==='CA'?'selected':''}>CA</option><option ${a.loc==='PA'?'selected':''}>PA</option><option ${a.loc==='MX'?'selected':''}>MX</option></select></td>
+        <td><input class="rec-in" data-f="dept" value="${wcEsc(a.dept)}" placeholder="Dept"></td>
+        <td><input class="rec-in wide" data-f="description" value="${wcEsc(a.description)}" placeholder="What happened"></td>
+        <td><input class="rec-in" data-f="bodyPart" value="${wcEsc(a.bodyPart)}" placeholder="Body part"></td>
+        <td><select class="rec-in" data-f="status"><option ${a.status==='Open'?'selected':''}>Open</option><option ${a.status==='Closed'?'selected':''}>Closed</option><option ${a.status==='Denied'?'selected':''}>Denied</option></select></td>
+        <td><textarea class="rec-in rec-note-ta" data-f="notes" rows="1" placeholder="Notes" onfocus="if(typeof recGrowNote==='function')recGrowNote(this)" oninput="if(typeof recGrowNote==='function')recGrowNote(this)" onblur="if(typeof recCollapseNote==='function')recCollapseNote(this)">${wcEsc(a.notes)}</textarea></td>
+        <td><button class="wc-del" title="Delete claim" onclick="wcActDel('${a.id}')"><i class="ti ti-trash"></i></button></td>
+      </tr>`;
+    });
+  } else {
+    list.forEach(a=>{
+      body+=`<tr>
+        <td>${a.date?new Date(a.date+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'—'}</td>
+        <td>${wcEsc(a.name)}</td>
+        <td><span class="wc-loc-tag ${a.loc==='PA'?'pa':''}">${wcEsc(a.loc)}</span></td>
+        <td>${wcEsc(a.dept)}</td>
+        <td>${wcEsc(a.description)}</td>
+        <td>${wcEsc(a.bodyPart)}</td>
+        <td>${wcStatusBadge(a.status)}</td>
+        <td class="rec-notes-cell">${wcEsc(a.notes)}</td>
+      </tr>`;
+    });
+  }
+
+  host.innerHTML=`
+    <div class="wc-kpis" style="grid-template-columns:repeat(3,1fr)">
+      <div class="wc-kpi amber"><div class="wc-kpi-lab"><i class="ti ti-clock"></i> Open</div><div class="wc-kpi-val">${openN}</div><div class="wc-kpi-sub">awaiting resolution</div></div>
+      <div class="wc-kpi green"><div class="wc-kpi-lab"><i class="ti ti-check"></i> Closed</div><div class="wc-kpi-val">${closedN}</div><div class="wc-kpi-sub">resolved this period</div></div>
+      <div class="wc-kpi slate"><div class="wc-kpi-lab"><i class="ti ti-ban"></i> Denied</div><div class="wc-kpi-val">${deniedN}</div><div class="wc-kpi-sub">not compensable</div></div>
+    </div>
+    <div class="wc-panel" style="padding:0;overflow:hidden">
+      <div class="wc-panel-head" style="padding:16px 18px 4px;margin-bottom:0">
+        <div><h2>Active claims — ${WC_CUR_PERIOD}</h2><div class="wc-panel-sub">Current policy period · these feed the trend on the Overview tab</div></div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <button class="rec-exp" onclick="wcExport('active')"><i class="ti ti-file-spreadsheet"></i> CSV</button>
+          ${editable?`<button class="rec-add sm" onclick="wcActAdd()"><i class="ti ti-plus"></i> Add claim</button>`:`<span class="wc-readonly-note"><i class="ti ti-eye"></i> View only</span>`}
+        </div>
+      </div>
+      <div class="rec-tbl-wrap" style="box-shadow:none;border:none;border-radius:0;margin-bottom:0">
+        <table class="rec-tbl" style="min-width:1040px"><thead><tr>
+          <th>Date</th><th>Employee</th><th>Loc</th><th>Dept</th><th>Injury</th><th>Body part</th><th>Status</th><th>Notes</th>${editable?'<th></th>':''}
+        </tr></thead><tbody>${body}</tbody></table>
+      </div>
+    </div>`;
+
+  if(editable){
+    host.querySelectorAll('tr[data-id]').forEach(tr=>{
+      const id=tr.getAttribute('data-id');
+      tr.querySelectorAll('[data-f]').forEach(inp=>{
+        inp.addEventListener('change',()=>wcActField(id, inp.getAttribute('data-f'), inp.value));
+      });
+    });
+  }
+}
+function wcActField(id,f,v){ const a=WC_ACTIVE.find(x=>x.id===id); if(!a) return; a[f]=v; wcSaveAct();
+  if(f==='status'){ wcRenderActive(); wcRenderOverview(); wcDashRender(); wcRenderSeg(); } }
+function wcActAdd(){
+  if(!wcCanEdit()) return;
+  const today=new Date().toISOString().slice(0,10);
+  WC_ACTIVE.push({id:wcUid('a'),name:'',loc:'CA',dept:'',date:today,status:'Open',claimType:'Medical Only',provider:'CNA',description:'',bodyPart:'',notes:'',incurred:0});
+  wcSaveAct(); wcRenderActive(); wcRenderOverview(); wcDashRender(); wcRenderSeg();
+  setTimeout(()=>{ const rows=document.querySelectorAll('#wc-sub-active tr[data-id]'); const first=rows[0]; if(first){ const i=first.querySelector('input[data-f=name]'); if(i) i.focus(); } },30);
+}
+function wcActDel(id){
+  if(!wcCanEdit()) return;
+  const a=WC_ACTIVE.find(x=>x.id===id);
+  if(!confirm('Delete this claim'+(a&&a.name?' for '+a.name:'')+'?')) return;
+  WC_ACTIVE=WC_ACTIVE.filter(x=>x.id!==id);
+  wcSaveAct(); wcRenderActive(); wcRenderOverview(); wcDashRender(); wcRenderSeg();
+}
+
+/* ── NEAR MISSES ── */
+function wcRenderNear(){
+  const host=document.getElementById('wc-sub-near'); if(!host) return;
+  const editable=wcCanEdit();
+  const list=WC_NEAR.slice().sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+  let body='';
+  if(!list.length){
+    body=`<tr><td colspan="${editable?7:6}"><div class="wc-empty"><i class="ti ti-shield-check"></i><div class="t">No near misses logged yet</div><div class="s">${editable?'Log the close calls — a hazard caught here is a claim avoided on the other tabs.':'Nothing logged yet.'}</div></div></td></tr>`;
+  } else if(editable){
+    list.forEach(n=>{
+      body+=`<tr data-id="${n.id}">
+        <td><input class="rec-in date" type="date" data-f="date" value="${wcEsc(n.date)}"></td>
+        <td><select class="rec-in" data-f="loc"><option ${n.loc==='CA'?'selected':''}>CA</option><option ${n.loc==='PA'?'selected':''}>PA</option><option ${n.loc==='MX'?'selected':''}>MX</option></select></td>
+        <td><input class="rec-in" data-f="dept" value="${wcEsc(n.dept)}" placeholder="Dept/area"></td>
+        <td><textarea class="rec-in rec-note-ta" data-f="description" rows="1" placeholder="What almost happened" onfocus="if(typeof recGrowNote==='function')recGrowNote(this)" oninput="if(typeof recGrowNote==='function')recGrowNote(this)" onblur="if(typeof recCollapseNote==='function')recCollapseNote(this)">${wcEsc(n.description)}</textarea></td>
+        <td><textarea class="rec-in rec-note-ta" data-f="corrective" rows="1" placeholder="Corrective action" onfocus="if(typeof recGrowNote==='function')recGrowNote(this)" oninput="if(typeof recGrowNote==='function')recGrowNote(this)" onblur="if(typeof recCollapseNote==='function')recCollapseNote(this)">${wcEsc(n.corrective)}</textarea></td>
+        <td><input class="rec-in" data-f="reportedBy" value="${wcEsc(n.reportedBy)}" placeholder="Reported by"></td>
+        <td><button class="wc-del" title="Delete" onclick="wcNearDel('${n.id}')"><i class="ti ti-trash"></i></button></td>
+      </tr>`;
+    });
+  } else {
+    list.forEach(n=>{
+      body+=`<tr>
+        <td>${n.date?new Date(n.date+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'—'}</td>
+        <td><span class="wc-loc-tag ${n.loc==='PA'?'pa':''}">${wcEsc(n.loc)}</span></td>
+        <td>${wcEsc(n.dept)}</td>
+        <td>${wcEsc(n.description)}</td>
+        <td>${wcEsc(n.corrective)}</td>
+        <td>${wcEsc(n.reportedBy)}</td>
+      </tr>`;
+    });
+  }
+
+  host.innerHTML=`
+    <div class="wc-panel" style="padding:0;overflow:hidden">
+      <div class="wc-panel-head" style="padding:16px 18px 4px;margin-bottom:0">
+        <div><h2>Near misses</h2><div class="wc-panel-sub">Close calls that didn't become claims — the leading indicator that we're getting safer</div></div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <button class="rec-exp" onclick="wcExport('near')"><i class="ti ti-file-spreadsheet"></i> CSV</button>
+          ${editable?`<button class="rec-add sm" onclick="wcNearAdd()"><i class="ti ti-plus"></i> Log near miss</button>`:`<span class="wc-readonly-note"><i class="ti ti-eye"></i> View only</span>`}
+        </div>
+      </div>
+      <div class="rec-tbl-wrap" style="box-shadow:none;border:none;border-radius:0;margin-bottom:0">
+        <table class="rec-tbl" style="min-width:900px"><thead><tr>
+          <th>Date</th><th>Loc</th><th>Dept/area</th><th>What almost happened</th><th>Corrective action</th><th>Reported by</th>${editable?'<th></th>':''}
+        </tr></thead><tbody>${body}</tbody></table>
+      </div>
+    </div>`;
+
+  if(editable){
+    host.querySelectorAll('tr[data-id]').forEach(tr=>{
+      const id=tr.getAttribute('data-id');
+      tr.querySelectorAll('[data-f]').forEach(inp=>{ inp.addEventListener('change',()=>wcNearField(id, inp.getAttribute('data-f'), inp.value)); });
+    });
+  }
+}
+function wcNearField(id,f,v){ const n=WC_NEAR.find(x=>x.id===id); if(!n) return; n[f]=v; wcSaveNear(); }
+function wcNearAdd(){
+  if(!wcCanEdit()) return;
+  const today=new Date().toISOString().slice(0,10);
+  WC_NEAR.push({id:wcUid('n'),date:today,loc:'CA',dept:'',description:'',corrective:'',reportedBy:''});
+  wcSaveNear(); wcRenderNear(); wcRenderSeg();
+  setTimeout(()=>{ const rows=document.querySelectorAll('#wc-sub-near tr[data-id]'); const first=rows[0]; if(first){ const i=first.querySelector('textarea[data-f=description]'); if(i) i.focus(); } },30);
+}
+function wcNearDel(id){
+  if(!wcCanEdit()) return;
+  if(!confirm('Delete this near-miss entry?')) return;
+  WC_NEAR=WC_NEAR.filter(x=>x.id!==id);
+  wcSaveNear(); wcRenderNear(); wcRenderSeg();
+}
+
+/* ── dashboard scorecard ── */
+function wcDashRender(){
+  const host=document.getElementById('dash-wc-card'); if(!host) return;
+  if(!WC_HISTORY.length && !WC_ACTIVE.length){ try{ wcInit(); }catch(e){} }
+  const s=wcStats();
+  const prev=s.latest;                 // last completed plan year (e.g. 24–25)
+  const cur=s.cur;                     // current period (e.g. 25–26, in progress)
+
+  // headline comparison: current incurred-to-date vs prior full year
+  const dLoss=cur.losses-prev.losses;
+  const pct=prev.losses>0?Math.round(100*Math.abs(dLoss)/prev.losses):(cur.losses>0?100:0);
+  const dir=dLoss<0?'down':(dLoss>0?'up':'flat');
+  const arrowIco=dir==='down'?'ti-arrow-down-right':(dir==='up'?'ti-arrow-up-right':'ti-arrows-horizontal');
+  const pillCls=dir==='up'?'red':'green';
+  const pill=`<span class="stat-pill ${pillCls}">${dir==='down'?'▼':(dir==='up'?'▲':'■')} ${pct}% vs ${wcShortPP(prev.pp)}</span>`;
+
+  // horizontal bars — losses by period, last 6, current highlighted (overtime-style)
+  const recent=s.per.slice(-6);
+  const bMax=Math.max(1,...recent.map(p=>p.losses));
+  const bars=recent.map(p=>{
+    const isCur=p.pp===WC_CUR_PERIOD;
+    const w=p.losses>0?Math.max(3,Math.round(100*p.losses/bMax)):0;
+    return `<div class="wc-bar-row ${isCur?'cur':''}">
+      <div class="wc-bar-lab">${wcShortPP(p.pp)}</div>
+      <div class="wc-bar-track"><div class="wc-bar-fill" style="width:${w}%"></div></div>
+      <div class="wc-bar-val">${p.losses>0?wcCompact(p.losses):'—'}</div></div>`;
+  }).join('');
+
+  host.innerHTML=`
+    <div class="stat-head">
+      <div class="stat-badge wc"><i class="ti ti-report-medical"></i></div>
+      <div class="stat-titles">
+        <div class="stat-eyebrow">Safety &amp; Risk</div>
+        <div class="stat-title">Workers' Comp</div>
+        <div class="stat-sub">${wcShortPP(prev.pp)} vs ${wcShortPP(cur.pp)} (in progress)</div>
+      </div>
+      ${pill}
+    </div>
+    <div class="stat-body">
+      <div class="wc-cmp">
+        <div class="wc-cmp-cell">
+          <div class="wc-cmp-lab">Last plan year <span class="pp">${wcShortPP(prev.pp)}</span></div>
+          <div class="wc-cmp-val">${wcCompact(prev.losses)}</div>
+          <div class="wc-cmp-sub">${prev.claims} claim${prev.claims===1?'':'s'} · closed</div>
+        </div>
+        <div class="wc-cmp-arrow">
+          <span class="d ${dir}"><i class="ti ${arrowIco}"></i>${pct}%</span>
+          <span class="cap">to date</span>
+        </div>
+        <div class="wc-cmp-cell cur">
+          <div class="wc-cmp-lab">Current <span class="pp">${wcShortPP(cur.pp)}</span></div>
+          <div class="wc-cmp-val">${wcCompact(cur.losses)}</div>
+          <div class="wc-cmp-sub">${cur.claims} claim${cur.claims===1?'':'s'} · ${cur.open} open</div>
+        </div>
+      </div>
+      <div class="wc-bars">${bars}</div>
+      <div class="wc-chart-cap">incurred losses by plan year</div>
+      <div class="wc-foot">
+        <span>Since 2018: <b>${wcCompact(s.totalLosses)}</b> · ${s.totalClaims} claims</span>
+        <span class="sep">|</span>
+        <span>Most common: <b>${wcEsc(s.topType.type)}</b> (${s.topType.claims})</span>
+      </div>
+    </div>`;
+}
+
+/* ── CSV export ── */
+function wcExport(which){
+  let head=[], rows=[], name='workers-comp';
+  if(which==='claims'){
+    head=['Policy Period','Employee','Location','Injury Type','Incurred','Status'];
+    rows=WC_HISTORY.slice().sort((a,b)=>String(a.pp).localeCompare(String(b.pp))).map(c=>[c.pp,c.name,c.loc,c.type,(+c.amount||0).toFixed(2),c.open?'Open':'Closed']);
+    name='wc-claims-log';
+  } else if(which==='periods'){
+    head=['Policy Period','Claims','Open','Incurred Losses'];
+    rows=wcPeriodAgg().map(p=>[p.pp,p.claims,p.open,p.losses.toFixed(2)]);
+    name='wc-period-summary';
+  } else if(which==='active'){
+    head=['Date','Employee','Location','Department','Injury','Body Part','Status','Claim Type','Provider','Notes'];
+    rows=WC_ACTIVE.map(a=>[a.date,a.name,a.loc,a.dept,a.description,a.bodyPart,a.status,a.claimType,a.provider,a.notes]);
+    name='wc-active-claims';
+  } else if(which==='near'){
+    head=['Date','Location','Dept/Area','What Almost Happened','Corrective Action','Reported By'];
+    rows=WC_NEAR.map(n=>[n.date,n.loc,n.dept,n.description,n.corrective,n.reportedBy]);
+    name='wc-near-misses';
+  }
+  const esc=v=>{ v=String(v==null?'':v); return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; };
+  const csv=[head.map(esc).join(','),...rows.map(r=>r.map(esc).join(','))].join('\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  const url=URL.createObjectURL(blob); const a=document.createElement('a');
+  a.href=url; a.download=name+'-'+new Date().toISOString().slice(0,10)+'.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 </script>
 
