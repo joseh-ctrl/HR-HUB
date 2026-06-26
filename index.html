@@ -1347,67 +1347,9 @@ select.rec-in{appearance:auto;cursor:pointer}
 .pm-cancel:hover{background:var(--gray-50)}
 @media(max-width:560px){ .pm-grid{grid-template-columns:1fr} .pm-computed{grid-template-columns:1fr} }
 
-/* ══════════════ TIMESHEET ASSISTANT ══════════════ */
-.ts-callout.bad{color:var(--red-600);background:#FCEBEB;border:1px solid #F09595}
-.ts-callout.ok{color:var(--green-pop-deep);background:var(--green-pop-bg);border:1px solid var(--green-pop-border)}
-.ts-state-seg{display:inline-flex;background:var(--gray-100);border:1px solid var(--gray-200);border-radius:22px;padding:3px;gap:3px}
-.ts-state-seg button{border:none;background:transparent;font-family:inherit;font-size:13px;font-weight:600;color:var(--gray-600);padding:7px 18px;border-radius:18px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:7px}
-.ts-state-seg button .ts-st-sub{font-size:10.5px;font-weight:600;opacity:.7}
-.ts-state-seg button.on{background:#fff;color:var(--blue-800);box-shadow:0 1px 3px rgba(16,40,80,.14)}
-.ts-state-seg button.on .ts-st-sub{opacity:.85}
-.ts-drop{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px;background:#fff;border:1.5px dashed var(--gray-200);border-radius:var(--radius-lg);padding:30px 20px;box-shadow:var(--shadow);cursor:pointer;transition:border-color .15s,background .15s}
-.ts-drop:hover{border-color:var(--blue-400);background:var(--blue-50)}
-.ts-drop.drag{border-color:var(--blue-400);background:var(--blue-50)}
-.ts-drop .ts-drop-ic{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:23px;background:var(--g-brand)}
-.ts-drop h4{font-size:14px;font-weight:700;color:var(--gray-800)}
-.ts-drop p{font-size:12px;color:var(--gray-500);line-height:1.5}
-.ts-drop input{display:none}
-.ts-thumbs{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-.ts-thumb{position:relative;width:108px;height:108px;border-radius:10px;overflow:hidden;border:1px solid var(--gray-200);box-shadow:var(--shadow);background:var(--gray-100)}
-.ts-thumb img{width:100%;height:100%;object-fit:cover}
-.ts-thumb button{position:absolute;top:4px;right:4px;width:22px;height:22px;border:none;border-radius:50%;background:rgba(24,28,32,.72);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px}
-.ts-thumb button:hover{background:var(--red-600)}
-.ts-thumb .ts-thumb-n{position:absolute;bottom:0;left:0;right:0;background:rgba(4,44,83,.82);color:#fff;font-size:10.5px;font-weight:600;padding:2px 6px}
-.ts-actions{display:flex;align-items:center;gap:12px;margin-top:18px;flex-wrap:wrap}
-.ts-link{background:none;border:none;color:var(--gray-500);font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:5px}
-.ts-link:hover{color:var(--red-600)}
-.ts-results{margin-top:24px;display:none}
-.ts-results.show{display:block}
-.ts-banner{display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:var(--radius-lg);margin-bottom:16px;color:#fff;background:var(--g-brand)}
-.ts-banner.clean{background:linear-gradient(135deg,#34D08A,#15A463)}
-.ts-banner.issues{background:linear-gradient(135deg,#E8731A,#C0521A)}
-.ts-banner i{font-size:30px;flex-shrink:0}
-.ts-banner .tb-t{font-size:16px;font-weight:800;line-height:1.2}
-.ts-banner .tb-s{font-size:12.5px;opacity:.92;margin-top:3px;line-height:1.4}
-.ts-day{background:#fff;border:var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-card);margin-bottom:14px;overflow:hidden}
-.ts-day-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:13px 16px;border-bottom:var(--border);background:var(--gray-50)}
-.ts-day-head .ts-day-label{font-size:14px;font-weight:700;color:var(--gray-900)}
-.ts-day-head .ts-day-meta{font-size:12px;color:var(--gray-500);display:flex;gap:14px;flex-wrap:wrap}
-.ts-day-head .ts-day-meta b{color:var(--gray-700);font-weight:700}
-.ts-pill{margin-left:auto;font-size:11px;font-weight:700;padding:3px 11px;border-radius:20px;letter-spacing:.3px}
-.ts-pill.clean{background:var(--green-pop-bg);color:var(--green-pop-deep)}
-.ts-pill.flagged{background:#FAEEDA;color:var(--amber-800)}
-.ts-flags{padding:8px 16px 14px}
-.ts-flag{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--gray-100)}
-.ts-flag:last-child{border-bottom:none}
-.ts-sev{flex-shrink:0;font-size:10px;font-weight:800;letter-spacing:.4px;padding:3px 8px;border-radius:5px;margin-top:1px;min-width:74px;text-align:center}
-.ts-sev.high{background:#FCEBEB;color:var(--red-600)}
-.ts-sev.medium{background:#FAEEDA;color:var(--amber-800)}
-.ts-sev.low{background:var(--blue-50);color:var(--blue-800)}
-.ts-sev.info{background:var(--gray-100);color:var(--gray-600)}
-.ts-flag .ts-flag-msg{font-size:13px;color:var(--gray-800);line-height:1.45}
-.ts-flag .ts-flag-msg .ts-code{font-weight:700;color:var(--gray-900)}
-.ts-clean-row{display:flex;align-items:center;gap:8px;padding:11px 0;font-size:13px;color:var(--green-pop-deep);font-weight:600}
-.ts-legend{background:#fff;border:var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow);padding:16px 18px;margin-top:18px}
-.ts-legend h4{font-size:13px;font-weight:700;color:var(--gray-800);display:flex;align-items:center;gap:7px;margin-bottom:10px}
-.ts-legend h4 i{color:var(--blue-600)}
-.ts-legend ul{list-style:none;display:flex;flex-direction:column;gap:7px}
-.ts-legend li{font-size:12.5px;color:var(--gray-600);line-height:1.45;display:flex;gap:8px;align-items:flex-start}
-.ts-legend li i{color:var(--blue-400);font-size:14px;margin-top:1px;flex-shrink:0}
-.ts-caveats{font-size:12px;color:var(--gray-500);line-height:1.55;margin-top:12px;padding-top:12px;border-top:var(--border)}
-.ts-caveats b{color:var(--gray-700)}
-
 /* ══════════════ MY TASKS ══════════════ */
+.tk-yearbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.tk-yearbar-lbl{font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--gray-500)}
 .tk-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px}
 .tk-stat{background:#fff;border:var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-card);padding:15px 16px}
 .tk-stat .tk-stat-top{display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;color:var(--gray-500)}
@@ -1422,6 +1364,10 @@ select.rec-in{appearance:auto;cursor:pointer}
 .tk-stat.accent .tk-bar > span{background:#fff}
 /* dashboard task scorecard */
 .tk-score-wrap{margin-bottom:22px}
+/* when the task scorecard sits inside the dashboard stat-grid (beside Workers' Comp),
+   fill that cell and stack the per-rep cards vertically so there's no blank space */
+.stat-grid>.tk-score-wrap{margin-bottom:0;display:flex;flex-direction:column}
+.stat-grid>.tk-score-wrap .tk-score-grid{grid-template-columns:1fr;flex:1}
 .tk-score-head{display:flex;align-items:center;gap:8px;margin:0 2px 12px;font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--blue-600)}
 .tk-score-head i{font-size:15px}
 .tk-score-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
@@ -1575,6 +1521,16 @@ select.rec-in{appearance:auto;cursor:pointer}
 }
 
 /* ══════════════ BIRTHDAY & GIFT CARDS ══════════════ */
+.gc-byr-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.gc-byr-bar .gc-byr-lbl{font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--gray-500)}
+.gc-byr-seg{display:inline-flex;background:var(--gray-100);border:1px solid var(--gray-200);border-radius:22px;padding:3px;gap:3px;flex-wrap:wrap}
+.gc-byr-btn{border:none;background:transparent;font-family:inherit;font-size:13px;font-weight:700;color:var(--gray-600);padding:6px 16px;border-radius:18px;cursor:pointer;transition:all .15s}
+.gc-byr-btn.on{background:#fff;color:var(--blue-800);box-shadow:0 1px 3px rgba(16,40,80,.14)}
+.gc-byr-add{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--gray-200);background:#fff;color:var(--gray-700);font-family:inherit;font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:18px;cursor:pointer;transition:all .15s}
+.gc-byr-add:hover{border-color:var(--blue-400);color:var(--blue-800);background:var(--blue-50)}
+.gc-seg{display:inline-flex;background:var(--gray-100);border:1px solid var(--gray-200);border-radius:22px;padding:3px;gap:3px}
+.gc-seg button{border:none;background:transparent;font-family:inherit;font-size:13px;font-weight:600;color:var(--gray-600);padding:7px 18px;border-radius:18px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:7px}
+.gc-seg button.on{background:#fff;color:var(--blue-800);box-shadow:0 1px 3px rgba(16,40,80,.14)}
 .gc-seg button .ti{font-size:15px}
 .gc-reminder{position:relative;overflow:hidden;border-radius:16px;padding:20px 22px;margin-bottom:4px;
   background:radial-gradient(620px 300px at 90% -40%,rgba(45,160,224,.30),transparent 60%),linear-gradient(135deg,var(--hero-1),var(--hero-2));
@@ -1980,7 +1936,6 @@ select.rec-in{appearance:auto;cursor:pointer}
       <div class="nav-item" onclick="nav('workerscomp',this)"><i class="ti ti-report-medical"></i>Workers' Comp</div>
       <div class="nav-item" onclick="nav('pto',this)"><i class="ti ti-beach"></i>PTO Tracker</div>
       <div class="nav-item" onclick="nav('benefits',this)"><i class="ti ti-heart-handshake"></i>Benefits Eligibility</div>
-      <div class="nav-item" onclick="nav('timesheet',this)"><i class="ti ti-clock-search"></i>Timesheet Assistant</div>
       <div class="nav-item" onclick="nav('giftcards',this)"><i class="ti ti-gift"></i>Birthday &amp; Gift Cards</div>
       <div class="nav-item" onclick="nav('vendors',this)"><i class="ti ti-building-store"></i>Approved Vendors</div>
     </div>
@@ -1995,7 +1950,7 @@ select.rec-in{appearance:auto;cursor:pointer}
 
     <div class="nav-group">
       <div class="nav-label">Vendor Portals</div>
-      <div class="nav-item nav-ext-link" onclick="window.open('https://www.employeenavigator.com/identity/Account/Login?ReturnUrl=%2Fidentity%2Fconnect%2Fauthorize%2Fcallback%3FauthzId%3D6FCD4D581E830DB758F1C387504A07752E4A67ACD5138C25B1CBAD1AB484A79A','_blank','noopener');closeSidebar()"><i class="ti ti-umbrella"></i>Employee Navigator<i class="ti ti-external-link nav-ext"></i></div>
+      <div class="nav-item nav-ext-link" onclick="window.open('https://www.employeenavigator.com/benefits/account/login','_blank','noopener');closeSidebar()"><i class="ti ti-umbrella"></i>Employee Navigator<i class="ti ti-external-link nav-ext"></i></div>
       <div class="nav-item nav-ext-link" onclick="window.open('https://secure.indeed.com/auth?hl=en_US&co=US&continue=https%3A%2F%2Femployers.indeed.com%2Forchestrator%3Ffrom%3Dgnav_employer_marketing_header%26continue%3Dhttps%253A%252F%252Fwww.indeed.com%252Femployers%252Flogin%26hl%3Den%26co%3DUS&tmpl=mobile&from=gnav-util-employer--post-press--employer&jsContinue=https%3A%2F%2Fonboarding.indeed.com%2Fonboarding%3Fhl%3Den_US%26co%3DUS%26from%3Dgnav-employer--post-press--employer','_blank','noopener');closeSidebar()"><i class="ti ti-briefcase"></i>Indeed<i class="ti ti-external-link nav-ext"></i></div>
       <div class="nav-item nav-ext-link" onclick="window.open('https://sponsor.fidelity.com/pspublic/pl/site/login.html#/login?ccsource=int_log-in','_blank','noopener');closeSidebar()"><i class="ti ti-building-bank"></i>Fidelity PSW<i class="ti ti-external-link nav-ext"></i></div>
       <div class="nav-item nav-ext-link" onclick="window.open('https://apps.trustmineral.com/auth/login','_blank','noopener');closeSidebar()"><i class="ti ti-gavel"></i>Mineral<i class="ti ti-external-link nav-ext"></i></div>
@@ -2179,10 +2134,10 @@ select.rec-in{appearance:auto;cursor:pointer}
 
           <!-- WORKERS' COMP · claims & losses this period -->
           <div class="stat-card wc" id="dash-wc-card" onclick="nav('workerscomp', document.querySelector('.nav-item[onclick*=workerscomp]'))" style="cursor:pointer"></div>
-        </div>
 
-        <!-- TASK SCORECARD (rendered by tasksScoreRender) -->
-        <div class="tk-score-wrap" id="dash-tasks-score"></div>
+          <!-- TASK SCORECARD (rendered by tasksScoreRender) — fills the cell beside Workers' Comp -->
+          <div class="tk-score-wrap" id="dash-tasks-score"></div>
+        </div>
       </div>
 
       <!-- YEARLY TASKS -->
@@ -2204,6 +2159,8 @@ select.rec-in{appearance:auto;cursor:pointer}
             <div class="yt-progress-bar"><div class="yt-progress-fill" id="yt-progress-fill"></div></div>
           </div>
           <button class="yt-reset" id="yt-reset" onclick="ytResetYear()"><i class="ti ti-rotate"></i> Reset year</button>
+          <button class="rec-exp" onclick="ytExport('csv')"><i class="ti ti-file-spreadsheet"></i> CSV</button>
+          <button class="rec-exp" onclick="ytExport('pdf')"><i class="ti ti-file-type-pdf"></i> PDF</button>
           <span class="yt-lock-badge" id="yt-lock-badge" style="display:none"><i class="ti ti-lock"></i> Locked · read-only</span>
         </div>
 
@@ -2258,6 +2215,8 @@ select.rec-in{appearance:auto;cursor:pointer}
           </div>
           <button class="yt-reset" id="tr-reset" onclick="trResetYear()"><i class="ti ti-rotate"></i> Reset year</button>
           <button class="tr-restore-btn" id="tr-restore" onclick="trRestoreFromCloud()" title="Pull this year's turnover from the Leadership cloud copy back into this device"><i class="ti ti-cloud-download"></i> Restore from cloud</button>
+          <button class="rec-exp" onclick="trExport('csv')"><i class="ti ti-file-spreadsheet"></i> CSV</button>
+          <button class="rec-exp" onclick="trExport('pdf')"><i class="ti ti-file-type-pdf"></i> PDF</button>
           <span class="tr-readonly-note" id="tr-readonly" style="display:none"><i class="ti ti-eye"></i> View only · ask HR to edit</span>
         </div>
 
@@ -2593,45 +2552,6 @@ select.rec-in{appearance:auto;cursor:pointer}
         <div id="tk-body"></div>
       </div>
 
-      <!-- TIMESHEET ASSISTANT -->
-      <div class="screen" id="screen-timesheet">
-        <div class="screen-eyebrow">Compliance</div>
-        <div class="screen-title">Timesheet Assistant</div>
-        <p class="screen-lede">Pick the work state, drop in a screenshot of the timecard, and the assistant flags meal-period, rest-break, and overtime timekeeping issues for that state. Decision support only — it reads what's on the card and never saves the image.</p>
-
-        <div id="ts-setup"></div>
-
-        <!-- state -->
-        <div class="sf-field" style="margin-bottom:18px">
-          <label style="margin-bottom:8px">Work state</label>
-          <div class="ts-state-seg" id="ts-state-seg">
-            <button data-state="CA" class="on" onclick="tsSetState('CA')">California <span class="ts-st-sub">CA</span></button>
-            <button data-state="PA" onclick="tsSetState('PA')">Pennsylvania <span class="ts-st-sub">PA</span></button>
-          </div>
-        </div>
-
-        <!-- dropzone -->
-        <label class="ts-drop" id="ts-drop"
-          ondragover="event.preventDefault();this.classList.add('drag')"
-          ondragleave="this.classList.remove('drag')"
-          ondrop="tsDrop(event)">
-          <span class="ts-drop-ic"><i class="ti ti-camera"></i></span>
-          <h4>Drop or paste a timecard screenshot</h4>
-          <p>Drag an image here, click to browse, or paste with Ctrl/⌘-V.<br>Add more than one for a multi-day or multi-page card.</p>
-          <input type="file" accept="image/*" multiple onchange="tsPick(this)">
-        </label>
-        <div class="ts-thumbs" id="ts-thumbs"></div>
-
-        <div class="ts-actions">
-          <button class="rec-add" id="ts-analyze-btn" onclick="tsAnalyze()"><i class="ti ti-sparkles"></i> Review timecard</button>
-          <button class="ts-link" onclick="tsClear()"><i class="ti ti-eraser"></i> Clear</button>
-        </div>
-
-        <div class="ts-results" id="ts-results"></div>
-
-        <div id="ts-legend"></div>
-      </div>
-
       <!-- BIRTHDAY & GIFT CARDS -->
       <div class="screen" id="screen-giftcards">
         <div class="screen-eyebrow">Recognition</div>
@@ -2642,10 +2562,14 @@ select.rec-in{appearance:auto;cursor:pointer}
         <div id="gc-reminder"></div>
 
         <!-- view toggle: Birthdays / Recognition / Raffle Winners -->
-        <div class="ts-state-seg gc-seg" id="gc-seg" style="margin:22px 0 18px">
+        <div class="gc-seg" id="gc-seg" style="margin:22px 0 18px">
           <button data-gc="birthday" class="on" onclick="gcSetView('birthday')"><i class="ti ti-cake"></i> Birthdays</button>
           <button data-gc="recognition" onclick="gcSetView('recognition')"><i class="ti ti-award"></i> Recognition</button>
           <button data-gc="raffle" onclick="gcSetView('raffle')"><i class="ti ti-confetti"></i> Raffle Winners</button>
+        </div>
+        <div style="display:flex;gap:8px;margin:-6px 0 16px">
+          <button class="rec-exp" onclick="gcExport('csv')"><i class="ti ti-file-spreadsheet"></i> CSV</button>
+          <button class="rec-exp" onclick="gcExport('pdf')"><i class="ti ti-file-type-pdf"></i> PDF</button>
         </div>
 
         <div id="gc-body"></div>
@@ -2664,6 +2588,7 @@ select.rec-in{appearance:auto;cursor:pointer}
             <button class="vnd-search-clear" onclick="var s=document.getElementById('vnd-search');s.value='';vndRender();s.focus()" aria-label="Clear search">&times;</button>
           </div>
           <button class="vnd-ghost" id="vnd-export" onclick="vndExportCsv()" style="display:none"><i class="ti ti-file-spreadsheet"></i> Export CSV</button>
+          <button class="vnd-ghost" id="vnd-export-pdf" onclick="vndExportPdf()" style="display:none"><i class="ti ti-file-type-pdf"></i> Export PDF</button>
           <button class="rec-add" id="vnd-add-btn" onclick="vndOpenModal()"><i class="ti ti-plus"></i> Add vendor</button>
           <span class="tr-readonly-note" id="vnd-readonly" style="display:none"><i class="ti ti-eye"></i> View only · ask HR to edit</span>
         </div>
@@ -2771,7 +2696,9 @@ async function cloudBridgeFromLRC(){
   };
   // turnover — per known year
   try{
-    const years = (typeof TR_YEARS!=='undefined' && Array.isArray(TR_YEARS)) ? TR_YEARS : [2026];
+    const years = (typeof trYearsList==='function') ? trYearsList()
+                : (typeof hubYearList==='function') ? hubYearList([2025,2026,2027], (typeof hubLsYears==='function'?hubLsYears('hrhub_turnover2_'):[]))
+                : (typeof TR_YEARS!=='undefined' && Array.isArray(TR_YEARS)) ? TR_YEARS : [2026];
     for(const y of years){
       const lsKey = 'hrhub_turnover2_'+y;
       if(!localEmpty(lsKey)) continue;
@@ -2784,7 +2711,7 @@ async function cloudBridgeFromLRC(){
   try{
     const otKey = (typeof OT_KEY!=='undefined') ? OT_KEY : 'hrhub_ot_2026';
     if(localEmpty(otKey)){
-      const yy=new Date().getFullYear(); const oy=(yy>=2025 && yy<=2027)?yy:2026;
+      const oy=new Date().getFullYear();
       const p = await window.hubPullLRC('ot_'+oy);
       const data = (p && Array.isArray(p.data)) ? p.data : null;
       if(data && data.length){ try{ localStorage.setItem(otKey, JSON.stringify(data)); }catch(e){} }
@@ -3006,7 +2933,6 @@ function enterApp(user){
 
 async function doLogout(){
   if(typeof recWipeSensitive==='function') recWipeSensitive();
-  if(typeof tsWipe==='function') tsWipe();
   try{ const sb=await cloudInit(); if(sb) await sb.auth.signOut(); }catch(e){}
   cloudReady = false;
   sessionStorage.removeItem(SESSION_KEY);
@@ -3016,7 +2942,7 @@ async function doLogout(){
 
 /* ══════════════ NAV ══════════════ */
 const pageTitles = {
-  dashboard:'Dashboard', yearly:'Yearly Tasks', turnover:'Turnover Rates', recruiting:'Recruiting', overtime:'Overtime by Department', workerscomp:"Workers' Comp", pto:'PTO Tracker', benefits:'Benefits Eligibility', timesheet:'Timesheet Assistant', tasks:'My Tasks', giftcards:'Birthday & Gift Cards', vendors:'Approved Vendors', settings:'Settings'
+  dashboard:'Dashboard', yearly:'Yearly Tasks', turnover:'Turnover Rates', recruiting:'Recruiting', overtime:'Overtime by Department', workerscomp:"Workers' Comp", pto:'PTO Tracker', benefits:'Benefits Eligibility', tasks:'My Tasks', giftcards:'Birthday & Gift Cards', vendors:'Approved Vendors', settings:'Settings'
 };
 function nav(id, el){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -3033,7 +2959,6 @@ function nav(id, el){
   if(id==='workerscomp' && typeof wcRender==='function') wcRender();
   if(id==='pto' && typeof ptoRender==='function') ptoRender();
   if(id==='benefits' && typeof benRender==='function') benRender();
-  if(id==='timesheet' && typeof tsRender==='function') tsRender();
   if(id==='giftcards' && typeof gcRender==='function') gcRender();
   if(id==='vendors' && typeof vndRender==='function') vndRender();
   if(id==='tasks' && typeof tasksRender==='function'){ tasksRender(); if(typeof tkConfigured==='function' && tkConfigured()) tkPull(false); }
@@ -3043,7 +2968,8 @@ function nav(id, el){
 }
 
 /* ══════════════ YEARLY TASKS TRACKER ══════════════ */
-const YT_YEARS = [2022,2023,2024,2025,2026,2027];
+const YT_YEARS = [2022,2023,2024,2025,2026,2027];   // baseline floor; live list also auto-adds current/next year + any year with data
+function ytYearsList(){ return (typeof hubYearList==='function') ? hubYearList(YT_YEARS, hubLsYears('hrhub_yearly_')) : YT_YEARS.slice(); }
 let ytYear = 2026;
 const TASK_GROUPS = [
   { cat:'Audit', icon:'ti-clipboard-check', tasks:[
@@ -3119,6 +3045,28 @@ function ytComputeYearStats(year){
   }));
   return {done, applicable, pct: applicable?Math.round(100*done/applicable):0};
 }
+function ytExport(fmt){
+  fmt=fmt||'csv';
+  const year=ytYear, groups=ytTasksForYear(year), locked=ytIsLocked(year);
+  let raw=null; if(!locked){ try{ raw=JSON.parse(localStorage.getItem(ytKey(year))||'null'); }catch(e){ raw=null; } }
+  const st=ytStateForYear(year);
+  const label={done:'Done',failed:'Failed to complete',na:'Not applicable',pending:'Pending'};
+  const head=['Category','Task','Status','Notes','Links'];
+  const rows=[];
+  groups.forEach(g=>{
+    g.tasks.forEach(t=>{
+      const status=st[t.id]||'pending';
+      const rec=(raw&&raw[t.id])||{};
+      const notes=rec.notes||'';
+      const links=((rec.links)||[]).map(l=>(l.label?l.label+': ':'')+(l.url||'')).join(' | ');
+      rows.push([g.cat, t.name, (label[status]||status), notes, links]);
+    });
+  });
+  const s=ytComputeYearStats(year);
+  const title='WS Display — Yearly Tasks '+year+' · '+s.pct+'% complete'+(locked?' (locked)':'');
+  const file='ws-yearly-tasks-'+year;
+  if(fmt==='pdf') hubExportPDF(head, rows, title, file); else hubExportCSV(head, rows, file);
+}
 function ytId(gi,ti){ return 'g'+gi+'t'+ti; }
 function ytKey(y){ return 'hrhub_yearly_'+y; }
 let ytState = {};
@@ -3151,7 +3099,7 @@ function ytAssign(id, userId){
 }
 
 function ytRenderYearSeg(){
-  document.getElementById('yt-year-seg').innerHTML = YT_YEARS.map(y=>
+  document.getElementById('yt-year-seg').innerHTML = ytYearsList().map(y=>
     `<button class="yt-year-btn ${y===ytYear?'active':''}" onclick="ytSetYear(${y})">${ytIsLocked(y)?'<i class="ti ti-lock"></i> ':''}${y}</button>`).join('');
 }
 function ytRenderToolbar(){
@@ -3361,7 +3309,7 @@ function ytInit(){
   ytLoadTaskDefs();
   // default to current calendar year if it's in range, else 2026
   const cy = new Date().getFullYear();
-  ytYear = YT_YEARS.includes(cy) ? cy : 2026;
+  ytYear = ytYearsList().includes(cy) ? cy : (typeof hubCurYear==='function'?hubCurYear():2026);
   notifYear = ytYear;
   ytLoad(); ytRenderYearSeg(); ytRenderToolbar(); ytRenderList(); ytRenderProgress();
 }
@@ -3437,7 +3385,7 @@ function hasYtData(y){ try{ return !!localStorage.getItem(ytKey(y)); }catch(e){ 
 function renderDashChart(){
   const host = document.getElementById('dash-chart'); if(!host) return;
   const cy = new Date().getFullYear();
-  const years = YT_YEARS.filter(y => y<=cy || (!ytIsLocked(y) && hasYtData(y)));
+  const years = ytYearsList().filter(y => y<=cy || (!ytIsLocked(y) && hasYtData(y)));
   const data = years.map(y=>{
     const pct = ytComputeYearStats(y).pct;
     return { label:String(y)+(ytIsLocked(y)?' 🔒':''), value:pct, display:pct+'%', highlight:(y===cy) };
@@ -3867,7 +3815,9 @@ const MONTHS = [
   {name:'July',abbr:'Jul'},{name:'August',abbr:'Aug'},{name:'September',abbr:'Sep'},
   {name:'October',abbr:'Oct'},{name:'November',abbr:'Nov'},{name:'December',abbr:'Dec'}
 ];
-const TR_YEARS = [2025,2026,2027];
+const TR_YEARS = [2025,2026,2027];   // baseline floor; the live list also auto-includes the current/next year and any year with data
+// Dynamic switcher list: baseline ∪ years that already have saved data ∪ current/next year.
+function trYearsList(){ return (typeof hubYearList==='function') ? hubYearList(TR_YEARS, hubLsYears('hrhub_turnover2_')) : TR_YEARS.slice(); }
 let trYear = 2026;
 let trView = 'all'; // 'all' (company rollup) | 'ca' | 'pa'
 
@@ -3962,7 +3912,7 @@ function trYearSummary(y,view){
 }
 function trInit(){
   const cy=new Date().getFullYear();
-  trYear = TR_YEARS.includes(cy)?cy:2026;
+  trYear = trYearsList().includes(cy)?cy:(typeof hubCurYear==='function'?hubCurYear():2026);
   trView='all';
   trLoad();
   renderDashTurnover();
@@ -3970,9 +3920,40 @@ function trInit(){
 function trRender(){ trRenderYearSeg(); trRenderStateSeg(); trRenderToolbar(); trRenderSummary(); trRenderBench(); trRenderChart(); trRenderMonths(); }
 function trRenderYearSeg(){
   const seg=document.getElementById('tr-year-seg'); if(!seg) return;
-  seg.innerHTML = TR_YEARS.map(y=>`<button class="yt-year-btn ${y===trYear?'active':''}" onclick="trSetYear(${y})">${y}</button>`).join('');
+  const years=trYearsList();
+  seg.innerHTML = years.map(y=>`<button class="yt-year-btn ${y===trYear?'active':''}" onclick="trSetYear(${y})">${y}</button>`).join('')
+    + `<button class="yt-year-btn yt-year-add" title="Track a new year" onclick="trAddYear()"><i class="ti ti-plus"></i></button>`;
 }
 function trSetYear(y){ if(y===trYear) return; trYear=y; trLoad(); trRender(); }
+function trAddYear(){
+  if(typeof trCanEdit==='function' && !trCanEdit()){ return; }
+  const years=trYearsList();
+  const suggest=(years.length?Math.max.apply(null,years):hubCurYear())+1;
+  const input=prompt('Add a year to track turnover for.\nPast years stay saved; you can switch between them anytime.', String(suggest));
+  if(input===null) return;
+  const y=parseInt(String(input).trim(),10);
+  if(!y || y<2000 || y>2100){ alert('Please enter a valid 4-digit year (e.g. '+suggest+').'); return; }
+  // touch an empty record so the year persists in the switcher even before data is entered
+  try{ if(!localStorage.getItem('hrhub_turnover2_'+y)) localStorage.setItem('hrhub_turnover2_'+y, JSON.stringify({})); }catch(e){}
+  trYear=y; trLoad(); trRender();
+}
+function trExport(fmt){
+  fmt=fmt||'csv';
+  const viewLbl = trView==='ca'?'California' : trView==='pa'?'Pennsylvania' : 'Company';
+  const head=['Month','Avg headcount','Voluntary','Involuntary','Total sep','Under 1 yr','Turnover %','Voluntary %','Involuntary %'];
+  const pct=v=>(v==null?'':(Math.round(v*10)/10).toFixed(1));
+  const num=v=>(v==null?'':v);
+  const rows=MONTHS.map((m,i)=>{
+    const r=trMonthCompute(trYear,i,trView);
+    if(!r.hasData) return null;
+    return [m.name, (r.avg==null?'':Math.round(r.avg*10)/10), num(r.vol), num(r.invol), num(r.sep), num(r.fy), pct(r.rate), pct(r.volRate), pct(r.involRate)];
+  }).filter(Boolean);
+  const s=trYearSummary(trYear,trView);
+  rows.push(['Year (avg / total)', (s.avgHeadcount==null?'':Math.round(s.avgHeadcount*10)/10), s.totalVol, s.totalInvol, s.totalSep, s.totalFy, pct(s.ytdRate), pct(s.volRate), pct(s.involRate)]);
+  const title='WS Display — Turnover '+trYear+' · '+viewLbl;
+  const file='ws-turnover-'+trYear+'-'+trView;
+  if(fmt==='pdf') hubExportPDF(head, rows, title, file); else hubExportCSV(head, rows, file);
+}
 function trRenderStateSeg(){
   const seg=document.getElementById('tr-state-seg'); if(!seg) return;
   const opts=[{id:'all',label:'Company'},{id:'ca',label:'California'},{id:'pa',label:'Pennsylvania'}];
@@ -4443,6 +4424,7 @@ function vndRender(){
     `<div class="vnd-stat bad"><div class="vs-n">${nBad}</div><div class="vs-l">Expired / missing</div></div>`
   ) : '';
   const exp=document.getElementById('vnd-export'); if(exp) exp.style.display = all.length?'':'none';
+  const expp=document.getElementById('vnd-export-pdf'); if(expp) expp.style.display = all.length?'':'none';
 
   // empty state
   if(!all.length){
@@ -4672,6 +4654,14 @@ function vndExportCsv(){
   const a=document.createElement('a'); a.href=url; a.download='approved-vendors-'+huTodayISO()+'.csv';
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(()=>{ try{ URL.revokeObjectURL(url); }catch(e){} }, 2000);
+}
+function vndExportPdf(){
+  const all=vndLoad(); if(!all.length){ alert('No vendors to export yet.'); return; }
+  const statusTxt=v=>v.status==='inactive'?'Inactive':v.status==='pending'?'Pending':'Active';
+  const head=['Business name','Service','Contact','Phone','Status','COI status','COI exp','W-9','Approved on'];
+  const rows=all.map(v=>{ const s=vndCoiStatus(v);
+    return [v.name,v.service,v.contactName,v.phone,statusTxt(v),s.label,(v.coiExp||''),(v.w9?'Yes':'No'),(v.approvedOn||'')]; });
+  hubExportPDF(head, rows, 'WS Display — Approved Vendors', 'approved-vendors');
 }
 
 /* ══════════════ SETTINGS (user management) ══════════════ */
@@ -5012,7 +5002,8 @@ function closeSidebar(){ document.getElementById('sidebar').classList.remove('op
    ══════════════════════════════════════════════════════════════ */
 function recEsc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
-const REC_YEARS  = [2024,2025,2026,2027];
+const REC_YEARS  = [2024,2025,2026,2027];   // baseline floor; live list also auto-adds current/next year + any year with data
+function recYearsList(){ return (typeof hubYearList==='function') ? hubYearList(REC_YEARS, hubLsYears('hrhub_rec_log_')) : REC_YEARS.slice(); }
 const REC_LOCKED = [2024,2025];           // permanent records — read-only
 const REC_DEFAULT_LOGGER = 'Stephanie Bryan';   // pre-fills the "Logged by" field
 let   recYear    = 2026;
@@ -5207,7 +5198,7 @@ function recYearStats(y, view){
 /* ══════════════ INIT / RENDER ══════════════ */
 function recInit(){
   const cy = new Date().getFullYear();
-  recYear = REC_YEARS.includes(cy)?cy:2026;
+  recYear = recYearsList().includes(cy)?cy:(typeof hubCurYear==='function'?hubCurYear():2026);
   recView = 'all';
   recLoadHolidays(); recLoadOpts(); recLoadRejects(); recLoadLog();
   if(typeof dashRecRender==='function') dashRecRender();
@@ -5258,7 +5249,7 @@ function recRenderSteps(){
 /* ── time-to-hire toolbar ── */
 function recRenderToolbar(){
   const yseg=document.getElementById('rec-year-seg');
-  if(yseg) yseg.innerHTML = REC_YEARS.map(y=>`<button class="yt-year-btn ${y===recYear?'active':''}" onclick="recSetYear(${y})">${y}${recIsLocked(y)?' <i class="ti ti-lock"></i>':''}</button>`).join('');
+  if(yseg) yseg.innerHTML = recYearsList().map(y=>`<button class="yt-year-btn ${y===recYear?'active':''}" onclick="recSetYear(${y})">${y}${recIsLocked(y)?' <i class="ti ti-lock"></i>':''}</button>`).join('');
   const vseg=document.getElementById('rec-view-seg');
   if(vseg){ const opts=[['all','Company'],['CA','California'],['PA','Pennsylvania'],['Remote','Remote']];
     vseg.innerHTML = opts.map(o=>`<button class="yt-year-btn ${o[0]===recView?'active':''}" onclick="recSetView('${o[0]}')">${o[1]}</button>`).join(''); }
@@ -5827,283 +5818,13 @@ function recClearResume(){
 /* wiped on logout — nothing here is ever written to disk */
 function recWipeSensitive(){ try{ sessionStorage.removeItem(REC_KEY_SS); }catch(e){} recClearResume(); }
 
-/* ══════════════ TIMESHEET ASSISTANT (vision · memory-only) ══════════════ */
-let tsState='CA';
-let tsImages=[];            // {data:base64, media_type, name}  — memory only, never persisted
-let tsBusy=false;
-let tsPasteBound=false;
-
-function tsRender(){
-  tsRenderSetup();
-  tsRenderLegend();
-  // enable paste-to-add while the tab is open
-  if(!tsPasteBound){
-    document.addEventListener('paste', tsHandlePaste);
-    tsPasteBound=true;
-  }
-}
-function tsActive(){ const s=document.getElementById('screen-timesheet'); return s && s.classList.contains('active'); }
-
-/* ── connection setup (shares the Recruiting analyzer's proxy / key) ── */
-function tsRenderSetup(){
-  const host=document.getElementById('ts-setup'); if(!host) return;
-  const proxy=localStorage.getItem(REC_PROXY_KEY)||'';
-  const hasKey=!!sessionStorage.getItem(REC_KEY_SS);
-  const badge = proxy?'<span class="rec-count">proxy</span>':hasKey?'<span class="rec-count">key</span>':'<span class="rec-count warn">not set</span>';
-  host.innerHTML =
-    `<details class="rec-details">
-       <summary><i class="ti ti-plug"></i> Assistant setup ${badge}</summary>
-       <div class="rec-details-body">
-         <p class="rec-note" style="margin-top:0">The review runs on Claude vision and shares the same connection as the Recruiting resume screener — set it once, it works in both. <b>Recommended:</b> a small proxy that keeps the API key on the server and forwards the full request (the timecard image is sent in the <code>messages</code> array). A pasted key works for quick testing but lives only in this tab and is wiped on sign-out.</p>
-         <div class="sf-field" style="margin-bottom:10px"><label>Proxy endpoint URL (recommended)</label>
-           <input class="rec-in" id="ts-proxy-url" placeholder="https://…supabase.co/functions/v1/timecard-review" value="${recEsc(proxy)}">
-         </div>
-         <div class="sf-field" style="margin-bottom:10px"><label>…or Anthropic API key (this tab only)</label>
-           <input class="rec-in" id="ts-api-key" type="password" placeholder="${hasKey?'•••••• stored for this session':'sk-ant-…'}">
-         </div>
-         <button class="rec-add sm" onclick="tsSaveSetup()"><i class="ti ti-device-floppy"></i> Save setup</button>
-         <span id="ts-setup-msg" class="sf-msg"></span>
-         <p class="rec-note" style="margin-bottom:0">Without setup, “Review” still works inside the Claude.ai preview, but on GitHub Pages it needs a proxy or key.</p>
-       </div>
-     </details>`;
-}
-function tsSaveSetup(){
-  const purl=document.getElementById('ts-proxy-url'), key=document.getElementById('ts-api-key');
-  if(purl){ const v=purl.value.trim(); if(v) localStorage.setItem(REC_PROXY_KEY,v); else localStorage.removeItem(REC_PROXY_KEY); }
-  if(key && key.value.trim()) sessionStorage.setItem(REC_KEY_SS, key.value.trim());
-  const m=document.getElementById('ts-setup-msg'); if(m){ m.textContent='Saved.'; m.className='sf-msg ok'; setTimeout(()=>{m.textContent='';},2000); }
-  if(key) key.value='';
-  tsRenderSetup();
-  if(typeof recRenderResumeSetup==='function') recRenderResumeSetup();
-}
-
-/* ── state toggle ── */
-function tsSetState(st){
-  tsState=st;
-  document.querySelectorAll('#ts-state-seg button').forEach(b=>b.classList.toggle('on', b.getAttribute('data-state')===st));
-  tsRenderLegend();
-}
-
-/* ── image intake: drop / pick / paste ── */
-function tsDrop(ev){ ev.preventDefault(); const d=document.getElementById('ts-drop'); if(d) d.classList.remove('drag');
-  const files=ev.dataTransfer&&ev.dataTransfer.files; if(files) tsAddFiles(files); }
-function tsPick(input){ if(input.files) tsAddFiles(input.files); input.value=''; }
-function tsHandlePaste(ev){
-  if(!tsActive()) return;
-  const items=ev.clipboardData&&ev.clipboardData.items; if(!items) return;
-  const imgs=[]; for(const it of items){ if(it.type&&it.type.indexOf('image')===0){ const f=it.getAsFile(); if(f) imgs.push(f); } }
-  if(imgs.length){ ev.preventDefault(); tsAddFiles(imgs); }
-}
-function tsAddFiles(fileList){
-  const files=Array.prototype.slice.call(fileList).filter(f=>f.type&&f.type.indexOf('image/')===0);
-  if(!files.length){ alert('Please add an image (PNG, JPG, or screenshot).'); return; }
-  let pending=files.length;
-  files.forEach(f=>{
-    tsDownscale(f).then(obj=>{ tsImages.push(obj); if(--pending===0) tsRenderThumbs(); })
-      .catch(()=>{ if(--pending===0) tsRenderThumbs(); });
-  });
-}
-/* downscale big screenshots to <=1600px long edge so payloads stay sane and text stays sharp */
-function tsDownscale(file){
-  return new Promise((res,rej)=>{
-    const fr=new FileReader();
-    fr.onload=()=>{
-      const img=new Image();
-      img.onload=()=>{
-        const MAX=1600; let {width:w,height:h}=img;
-        if(Math.max(w,h)>MAX){ const s=MAX/Math.max(w,h); w=Math.round(w*s); h=Math.round(h*s); }
-        try{
-          const c=document.createElement('canvas'); c.width=w; c.height=h;
-          c.getContext('2d').drawImage(img,0,0,w,h);
-          const url=c.toDataURL('image/jpeg',0.9);
-          res({ data:url.split(',')[1], media_type:'image/jpeg', name:file.name||'screenshot' });
-        }catch(e){
-          const parts=String(fr.result).split(','); const m=/data:(image\/[a-z]+);/.exec(fr.result);
-          res({ data:parts[1], media_type:(m&&m[1])||'image/png', name:file.name||'screenshot' });
-        }
-      };
-      img.onerror=rej; img.src=fr.result;
-    };
-    fr.onerror=rej; fr.readAsDataURL(file);
-  });
-}
-function tsRenderThumbs(){
-  const host=document.getElementById('ts-thumbs'); if(!host) return;
-  host.innerHTML = tsImages.map((im,i)=>
-    `<div class="ts-thumb"><img src="data:${im.media_type};base64,${im.data}" alt="">
-       <button onclick="tsRemoveImg(${i})" title="Remove"><i class="ti ti-x"></i></button>
-       <div class="ts-thumb-n">Card ${i+1}</div></div>`).join('');
-}
-function tsRemoveImg(i){ tsImages.splice(i,1); tsRenderThumbs(); }
-
-/* ── vision model call (shares proxy/key with the resume screener) ── */
-async function tsCallVision(system, userText, images){
-  const content=[];
-  images.forEach(im=>content.push({ type:'image', source:{ type:'base64', media_type:im.media_type, data:im.data } }));
-  content.push({ type:'text', text:userText });
-  const body={ model:'claude-sonnet-4-6', max_tokens:2600, system, messages:[{ role:'user', content }] };
-  const proxy=localStorage.getItem(REC_PROXY_KEY);
-  const key=sessionStorage.getItem(REC_KEY_SS);
-  let resp;
-  if(proxy){
-    resp=await fetch(proxy,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-  } else if(key){
-    resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify(body)});
-  } else {
-    resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-  }
-  if(!resp.ok){
-    let extra=''; try{ const j=await resp.json(); extra=j.error&&j.error.message?(' — '+j.error.message):''; }catch(e){}
-    if(resp.status===401||resp.status===403) throw new Error('Assistant not authorized'+extra+'. Add a proxy URL or API key in Assistant setup.');
-    throw new Error('Request failed ('+resp.status+')'+extra);
-  }
-  const j=await resp.json();
-  if(typeof j==='string') return j;
-  if(j.content && Array.isArray(j.content)) return j.content.map(b=>b.text||'').join('\n');
-  if(typeof j.text==='string') return j.text;
-  if(j.completion) return j.completion;
-  return JSON.stringify(j);
-}
-
-/* ── state-specific rule prompts ── */
-function tsSystemPrompt(state){
-  const common=
-`You are a timekeeping-compliance assistant for WS Display reviewing an employee timecard from a screenshot. Read the punches exactly as shown — clock in/out, meal (lunch) start/end, and any recorded rest breaks. Do not invent data. If the card does not record something (e.g. paid 10-minute rest breaks are usually not punched), say it is "not shown on this card" and use severity "info" rather than asserting a violation.
-For each day compute WORKED HOURS = time between first in and last out, minus unpaid meal time.
-Severity scale: "high" = likely legal violation / premium owed; "medium" = probable issue or policy deviation to verify; "low" = minor / accuracy note; "info" = cannot be determined from the card, or context only.
-Return ONLY valid minified JSON, no markdown, no commentary, in EXACTLY this shape:
-{"state":"${state}","readOk":true,"employee":string|null,"period":string|null,"days":[{"label":string,"in":string|null,"out":string|null,"meals":[{"start":string,"end":string,"mins":number}],"restBreaksSeen":number|null,"workedHours":number|null,"flags":[{"code":string,"severity":"high|medium|low|info","msg":string}]}],"summary":string,"globalFlags":[{"code":string,"severity":"high|medium|low|info","msg":string}],"caveats":[string]}
-Each flag "msg" must be plain English and cite the actual times from the card (e.g. "Lunch started at 1:10 PM, the 6th hour after a 7:00 AM start"). "code" is a short label like "Late meal" or "Missing meal". If a day has no issues, give it an empty flags array. If you cannot read the image at all, set readOk to false and explain in summary.`;
-
-  if(state==='CA'){
-    return common+`
-APPLY CALIFORNIA RULES:
-- MEAL 1: required once a shift exceeds 5 hours and must START before the end of the 5th hour of work. >5 hrs with no meal, or a meal that starts after the 5th hour → "high" (meal premium of 1 hr pay likely owed). If worked is >5 but ≤6 hrs, a missing/late meal is only OK with a valid written waiver → flag "medium" to verify the waiver.
-- MEAL length: meal under 30 minutes, or that looks split/interrupted → flag.
-- MEAL 2: required once a shift exceeds 10 hours and must start before the end of the 10th hour. >10 hrs with fewer than two meals → "high" (unless a valid 2nd-meal waiver applies for ≤12 hrs).
-- REST BREAKS: one paid 10-min rest per 4 hours worked or major fraction (>2 hrs). Net entitlement: 3.5–6 hrs = 1, over 6–10 = 2, over 10–14 = 3. Rest breaks should fall in the middle of each work period. If rest breaks are not shown on the card, do NOT claim they were skipped — flag "info" that rest-break compliance can't be confirmed from this card and should be checked against schedule/policy. If the card DOES show rest punches and the count is short, flag the shortfall. If two 10-minute rest breaks appear stacked back-to-back (or combined with the meal) instead of split across the shift, flag "medium" — rest breaks must be separated and taken mid-period.
-- LONG DAY: any day over 10 worked hours → flag "medium" ("Workday over 10 hours") and confirm the 2nd meal + 3rd rest break. Note daily overtime context: over 8 hrs = 1.5×, over 12 hrs = 2×.
-- ACCURACY: missing punches, overlapping/negative times, or out-before-in → flag.`;
-  }
-  return common+`
-APPLY PENNSYLVANIA RULES (important — PA differs a lot from CA):
-- PA has NO state-mandated meal or rest breaks for workers 18 and older. So a missing lunch or missing 10-minute break is NOT a state violation by itself. Do not flag missing breaks as legal violations; instead note them as "info"/context, and flag "medium" only if they would breach WS Display's own policy (state that this depends on company policy).
-- MINORS: PA requires a 30-minute break after 5 consecutive hours for employees under 18. A timecard rarely shows age, so if you see 5+ continuous hours with no break, flag "info" that this is fine for adults but would violate the minor-break rule if this employee is under 18.
-- OVERTIME: PA follows weekly overtime — over 40 hours in a workweek is paid at 1.5×. There is NO daily overtime in PA, so a single long day is not an OT violation on its own. A one-day screenshot can't establish the weekly total → note that in caveats. Still flag a day over 10 worked hours as "low" for fatigue/accuracy awareness, not as a legal issue.
-- ACCURACY: missing punches, overlapping/negative times, or out-before-in → flag.
-- In "summary", make clear which CA-style items do NOT apply in PA so the reviewer isn't misled.`;
-}
-
-async function tsAnalyze(){
-  if(tsBusy) return;
-  const out=document.getElementById('ts-results');
-  if(!tsImages.length){
-    if(out){ out.classList.add('show'); out.innerHTML='<div class="rec-callout warn"><i class="ti ti-alert-triangle"></i> Add at least one timecard screenshot first.</div>'; }
-    return;
-  }
-  tsBusy=true;
-  const btn=document.getElementById('ts-analyze-btn'); if(btn){ btn.disabled=true; btn.innerHTML='<i class="ti ti-loader-2 rec-spin"></i> Reviewing…'; }
-  if(out){ out.classList.add('show'); out.innerHTML='<div class="rec-callout"><i class="ti ti-loader-2 rec-spin"></i> Reading the timecard and checking '+(tsState==='CA'?'California':'Pennsylvania')+' timekeeping rules…</div>'; }
-
-  const system=tsSystemPrompt(tsState);
-  const user='State: '+tsState+'. The attached image'+(tsImages.length>1?'s are timecards':' is a timecard')+' to review. Extract the punches and apply the '+tsState+' rules. Return the JSON only.';
-  try{
-    const text=await tsCallVision(system, user, tsImages);
-    const data=recExtractJSON(text);
-    if(out) out.innerHTML = data ? tsRenderFindings(data) :
-      `<div class="rec-callout warn"><i class="ti ti-alert-triangle"></i> The assistant didn't return structured findings. Raw response:</div><pre class="rec-raw">${recEsc(text||'(empty)')}</pre>`;
-  }catch(err){
-    if(out) out.innerHTML=`<div class="rec-callout bad"><i class="ti ti-alert-triangle"></i> ${recEsc(err.message||'Request failed.')}</div>`;
-  }finally{
-    tsBusy=false; if(btn){ btn.disabled=false; btn.innerHTML='<i class="ti ti-sparkles"></i> Review timecard'; }
-  }
-}
-
-/* ── render findings ── */
-function tsRenderFindings(d){
-  if(d.readOk===false){
-    return `<div class="rec-callout warn"><i class="ti ti-photo-off"></i> ${recEsc(d.summary||"The timecard couldn't be read clearly. Try a sharper or fuller screenshot.")}</div>`;
-  }
-  const days=Array.isArray(d.days)?d.days:[];
-  const allFlags=days.reduce((n,dy)=>n+((dy.flags&&dy.flags.length)||0),0)+((d.globalFlags&&d.globalFlags.length)||0);
-  const hasHigh=days.some(dy=>(dy.flags||[]).some(f=>f.severity==='high'))||(d.globalFlags||[]).some(f=>f.severity==='high');
-  const banner = allFlags===0
-    ? `<div class="ts-banner clean"><i class="ti ti-circle-check"></i><div><div class="tb-t">No timekeeping issues flagged</div><div class="tb-s">${recEsc(d.summary||'Punches look compliant for '+(d.state||tsState)+' based on what the card shows.')}</div></div></div>`
-    : `<div class="ts-banner ${hasHigh?'issues':''}"><i class="ti ti-${hasHigh?'alert-octagon':'alert-triangle'}"></i><div><div class="tb-t">${allFlags} item${allFlags>1?'s':''} to review</div><div class="tb-s">${recEsc(d.summary||'')}</div></div></div>`;
-
-  const meta=[];
-  if(d.employee) meta.push('Employee');
-  const header=(d.employee||d.period)
-    ? `<div class="rec-note" style="margin:-6px 0 14px">${d.employee?('<b>'+recEsc(d.employee)+'</b>'):''}${d.employee&&d.period?' · ':''}${d.period?recEsc(d.period):''}</div>`
-    : '';
-
-  const sevOrder={high:0,medium:1,low:2,info:3};
-  const flagRow=f=>`<div class="ts-flag"><span class="ts-sev ${recEsc(f.severity||'info')}">${recEsc((f.severity||'info').toUpperCase())}</span><div class="ts-flag-msg"><span class="ts-code">${recEsc(f.code||'Note')}.</span> ${recEsc(f.msg||'')}</div></div>`;
-
-  const dayCards=days.map(dy=>{
-    const flags=(dy.flags||[]).slice().sort((a,b)=>(sevOrder[a.severity]??9)-(sevOrder[b.severity]??9));
-    const metaBits=[];
-    if(dy.in||dy.out) metaBits.push('<b>In/Out:</b> '+recEsc(dy.in||'?')+' – '+recEsc(dy.out||'?'));
-    if(dy.meals&&dy.meals.length) metaBits.push('<b>Lunch:</b> '+dy.meals.map(m=>recEsc((m.start||'?')+'–'+(m.end||'?')+(m.mins!=null?(' ('+m.mins+'m)'):''))).join(', '));
-    else metaBits.push('<b>Lunch:</b> none shown');
-    if(dy.restBreaksSeen!=null) metaBits.push('<b>Rests shown:</b> '+dy.restBreaksSeen);
-    if(dy.workedHours!=null) metaBits.push('<b>Worked:</b> '+dy.workedHours+' h');
-    return `<div class="ts-day">
-      <div class="ts-day-head">
-        <span class="ts-day-label">${recEsc(dy.label||'Day')}</span>
-        <span class="ts-pill ${flags.length?'flagged':'clean'}">${flags.length?(flags.length+' flag'+(flags.length>1?'s':'')):'Clean'}</span>
-        <div class="ts-day-meta" style="flex-basis:100%;margin-top:2px">${metaBits.join('<span style="opacity:.4">|</span>')}</div>
-      </div>
-      <div class="ts-flags">${flags.length?flags.map(flagRow).join(''):'<div class="ts-clean-row"><i class="ti ti-circle-check"></i> No issues flagged for this day.</div>'}</div>
-    </div>`;
-  }).join('');
-
-  const globals=(d.globalFlags&&d.globalFlags.length)
-    ? `<div class="ts-day"><div class="ts-day-head"><span class="ts-day-label"><i class="ti ti-flag"></i> Across the timecard</span></div><div class="ts-flags">${d.globalFlags.slice().sort((a,b)=>(sevOrder[a.severity]??9)-(sevOrder[b.severity]??9)).map(flagRow).join('')}</div></div>`
-    : '';
-
-  const caveats=(d.caveats&&d.caveats.length)
-    ? `<div class="ts-caveats"><b>Keep in mind:</b> ${d.caveats.map(recEsc).join(' ')}</div>` : '';
-
-  return banner+header+dayCards+globals+
-    `<div class="rec-callout"><i class="ti ti-lock"></i> Decision support only — HR makes the final call, and rest breaks that aren't punched can't be verified from a timecard alone. This image is held in memory and disappears when you sign out.</div>`+
-    caveats;
-}
-
-/* ── state rules legend ── */
-function tsRenderLegend(){
-  const host=document.getElementById('ts-legend'); if(!host) return;
-  const ca=[
-    'Lunch must start before the end of the 5th hour, once a shift passes 5 hours.',
-    'No lunch on a day over 6 hours (waiver only allowed up to 6 hours).',
-    'A 2nd lunch is owed once a shift passes 10 hours.',
-    'One paid 10-minute rest per 4 hours worked — and they must be split across the shift, not taken back-to-back.',
-    'Any workday over 10 hours is flagged (and triggers the 2nd lunch + 3rd rest break).'
-  ];
-  const pa=[
-    'PA has no state-required meal or rest breaks for adults — missing lunches/breaks aren\'t state violations (only your company policy may require them).',
-    'Employees under 18 must get a 30-minute break after 5 consecutive hours.',
-    'Overtime in PA is weekly (over 40 hours), not daily — one long day isn\'t an OT violation by itself.',
-    'Long days and punch errors are still flagged for accuracy and fatigue awareness.'
-  ];
-  const items=(tsState==='CA'?ca:pa).map(t=>`<li><i class="ti ti-point"></i>${recEsc(t)}</li>`).join('');
-  host.innerHTML=`<div class="ts-legend"><h4><i class="ti ti-list-check"></i> What's checked for ${tsState==='CA'?'California':'Pennsylvania'}</h4><ul>${items}</ul></div>`;
-}
-
-/* ── clear / wipe ── */
-function tsClear(){
-  tsImages=[]; tsRenderThumbs();
-  const out=document.getElementById('ts-results'); if(out){ out.classList.remove('show'); out.innerHTML=''; }
-}
-function tsWipe(){ tsImages=[]; const t=document.getElementById('ts-thumbs'); if(t) t.innerHTML=''; const o=document.getElementById('ts-results'); if(o){ o.classList.remove('show'); o.innerHTML=''; } }
-
 /* ══════════════ MY TASKS (assign · track · complete) ══════════════ */
 const TASKS_KEY = 'hrhub_tasks_v1';
 let tkEditId = null;                 // task being edited (admin)
 let tkFilterEmp = 'all';             // admin: filter by assignee id
 let tkFilterStatus = 'all';          // admin: all | open | done
+let tkYear = new Date().getFullYear();   // which year the My Tasks view is scoped to
+const TK_YEARS_KEY = 'hrhub_tasks_years';   // extra years opened ahead of having any tasks
 
 /* ┌──────────────────────────────────────────────────────────────────┐
    │  CROSS-DEVICE SYNC — fill these two in to turn it on.             │
@@ -6311,6 +6032,41 @@ function tkClass(t){ if(tkIsMissed(t)) return 'missed'; return t.status==='done'
 
 /* ── stats ── */
 function tkInThisMonth(iso){ if(!iso) return false; const d=new Date(iso), n=new Date(); return d.getFullYear()===n.getFullYear() && d.getMonth()===n.getMonth(); }
+/* A task belongs to the year of its DUE date (deadline); if it has no deadline,
+   it falls back to the date it was assigned. So tasks file themselves into the
+   right year automatically — no separate "log" to create when the year turns. */
+function tkTaskYear(t){
+  const d=(t&&t.deadline&&tkParseDate(t.deadline)) || (t&&t.createdAt?new Date(t.createdAt):null);
+  return (d && !isNaN(d)) ? d.getFullYear() : new Date().getFullYear();
+}
+function tkTasksForYear(list, year){ return (list||[]).filter(t=>tkTaskYear(t)===year); }
+function tkExtraYears(){ try{ return (JSON.parse(localStorage.getItem(TK_YEARS_KEY)||'[]')||[]).filter(y=>+y); }catch(e){ return []; } }
+function tkSaveExtraYears(arr){ try{ localStorage.setItem(TK_YEARS_KEY, JSON.stringify(arr)); }catch(e){} }
+function tkYearsList(){
+  const set=new Set();
+  tkLoad().forEach(t=>set.add(tkTaskYear(t)));
+  tkExtraYears().forEach(y=>set.add(+y));
+  const baseline=Array.from(set);
+  if(typeof hubYearList==='function') return hubYearList(baseline, []);
+  const cy=new Date().getFullYear(); set.add(cy); set.add(cy+1);
+  return Array.from(set).filter(y=>y).sort((a,b)=>a-b);
+}
+function tkSetYear(y){ tkYear=+y; tasksRender(); }
+function tkAddYear(){
+  const years=tkYearsList();
+  const suggest=(years.length?Math.max.apply(null,years):new Date().getFullYear())+1;
+  const input=prompt('Open a tasks view for a new year.\nTasks file themselves by their due date, so this just lets you look ahead — assign tasks with that year\u2019s deadlines and they appear here automatically.', String(suggest));
+  if(input===null) return;
+  const y=parseInt(String(input).trim(),10);
+  if(!y||y<2000||y>2100){ alert('Please enter a valid 4-digit year (e.g. '+suggest+').'); return; }
+  const extra=tkExtraYears(); if(extra.indexOf(y)===-1){ extra.push(y); tkSaveExtraYears(extra); }
+  tkYear=y; tasksRender();
+}
+/* shared year-switcher bar for the My Tasks admin + rep views */
+function tkYearBar(){
+  const btns=tkYearsList().map(y=>`<button class="yt-year-btn ${y===tkYear?'active':''}" onclick="tkSetYear(${y})">${y}</button>`).join('');
+  return `<div class="tk-yearbar"><span class="tk-yearbar-lbl">Year</span><div class="yt-year-seg">${btns}<button class="yt-year-btn yt-year-add" onclick="tkAddYear()" title="Open a new year"><i class="ti ti-plus"></i></button></div></div>`;
+}
 function tkStats(list){
   const total=list.length;
   const done   = list.filter(t=>tkClass(t)==='done').length;    // completed ON TIME only
@@ -6343,7 +6099,7 @@ function tasksRender(){
   const eyebrow=document.getElementById('tk-eyebrow'), lede=document.getElementById('tk-lede');
   if(tkCanManage()){
     if(eyebrow) eyebrow.textContent='Workload';
-    if(lede) lede.textContent='Assign tasks to the HR team with deadlines and notes, then track completion for the month and overall. Reps see only their own tasks and can mark them done or add notes.';
+    if(lede) lede.textContent='Assign tasks to the HR team with deadlines and notes, then track completion for the month and the year. Tasks file into a year by their due date. Reps see only their own tasks and can mark them done or add notes.';
     host.innerHTML = tkRenderAdmin();
   } else {
     if(eyebrow) eyebrow.textContent='Assigned to me';
@@ -6355,13 +6111,17 @@ function tasksRender(){
 /* ════ ADMIN / MANAGER VIEW ════ */
 function tkRenderAdmin(){
   const all=tkLoad();
+  const yearTasks=tkTasksForYear(all, tkYear);
   const users=loadUsers();
-  const s=tkStats(all);
+  const assignees=users.filter(u=>u && u.role!=='admin');   // tasks are assigned to team members, not the admin
+  const s=tkStats(yearTasks);
+  const curY=new Date().getFullYear();
+  const onTime=(s.done+s.missed)?Math.round(s.done/(s.done+s.missed)*100):0;
 
   // assignee options
   const editing = tkEditId ? all.find(t=>t.id===tkEditId) : null;
   const optHtml = `<option value="" disabled${editing?'':' selected'}>Select…</option>` +
-    users.map(u=>`<option value="${u.id}" ${editing&&editing.assigneeId===u.id?'selected':''}>${tkEsc(u.name||u.email)}${u.role==='admin'?' (admin)':''}</option>`).join('');
+    assignees.map(u=>`<option value="${u.id}" ${editing&&editing.assigneeId===u.id?'selected':''}>${tkEsc(u.name||u.email)}</option>`).join('');
 
   // assign / edit form
   const form=`<div class="tk-card">
@@ -6379,17 +6139,20 @@ function tkRenderAdmin(){
     </div>
   </div>`;
 
-  // stat cards
+  // stat cards — completion is now scoped to the selected year
+  const secondCard = (tkYear===curY)
+    ? tkStatCard('Completion · this month','ti-calendar-month',s.mPct+'%',s.mDone+' of '+s.mTotal+' assigned',s.mPct)
+    : tkStatCard('On-time rate','ti-clock-check',onTime+'%',s.done+' on time of '+(s.done+s.missed)+' resolved',onTime);
   const stats=`<div class="tk-stats">
-    ${tkStatCard('Completion · overall','ti-checkbox',s.pct+'%',s.done+' of '+s.total+' done',s.pct,true)}
-    ${tkStatCard('Completion · this month','ti-calendar-month',s.mPct+'%',s.mDone+' of '+s.mTotal+' assigned',s.mPct)}
-    ${tkStatCard('Open','ti-progress',s.open,s.total+' total assigned')}
+    ${tkStatCard('Completion · '+tkYear,'ti-checkbox',s.pct+'%',s.done+' of '+s.total+' done',s.pct,true)}
+    ${secondCard}
+    ${tkStatCard('Open','ti-progress',s.open,s.total+' total in '+tkYear)}
     ${tkStatCard('Missed deadline','ti-alarm',s.missed,s.missed?'locked as not completed':'none missed')}
   </div>`;
 
-  // per-employee breakdown
-  const empRows=users.map(u=>{
-    const mine=all.filter(t=>t.assigneeId===u.id);
+  // per-employee breakdown (selected year)
+  const empRows=assignees.map(u=>{
+    const mine=yearTasks.filter(t=>t.assigneeId===u.id);
     const st=tkStats(mine);
     return `<div class="tk-emp-row">
       <span class="tk-emp-av">${userInitials(u)}</span>
@@ -6398,32 +6161,52 @@ function tkRenderAdmin(){
       <span class="tk-emp-nums"><b>${st.done}/${st.total}</b> done · ${st.pct}%${st.missed?` · <span style="color:var(--red-600)">${st.missed} missed</span>`:''}</span>
     </div>`;
   }).join('');
-  const breakdown=`<div class="tk-card"><div class="tk-card-h"><i class="ti ti-users"></i> By employee · overall</div>${empRows}</div>`;
+  const breakdown=`<div class="tk-card"><div class="tk-card-h"><i class="ti ti-users"></i> By employee · ${tkYear}</div>${empRows}</div>`;
 
   // filters — modern dropdown toolbar
   const empOpts=[`<option value="all" ${tkFilterEmp==='all'?'selected':''}>Everyone</option>`]
-    .concat(users.map(u=>`<option value="${u.id}" ${tkFilterEmp===u.id?'selected':''}>${tkEsc(u.name||u.email)}</option>`)).join('');
+    .concat(assignees.map(u=>`<option value="${u.id}" ${tkFilterEmp===u.id?'selected':''}>${tkEsc(u.name||u.email)}</option>`)).join('');
   const statusOpts=['all','open','missed','done'].map(k=>`<option value="${k}" ${tkFilterStatus===k?'selected':''}>${k==='all'?'All statuses':k==='open'?'Open':k==='missed'?'Missed':'Done'}</option>`).join('');
   const filters=`<div class="tk-toolbar">
       <div class="tk-group-h"><i class="ti ti-list-details"></i> All tasks</div>
       <div class="tk-tools">
         <span class="tk-select"><i class="ti ti-user"></i><select aria-label="Filter by person" onchange="tkSetEmp(this.value)">${empOpts}</select><i class="ti ti-chevron-down tk-caret"></i></span>
         <span class="tk-select"><i class="ti ti-filter"></i><select aria-label="Filter by status" onchange="tkSetStatus(this.value)">${statusOpts}</select><i class="ti ti-chevron-down tk-caret"></i></span>
+        <button class="rec-exp" onclick="tkExport('csv')"><i class="ti ti-file-spreadsheet"></i> CSV</button>
+        <button class="rec-exp" onclick="tkExport('pdf')"><i class="ti ti-file-type-pdf"></i> PDF</button>
       </div>
     </div>`;
 
-  // task list (filtered)
-  let list=all.slice();
+  // task list (selected year, then filters)
+  let list=yearTasks.slice();
   if(tkFilterEmp!=='all') list=list.filter(t=>t.assigneeId===tkFilterEmp);
   if(tkFilterStatus!=='all') list=list.filter(t=>tkClass(t)===tkFilterStatus);
   list.sort(tkSortTasks);
   const rows = list.length ? list.map(t=>tkTaskCard(t,true)).join('')
     : `<div class="tk-empty"><i class="ti ti-clipboard-off"></i><h3>No tasks here</h3><p>Assign one above, or change the filters.</p></div>`;
 
-  return form+stats+breakdown+filters+rows+tkSyncNote();
+  return tkYearBar()+form+stats+breakdown+filters+rows+tkSyncNote();
 }
 function tkSetEmp(id){ tkFilterEmp=id; tasksRender(); }
 function tkSetStatus(s){ tkFilterStatus=s; tasksRender(); }
+function tkExport(fmt){
+  fmt=fmt||'csv';
+  let list=tkTasksForYear(tkLoad(), tkYear);
+  if(tkFilterEmp!=='all') list=list.filter(t=>t.assigneeId===tkFilterEmp);
+  if(tkFilterStatus!=='all') list=list.filter(t=>tkClass(t)===tkFilterStatus);
+  list.sort(tkSortTasks);
+  const label={done:'Done',missed:'Missed deadline',open:'Open'};
+  const dayFromISO=iso=>{ if(!iso) return ''; const d=new Date(iso); return isNaN(d)?'':d.toISOString().slice(0,10); };
+  const head=['Assignee','Task','Assigned by','Deadline','Completed','Status','Notes'];
+  const rows=list.map(t=>[
+    (t.assigneeName||t.assigneeEmail||''), (t.title||''), (t.assignedByName||''),
+    (t.deadline||''), dayFromISO(t.completedAt), (label[tkClass(t)]||tkClass(t)), (t.desc||'')
+  ]);
+  const who = tkFilterEmp==='all' ? 'all' : ((findUserById(tkFilterEmp)||{}).name||'rep');
+  const title='WS Display — HR Tasks '+tkYear+(tkFilterEmp==='all'?'':' · '+who)+(tkFilterStatus==='all'?'':' · '+(label[tkFilterStatus]||tkFilterStatus));
+  const file='ws-hr-tasks-'+tkYear;
+  if(fmt==='pdf') hubExportPDF(head, rows, title, file); else hubExportCSV(head, rows, file);
+}
 
 function tkSubmit(){
   const title=(document.getElementById('tk-f-title')||{}).value||'';
@@ -6468,22 +6251,28 @@ function tkDelete(id){
 
 /* ════ REP VIEW (own tasks only) ════ */
 function tkRenderRep(){
-  const mine=tkLoad().filter(t=>t.assigneeId===CURRENT.id);
+  const mineAll=tkLoad().filter(t=>t.assigneeId===CURRENT.id);
+  const mine=tkTasksForYear(mineAll, tkYear);
   const s=tkStats(mine);
+  const curY=new Date().getFullYear();
+  const onTime=(s.done+s.missed)?Math.round(s.done/(s.done+s.missed)*100):0;
+  const secondCard = (tkYear===curY)
+    ? tkStatCard('Completion · this month','ti-calendar-month',s.mPct+'%',s.mDone+' of '+s.mTotal+' done',s.mPct,true)
+    : tkStatCard('On-time rate','ti-clock-check',onTime+'%',s.done+' on time of '+(s.done+s.missed)+' resolved',onTime,true);
   const stats=`<div class="tk-stats">
-    ${tkStatCard('Completion · this month','ti-calendar-month',s.mPct+'%',s.mDone+' of '+s.mTotal+' done',s.mPct,true)}
-    ${tkStatCard('Completion · overall','ti-checkbox',s.pct+'%',s.done+' of '+s.total+' done',s.pct)}
+    ${secondCard}
+    ${tkStatCard('Completion · '+tkYear,'ti-checkbox',s.pct+'%',s.done+' of '+s.total+' done',s.pct)}
     ${tkStatCard('Open','ti-progress',s.open,'still to do')}
     ${tkStatCard('Missed','ti-alarm',s.missed,s.missed?'past deadline':'none')}
   </div>`;
 
   if(!mine.length){
-    return stats+`<div class="tk-empty"><i class="ti ti-coffee"></i><h3>No tasks assigned</h3><p>When HR assigns you a task, it\u2019ll show up here with its deadline and any notes.</p></div>`;
+    return tkYearBar()+stats+`<div class="tk-empty"><i class="ti ti-coffee"></i><h3>No tasks for ${tkYear}</h3><p>When HR assigns you a task with a ${tkYear} deadline, it\u2019ll show up here with its notes.</p></div>`;
   }
   const open  =mine.filter(t=>tkClass(t)==='open').sort(tkSortTasks);
   const missed=mine.filter(t=>tkClass(t)==='missed').sort(tkSortTasks);
   const done  =mine.filter(t=>tkClass(t)==='done').sort((a,b)=>new Date(b.completedAt||0)-new Date(a.completedAt||0));
-  let out=stats;
+  let out=tkYearBar()+stats;
   out+=`<div class="tk-group-h"><i class="ti ti-clipboard-list"></i> Open <span class="tk-count">${open.length}</span></div>`;
   out+= open.length ? open.map(t=>tkTaskCard(t,false)).join('')
     : `<div class="tk-empty"><i class="ti ti-circle-check"></i><h3>All caught up</h3><p>Nothing open right now.</p></div>`;
@@ -6634,12 +6423,13 @@ function tkOpenFromNotif(){
 function tasksScoreRender(){
   const host=document.getElementById('dash-tasks-score'); if(!host || !CURRENT) return;
   const all=tkLoad();
+  const curY=new Date().getFullYear();
   const manage=tkCanManage();
   const people = manage ? loadUsers().filter(u=>u && u.role!=='admin')
                         : loadUsers().filter(u=>u && u.id===CURRENT.id);
   const heading = manage ? 'Task tracker · team' : 'My task tracker';
   const cards = people.map(u=>{
-    const mine=all.filter(t=>t.assigneeId===u.id);
+    const mine=tkTasksForYear(all.filter(t=>t.assigneeId===u.id), curY);
     const s=tkStats(mine);
     const go = manage ? `tasksScoreGo('${u.id}')` : `tasksScoreGo('')`;
     return `<div class="tk-score-card" role="button" tabindex="0" onclick="${go}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();${go}}">
@@ -6660,7 +6450,7 @@ function tasksScoreRender(){
           <div class="tk-score-pct-sub">${s.mDone} of ${s.mTotal} done</div>
         </div>
         <div class="tk-score-pct">
-          <div class="tk-score-pct-top"><span>Overall</span><b>${s.pct}%</b></div>
+          <div class="tk-score-pct-top"><span>${curY}</span><b>${s.pct}%</b></div>
           <div class="tk-bar"><span style="width:${s.pct}%"></span></div>
           <div class="tk-score-pct-sub">${s.done} of ${s.total} done</div>
         </div>
@@ -6828,6 +6618,55 @@ function recPrintFallback(title, head, rows){
   const e=s=>String(s==null?'':s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
   w.document.write('<html><head><title>'+e(title)+'</title><style>body{font-family:Segoe UI,sans-serif;padding:24px;color:#212529}h1{font-size:16px;color:#0C447C}table{border-collapse:collapse;width:100%;font-size:11px;margin-top:10px}th{background:#185FA5;color:#fff;text-align:left;padding:6px 8px}td{border-bottom:1px solid #E9ECEF;padding:5px 8px}</style></head><body><h1>'+e(title)+'</h1><table><thead><tr>'+head.map(h=>'<th>'+e(h)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+r.map(c=>'<td>'+e(c)+'</td>').join('')+'</tr>').join('')+'</tbody></table></body></html>');
   w.document.close(); setTimeout(()=>w.print(), 400);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   SHARED HELPERS — dynamic year handling + generic CSV/PDF export.
+   These let every module future-proof its year list (auto-include the
+   current + next calendar year, plus any year that already has data) and
+   export a simple {head, rows} table to CSV or PDF with one call.
+   ══════════════════════════════════════════════════════════════════ */
+function hubCurYear(){ return new Date().getFullYear(); }
+// Build a sorted, de-duped year list: the module's baseline years, any
+// years that already hold data, and always the current + next year so a
+// fresh tab appears automatically as time rolls forward (no code edits).
+function hubYearList(baseline, dataYears){
+  const cy=hubCurYear(); const set=new Set();
+  (baseline||[]).forEach(y=>{ if(+y) set.add(+y); });
+  (dataYears||[]).forEach(y=>{ if(+y) set.add(+y); });
+  set.add(cy); set.add(cy+1);
+  return Array.from(set).filter(y=>y).sort((a,b)=>a-b);
+}
+// Scan localStorage for per-year keys like `prefix2027` and return the years.
+function hubLsYears(prefix){
+  const out=[];
+  try{ for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i);
+    if(k && k.indexOf(prefix)===0){ const y=parseInt(k.slice(prefix.length),10); if(y>2000&&y<2100) out.push(y); } } }catch(e){}
+  return out;
+}
+function hubCSVCell(v){ return (typeof recCSVCell==='function')?recCSVCell(v):(()=>{ v=String(v==null?'':v); return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; })(); }
+function hubExportCSV(head, rows, file){
+  const csv=[head].concat(rows).map(r=>r.map(hubCSVCell).join(',')).join('\r\n');
+  const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});
+  const name=file+'-'+new Date().toISOString().slice(0,10)+'.csv';
+  if(typeof recDownload==='function'){ recDownload(blob,name); return; }
+  const url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url; a.download=name; document.body.appendChild(a); a.click();
+  setTimeout(()=>{ document.body.removeChild(a); URL.revokeObjectURL(url); },1000);
+}
+async function hubExportPDF(head, rows, title, file){
+  try{
+    await recLoadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+    await recLoadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js');
+    const JS=window.jspdf&&window.jspdf.jsPDF; if(!JS) throw new Error('no jsPDF');
+    const doc=new JS({orientation:'landscape',unit:'pt',format:'letter'});
+    doc.setFontSize(14); doc.setTextColor(12,68,124); doc.text(title,40,40);
+    doc.setFontSize(9); doc.setTextColor(130,130,130);
+    doc.text('Generated '+new Date().toLocaleDateString()+' · Confidential',40,55);
+    doc.autoTable({ head:[head], body:rows, startY:68, styles:{fontSize:8,cellPadding:4,overflow:'linebreak'},
+      headStyles:{fillColor:[24,95,165],textColor:255}, alternateRowStyles:{fillColor:[245,247,250]}, margin:{left:40,right:40} });
+    doc.save(file+'-'+new Date().toISOString().slice(0,10)+'.pdf');
+  }catch(e){ if(typeof recPrintFallback==='function') recPrintFallback(title,head,rows); else alert('Could not generate the PDF — try CSV instead.'); }
 }
 
 /* ══════════════ DASHBOARD · time-to-fill card ══════════════ */
@@ -7185,6 +7024,32 @@ function otEsc(s){ return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;
 /* ---- remove / clear ---- */
 function otRemoveMonth(key){ if(!isAdmin()) return; otLoad(); otData=otData.filter(x=>x.key!==key); otSave(); otRender(); otStatus('','Removed.'); }
 function otClearAll(){ if(!isAdmin()) return; if(!confirm('Clear all uploaded overtime data from this browser? This cannot be undone.')) return; otLoad(); otData=[]; otSave(); otRender(); otStatus('','All data cleared.'); }
+function otExport(fmt){
+  fmt=fmt||'csv';
+  otLoad();
+  const data=otData.filter(m=>m.year===otYear).sort((a,b)=>String(a.key).localeCompare(String(b.key)));
+  if(!data.length){ alert('No overtime data loaded for '+otYear+' yet.'); return; }
+  const r1=v=>Math.round((+v||0)*100)/100;
+  if(fmt==='pdf'){
+    // PDF: tidy month summary (CA / PA / total hours & pay)
+    const head=['Month','CA hours','CA pay','PA hours','PA pay','Total hours','Total pay'];
+    let tH=0,tP=0;
+    const rows=data.map(m=>{ const th=m.ca.hours+m.pa.hours, tp=m.ca.pay+m.pa.pay; tH+=th; tP+=tp;
+      return [m.month, r1(m.ca.hours), '$'+r1(m.ca.pay).toLocaleString('en-US'), r1(m.pa.hours), '$'+r1(m.pa.pay).toLocaleString('en-US'), r1(th), '$'+r1(tp).toLocaleString('en-US')]; });
+    rows.push(['Year total', '', '', '', '', r1(tH), '$'+r1(tP).toLocaleString('en-US')]);
+    hubExportPDF(head, rows, 'WS Display — Overtime '+otYear, 'ws-overtime-'+otYear);
+    return;
+  }
+  // CSV: full department-level detail, one row per dept per month + a monthly subtotal
+  const head=['Month','Location','Department','OT hours','OT pay'];
+  const rows=[];
+  data.forEach(m=>{
+    (m.ca.depts||[]).forEach(d=>rows.push([m.month,'CA',d.name,r1(d.hours),r1(d.pay)]));
+    (m.pa.depts||[]).forEach(d=>rows.push([m.month,'PA',d.name,r1(d.hours),r1(d.pay)]));
+    rows.push([m.month,'—','Month total',r1(m.ca.hours+m.pa.hours),r1(m.ca.pay+m.pa.pay)]);
+  });
+  hubExportCSV(head, rows, 'ws-overtime-'+otYear);
+}
 function otReseed(){ if(!isAdmin()) return; if(!confirm('Reload the built-in 2026 data (Jan–May)? This replaces what’s currently shown.')) return; otData=JSON.parse(JSON.stringify(OT_SEED)); otSave(); otRender(); otStatus('ok','Built-in 2026 data restored ✓'); }
 
 /* ---- multi-year support ---- */
@@ -7193,7 +7058,8 @@ function otSaveExtraYears(arr){ try{ localStorage.setItem(OT_YEARS_KEY, JSON.str
 function otYearsList(){
   otLoad();
   const present = otData.map(m=>m.year);
-  const all = Array.from(new Set([...present, ...otExtraYears(), 2026])).filter(y=>+y).sort((a,b)=>a-b);
+  const cy=(typeof hubCurYear==='function'?hubCurYear():new Date().getFullYear());
+  const all = Array.from(new Set([...present, ...otExtraYears(), 2026, cy, cy+1])).filter(y=>+y).sort((a,b)=>a-b);
   return all;
 }
 function otAddYear(){
@@ -7237,7 +7103,9 @@ function otRender(){
     const x=(isAdmin() && !has && y!==2026) ? '<span class="yb-x" title="Remove '+y+'" onclick="event.stopPropagation();otRemoveYear('+y+')">\u00d7</span>' : '';
     yearbar+='<button class="ot-year-btn'+(active?' active':'')+'" onclick="otSetYear('+y+')">'+y+(has?'':'<span class="yb-empty">empty</span>')+x+'</button>';
   });
-  yearbar+='</div><button class="ot-addyear" onclick="otAddYear()"><i class="ti ti-plus"></i> Add year</button></div>';
+  yearbar+='</div><button class="ot-addyear" onclick="otAddYear()"><i class="ti ti-plus"></i> Add year</button>'+
+    '<button class="rec-exp" onclick="otExport(\'csv\')"><i class="ti ti-file-spreadsheet"></i> CSV</button>'+
+    '<button class="rec-exp" onclick="otExport(\'pdf\')"><i class="ti ti-file-type-pdf"></i> PDF</button></div>';
 
   /* data for the active year */
   const data=otData.filter(m=>m.year===otYear).sort((a,b)=>a.key.localeCompare(b.key));
@@ -9088,7 +8956,7 @@ spawnWaves(document.getElementById('hero-waves'), {
   const LRC_SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpvenBvbWp2dnJoamdxYmF6bXJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5MDE0NDgsImV4cCI6MjA5NTQ3NzQ0OH0.TJmx6C3VfnXlMNS6Ss-5iYwgtkhc2ryoaLggOmV_At8';
   const LRC_TABLE   = 'lrc_dashboard';
 
-  function lrcYear(){ const y=new Date().getFullYear(); return (y>=2025 && y<=2027)?y:2026; }
+  function lrcYear(){ return new Date().getFullYear(); }   // always the real current year — keeps LRC keys advancing past 2027 with no edits
 
   function lrcPush(key, payload){
     if(!LRC_SB_URL || !LRC_SB_ANON) return;
@@ -9255,6 +9123,7 @@ const GC_KEY = 'hrhub_giftcards_v1';
 
 let GC = null;
 let gcView = 'birthday';
+let gcBdayYear = new Date().getFullYear();   // which year the Birthdays tab is tracking
 let gcFilter = { q:'', loc:'all', status:'all' };
 let gcRaffleLoc = 'all';
 let gcRecEditId = null, gcRafEditId = null;
@@ -9316,12 +9185,52 @@ function gcLoad(){
     GC.raffle = GC_RAFFLE_SEED.map(x=>Object.assign({},x));
     GC._seeded = true;
   }
+  gcMigrateBdayKeys(); // convert legacy one-per-employee rows to empId::year keys (runs once)
   gcSeedBirthdays(); // backfill "given" status for birthdays already passed this year (runs once)
   gcMigrateCards();  // backfill historical given rows with a "see spreadsheet" card # (runs once)
   gcSave();
 }
 function gcSave(){ try{ localStorage.setItem(GC_KEY, JSON.stringify(GC)); }catch(e){} }
 function gcInit(){ gcLoad(); }
+
+/* ── per-year birthday keys: GC.bday is keyed "empId::year" so each year is tracked
+   separately. These helpers + a one-time migration keep older single-year data intact. ── */
+function gcBdayKey(empId, year){ return empId+'::'+(year||gcBdayYear); }
+function gcBdayRec(empId, year){ return (GC && GC.bday) ? (GC.bday[gcBdayKey(empId, year)]||null) : null; }
+function gcMigrateBdayKeys(){
+  if(GC._bdayKeyed) return;
+  const cy=new Date().getFullYear(), next={};
+  Object.keys(GC.bday||{}).forEach(k=>{
+    const r=GC.bday[k]; if(!r) return;
+    if(k.indexOf('::')>=0){ next[k]=r; return; }           // already keyed
+    const y=(r.year|| cy);                                  // legacy flat record → stamp by its year
+    next[k+'::'+y]=r;
+  });
+  GC.bday=next; GC._bdayKeyed=true;
+}
+// Years offered in the Birthdays switcher: any year with data + the current and next year.
+function gcBdayYearsList(){
+  const set=new Set();
+  Object.keys((GC&&GC.bday)||{}).forEach(k=>{ const i=k.indexOf('::'); if(i>=0){ const y=parseInt(k.slice(i+2),10); if(y) set.add(y); } });
+  ((GC&&GC._bdayYears)||[]).forEach(y=>{ if(+y) set.add(+y); });
+  const baseline=Array.from(set);
+  if(typeof hubYearList==='function') return hubYearList(baseline, []);
+  const cy=new Date().getFullYear(); set.add(cy); set.add(cy+1);
+  return Array.from(set).filter(y=>y).sort((a,b)=>a-b);
+}
+function gcSetBdayYear(y){ gcBdayYear=+y; const host=document.getElementById('gc-body'); if(host) host.innerHTML=gcBirthdayHTML(); }
+function gcAddBdayYear(){
+  const years=gcBdayYearsList();
+  const suggest=(years.length?Math.max.apply(null,years):new Date().getFullYear())+1;
+  const input=prompt('Add a year to track birthday gift cards for.\nPast years stay saved — you can switch between them anytime.', String(suggest));
+  if(input===null) return;
+  const y=parseInt(String(input).trim(),10);
+  if(!y||y<2000||y>2100){ alert('Please enter a valid 4-digit year (e.g. '+suggest+').'); return; }
+  if(!Array.isArray(GC._bdayYears)) GC._bdayYears=[];
+  if(GC._bdayYears.indexOf(y)===-1){ GC._bdayYears.push(y); gcSave(); }  // remember the year even before any card is logged
+  gcBdayYear=y;
+  const host=document.getElementById('gc-body'); if(host) host.innerHTML=gcBirthdayHTML();
+}
 
 /* mark everyone whose current-year birthday has already passed as "given" — once. */
 function gcSeedBirthdays(){
@@ -9333,7 +9242,7 @@ function gcSeedBirthdays(){
     if(!emp || !emp.id || !emp.birthDate) return;
     const bd = ptoParse(emp.birthDate); if(!bd) return;
     const thisYr = new Date(Y, bd.getMonth(), bd.getDate());
-    if(thisYr < today){ GC.bday[emp.id] = { given:true, year:Y, sent:'', card:'see spreadsheet', type:'' }; }
+    if(thisYr < today){ GC.bday[gcBdayKey(emp.id, Y)] = { given:true, year:Y, sent:'', card:'see spreadsheet', type:'' }; }
   });
   GC._bdaySeeded = true;
 }
@@ -9353,7 +9262,7 @@ function gcMigrateCards(){
 }
 
 /* ── birthday helpers ── */
-function gcBdayGiven(empId){ const r=GC.bday[empId]; const Y=new Date().getFullYear(); return !!(r && r.year===Y && r.given); }
+function gcBdayGiven(empId, year){ const r=gcBdayRec(empId, year); return !!(r && r.given); }
 function gcNextBday(bd){ // returns Date of next occurrence (today or later)
   const today = ptoParse(ptoTodayISO());
   let d = new Date(today.getFullYear(), bd.getMonth(), bd.getDate());
@@ -9372,7 +9281,7 @@ function gcWeekBirthdays(){
     const bd = ptoParse(emp.birthDate); if(!bd) return;
     const next = gcNextBday(bd);
     if(next>=today && next<=horizon){
-      out.push({ id:emp.id, name:emp.name, loc:emp.location||'', date:next, given:gcBdayGiven(emp.id) });
+      out.push({ id:emp.id, name:emp.name, loc:emp.location||'', date:next, given:gcBdayGiven(emp.id, new Date().getFullYear()) });
     }
   });
   out.sort((a,b)=> a.date-b.date);
@@ -9451,10 +9360,37 @@ function gcRenderBody(){
   else if(gcView==='recognition') host.innerHTML = gcRecognitionHTML();
   else host.innerHTML = gcRaffleHTML();
 }
+function gcExport(fmt){
+  if(!GC) gcLoad();
+  fmt=fmt||'csv';
+  let head, rows, title, file;
+  const Y=gcBdayYear;
+  if(gcView==='recognition'){
+    head=['Date','Requested by','Requester title','Recipient','Recipient title','Reason','Type','Card'];
+    rows=(GC.recognition||[]).slice().sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')))
+      .map(r=>[r.date||'',r.requestedBy||'',r.requesterTitle||'',r.recipient||'',r.recipientTitle||'',r.reason||'',r.type||'',r.card||'']);
+    title='WS Display — Recognition Gift Cards'; file='ws-recognition-cards';
+  } else if(gcView==='raffle'){
+    head=['Item','Ordered','Raffled','Recipient','Title','Type','Source','Location'];
+    rows=(GC.raffle||[]).slice().sort((a,b)=>String(b.raffled||'').localeCompare(String(a.raffled||'')))
+      .map(r=>[r.item||'',r.ordered||'',r.raffled||'',r.recipient||'',r.title||'',r.type||'',r.source||'',r.loc||'']);
+    title='WS Display — Raffle Winners'; file='ws-raffle-winners';
+  } else {
+    const mdy=iso=>{ const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(iso||''); return m?(m[2]+'/'+m[3]):''; };
+    head=['Employee','Location','Birthday','Given '+Y+'?','Sent','Card','Type'];
+    rows=(typeof gcRoster==='function'?gcRoster():[]).slice()
+      .sort((a,b)=>String(a.name||'').localeCompare(String(b.name||'')))
+      .map(e=>{ const r=gcBdayRec(e.id, Y)||{};
+        const given=(r.given)?'Yes':'No';
+        return [e.name||'', e.location||'', mdy(e.birthDate), given, (r.sent||''), (r.card||''), (r.type||'')]; });
+    title='WS Display — Birthday Gift Cards '+Y; file='ws-birthday-cards-'+Y;
+  }
+  if(fmt==='pdf') hubExportPDF(head, rows, title, file); else hubExportCSV(head, rows, file);
+}
 
 /* ════════ BIRTHDAYS ════════ */
 function gcBirthdayHTML(){
-  const Y=new Date().getFullYear();
+  const Y=gcBdayYear;
   const today=ptoParse(ptoTodayISO());
   const soon=ptoAddDays(today,6);
   let roster = gcRoster().filter(e=>e && e.birthDate).slice();
@@ -9465,23 +9401,29 @@ function gcBirthdayHTML(){
   });
   // stats
   let given=0, pending=0;
-  roster.forEach(e=>{ gcBdayGiven(e.id)?given++:pending++; });
+  roster.forEach(e=>{ gcBdayGiven(e.id, Y)?given++:pending++; });
   const weekCount = gcWeekBirthdays().length;
 
   // filters
   const q=gcFilter.q.trim().toLowerCase();
   const rows = roster.filter(e=>{
     if(gcFilter.loc!=='all'){ if(gcFilter.loc==='other'){ if(e.location==='CA'||e.location==='PA') return false; } else if(e.location!==gcFilter.loc) return false; }
-    const g=gcBdayGiven(e.id);
+    const g=gcBdayGiven(e.id, Y);
     if(gcFilter.status==='given' && !g) return false;
     if(gcFilter.status==='pending' && g) return false;
     if(q && !(e.name||'').toLowerCase().includes(q) && !(e.notes||'').toLowerCase().includes(q)) return false;
     return true;
   });
 
+  const yearBtns = gcBdayYearsList().map(y=>`<button class="gc-byr-btn ${y===Y?'on':''}" onclick="gcSetBdayYear(${y})">${y}</button>`).join('');
   let html = `
+    <div class="gc-byr-bar">
+      <span class="gc-byr-lbl">Year</span>
+      <div class="gc-byr-seg">${yearBtns}</div>
+      <button class="gc-byr-add" onclick="gcAddBdayYear()" title="Track a new year"><i class="ti ti-plus"></i> Add year</button>
+    </div>
     <div class="gc-cards">
-      <div class="gc-stat given"><div class="gc-stat-num">${given}</div><div class="gc-stat-lbl">Given this year</div></div>
+      <div class="gc-stat given"><div class="gc-stat-num">${given}</div><div class="gc-stat-lbl">Given${Y===new Date().getFullYear()?' this year':' ('+Y+')'}</div></div>
       <div class="gc-stat pending"><div class="gc-stat-num">${pending}</div><div class="gc-stat-lbl">Pending</div></div>
       <div class="gc-stat week"><div class="gc-stat-num">${weekCount}</div><div class="gc-stat-lbl">This week</div></div>
       <div class="gc-stat total"><div class="gc-stat-num">${roster.length}</div><div class="gc-stat-lbl">Employees</div></div>
@@ -9508,8 +9450,8 @@ function gcBirthdayHTML(){
       const bd=ptoParse(e.birthDate);
       const next=gcNextBday(bd);
       const isSoon = next>=today && next<=soon;
-      const given=gcBdayGiven(e.id);
-      const rec=GC.bday[e.id]||{};
+      const given=gcBdayGiven(e.id, Y);
+      const rec=gcBdayRec(e.id, Y)||{};
       const typeCell = given
         ? `<input class="gc-cell-inp" list="gc-bd-type-list" value="${gcEsc(rec.type||'')}" placeholder="Type" onchange="gcSetBdayField('${e.id}','type',this.value)">`
         : '<span class="gc-msub">—</span>';
@@ -9544,11 +9486,11 @@ function gcSetFilter(k,v){
 }
 
 function gcToggleBday(empId){
-  const Y=new Date().getFullYear();
-  if(gcBdayGiven(empId)){
-    GC.bday[empId] = { given:false, year:Y, sent:'', card:'', type:'' };
+  const Y=gcBdayYear, k=gcBdayKey(empId, Y);
+  if(gcBdayGiven(empId, Y)){
+    GC.bday[k] = { given:false, year:Y, sent:'', card:'', type:'' };
   } else {
-    GC.bday[empId] = { given:true, year:Y, sent:ptoTodayISO(), card:'', type:'' };
+    GC.bday[k] = { given:true, year:Y, sent:ptoTodayISO(), card:'', type:'' };
   }
   gcSave();
   gcRenderReminder();
@@ -9558,9 +9500,9 @@ function gcToggleBday(empId){
 /* inline edit of the Type / Card # cells (given rows only) — saved without a
    re-render so the input keeps focus while typing the next field. */
 function gcSetBdayField(empId, field, val){
-  const r=GC.bday[empId]; if(!r) return;
+  const r=GC.bday[gcBdayKey(empId, gcBdayYear)]; if(!r) return;
   r[field]=(val||'').trim();
-  GC.bday[empId]=r; gcSave();
+  gcSave();
 }
 
 /* ════════ RECOGNITION ════════ */
@@ -9731,8 +9673,28 @@ function gcRafDelete(id){
    All three datasets live under hrhub_wc_* and auto-sync to Supabase.
    ══════════════════════════════════════════════════════════════════════════ */
 const WC_HIST_KEY='hrhub_wc_history', WC_ACT_KEY='hrhub_wc_active', WC_NEAR_KEY='hrhub_wc_near';
-const WC_PERIODS=['2018-2019','2019-2020','2020-2021','2021-2022','2022-2023','2023-2024','2024-2025','2025-2026'];
-const WC_CUR_PERIOD='2025-2026';   // claims logged in the Active tab belong here
+const WC_FIRST_PERIOD_START=2018;          // first policy year on record (2018-2019)
+const WC_PERIOD_START_MONTH=6;             // policy year runs Jul 1 (month index 6) → Jun 30
+// Which policy period a calendar date falls in, e.g. 2026-05-04 → '2025-2026', 2026-08-01 → '2026-2027'.
+function wcPeriodForDate(d){
+  let dt = (d instanceof Date) ? d : (d ? new Date(String(d).length<=10 ? d+'T00:00:00' : d) : new Date());
+  if(isNaN(dt)) dt=new Date();
+  const y=dt.getFullYear(), startYr = (dt.getMonth()>=WC_PERIOD_START_MONTH) ? y : y-1;
+  return startYr+'-'+(startYr+1);
+}
+// The policy period in effect today — flips automatically every July 1, no edits needed.
+function wcCurrentPeriod(){ return wcPeriodForDate(new Date()); }
+function wcPeriodStartYear(pp){ return parseInt(String(pp).split('-')[0],10)||WC_FIRST_PERIOD_START; }
+// Full list of policy periods: 2018-2019 up to the current period, plus any period
+// already present in the data — so a new period appears on its own each July 1.
+function wcPeriods(){
+  const curStart=wcPeriodStartYear(wcCurrentPeriod());
+  const set=new Set();
+  for(let s=WC_FIRST_PERIOD_START; s<=curStart; s++) set.add(s+'-'+(s+1));
+  (WC_HISTORY||[]).forEach(c=>{ if(c&&c.pp) set.add(c.pp); });
+  (WC_ACTIVE||[]).forEach(a=>{ set.add(wcPeriodForDate(a.date)); });
+  return Array.from(set).sort((a,b)=>wcPeriodStartYear(a)-wcPeriodStartYear(b));
+}
 
 // Historical settled claims, transcribed from the 2018–2025 loss runs.
 // Amounts reconcile to the official policy-period totals.
@@ -9901,6 +9863,50 @@ function wcInit(){
   if(!Array.isArray(WC_ACTIVE)){ WC_ACTIVE=WC_ACTIVE_SEED.map(c=>Object.assign({id:wcUid('a')},c)); wcSaveAct(); }
   try{ WC_NEAR=JSON.parse(localStorage.getItem(WC_NEAR_KEY)||'null'); }catch(e){ WC_NEAR=null; }
   if(!Array.isArray(WC_NEAR)){ WC_NEAR=[]; wcSaveNear(); }
+  wcRollover();   // close out any policy period that has ended → its claims move to the Claims Log
+}
+/* ── policy-period rollover ────────────────────────────────────────────
+   The policy year runs Jul 1 – Jun 30. When a period ends, the claims that
+   were "active" for it belong to the Claims Log under that period. This runs
+   on load: any active claim whose incident date falls in a now-closed period
+   is converted to a Claims-Log record (keeping full detail) and removed from
+   the Active tab, which then starts clean for the new period. Date-derived, so
+   it happens on its own every July 1 — no edits and no manual button needed.
+   Open claims carry over to the Log still marked Open and stay editable there. */
+function wcRollover(){
+  if(!Array.isArray(WC_ACTIVE) || !WC_ACTIVE.length) return 0;
+  const cur=wcCurrentPeriod();
+  const stay=[], moved=[];
+  WC_ACTIVE.forEach(a=>{
+    const pp=wcPeriodForDate(a.date);
+    if(pp!==cur && wcPeriodStartYear(pp)<wcPeriodStartYear(cur)){ moved.push(a); }
+    else stay.push(a);
+  });
+  if(!moved.length) return 0;
+  moved.forEach(a=>{
+    WC_HISTORY.push({
+      id:wcUid('h'), pp:wcPeriodForDate(a.date),
+      name:a.name||'', loc:a.loc||'CA',
+      type:(a.description||a.claimType||'Claim'),
+      amount:(+a.incurred||0),
+      open:(String(a.status||'').toLowerCase()==='open'),
+      // keep the richer detail so nothing is lost in the move / CSV / PDF
+      date:a.date||'', dept:a.dept||'', bodyPart:a.bodyPart||'',
+      provider:a.provider||'', claimType:a.claimType||'', notes:a.notes||'', rolledFromActive:true
+    });
+  });
+  WC_ACTIVE=stay;
+  wcSaveHist(); wcSaveAct();
+  // friendly one-time heads-up per period so a daily user isn't surprised the Active tab cleared
+  try{
+    const flag='hrhub_wc_rolled_'+cur;
+    if(!localStorage.getItem(flag)){
+      localStorage.setItem(flag,'1');
+      const periods=[...new Set(moved.map(a=>wcPeriodForDate(a.date)))].sort().join(', ');
+      setTimeout(()=>{ try{ alert('Workers\u2019 Comp: the '+periods+' policy period has ended. Its '+moved.length+' claim'+(moved.length===1?'':'s')+' moved to the Claims Log (still editable there). The Active Claims tab is now tracking '+cur+'.'); }catch(e){} },600);
+    }
+  }catch(e){}
+  return moved.length;
 }
 function wcSaveHist(){ try{ localStorage.setItem(WC_HIST_KEY, JSON.stringify(WC_HISTORY)); }catch(e){} }
 function wcSaveAct(){ try{ localStorage.setItem(WC_ACT_KEY, JSON.stringify(WC_ACTIVE)); }catch(e){} }
@@ -9908,16 +9914,16 @@ function wcSaveNear(){ try{ localStorage.setItem(WC_NEAR_KEY, JSON.stringify(WC_
 
 /* ── aggregation ── */
 function wcActiveAsClaims(){
-  return WC_ACTIVE.map(a=>({ id:a.id, pp:WC_CUR_PERIOD, name:a.name, loc:a.loc, type:(a.description||a.claimType||'Claim'),
+  return WC_ACTIVE.map(a=>({ id:a.id, pp:wcPeriodForDate(a.date), name:a.name, loc:a.loc, type:(a.description||a.claimType||'Claim'),
     amount:(+a.incurred||0), open:(a.status||'').toLowerCase()==='open', active:true, status:a.status }));
 }
 function wcAllClaims(){ return WC_HISTORY.concat(wcActiveAsClaims()); }
 
 function wcPeriodAgg(){
-  const m={}; WC_PERIODS.forEach(p=>m[p]={pp:p,claims:0,losses:0,open:0});
+  const m={}; wcPeriods().forEach(p=>m[p]={pp:p,claims:0,losses:0,open:0});
   wcAllClaims().forEach(c=>{ const p=c.pp; if(!m[p]) m[p]={pp:p,claims:0,losses:0,open:0};
     m[p].claims++; m[p].losses+=(+c.amount||0); if(c.open) m[p].open++; });
-  return WC_PERIODS.map(p=>m[p]);
+  return wcPeriods().map(p=>m[p]);
 }
 function wcInjuryAgg(){
   const m={};
@@ -9933,8 +9939,8 @@ function wcLocAgg(){
 }
 function wcStats(){
   const per=wcPeriodAgg();
-  const completed=per.filter(p=>p.pp!==WC_CUR_PERIOD);
-  const cur=per.find(p=>p.pp===WC_CUR_PERIOD)||{claims:0,losses:0,open:0};
+  const completed=per.filter(p=>p.pp!==wcCurrentPeriod());
+  const cur=per.find(p=>p.pp===wcCurrentPeriod())||{claims:0,losses:0,open:0};
   const totalLosses=per.reduce((a,p)=>a+p.losses,0);
   const totalClaims=per.reduce((a,p)=>a+p.claims,0);
   let peak=completed[0]||{pp:'',losses:0};
@@ -9955,6 +9961,7 @@ function totalCompletedLosses(c){ return c.reduce((a,p)=>a+p.losses,0); }
 /* ── segment / tab switching ── */
 function wcRender(){
   if(!WC_HISTORY.length && !WC_ACTIVE.length) wcInit();
+  else if(typeof wcRollover==='function') wcRollover();
   wcRenderSeg();
   wcRenderOverview(); wcRenderLog(); wcRenderActive(); wcRenderNear();
   wcShowTab(wcTab);
@@ -9988,7 +9995,7 @@ function wcRenderOverview(){
     <div class="wc-improve ${improving?'':'flat'}">
       <div class="wc-improve-ico"><i class="ti ti-${improving?'trending-down':'trending-up'}"></i></div>
       <div class="wc-improve-main">
-        <div class="wc-improve-eyebrow">Trend · 2018–${WC_CUR_PERIOD.split('-')[1]}</div>
+        <div class="wc-improve-eyebrow">Trend · 2018–${wcCurrentPeriod().split('-')[1]}</div>
         <h2>Losses are <span class="big">${s.pctBelowPeak}%</span> below our ${wcShortPP(s.peak.pp)} peak</h2>
         <p>The ${wcShortPP(s.peak.pp)} period cost ${wcFmt0(s.peak.losses)} across ${s.peak.claims} claims. The most recent closed period (${wcShortPP(s.latest.pp)}) came in at ${wcFmt0(s.latest.losses)} over ${s.latest.claims} claims — and the current period is tracking lighter still, with most claims medical-only.</p>
       </div>
@@ -10025,7 +10032,7 @@ function wcRenderOverview(){
 
   // trend chart (losses per period)
   const trendData=s.per.map(p=>({ label:wcShortPP(p.pp), value:p.losses,
-    display:p.losses>0?wcCompact(p.losses):'—', highlight:p.pp===WC_CUR_PERIOD }));
+    display:p.losses>0?wcCompact(p.losses):'—', highlight:p.pp===wcCurrentPeriod() }));
   const trend=`
     <div class="tr-chart-card">
       <div class="tr-chart-head">
@@ -10052,7 +10059,7 @@ function wcRenderOverview(){
 
   const pMax=Math.max(1,...s.per.map(p=>p.losses));
   const rows=s.per.map(p=>{
-    const isCur=p.pp===WC_CUR_PERIOD;
+    const isCur=p.pp===wcCurrentPeriod();
     const tag=p.pp===s.peak.pp?'<span class="wc-peak-tag">Peak</span>':(p.pp===s.low.pp?'<span class="wc-low-tag">Lowest</span>':'');
     const barW=Math.max(2,Math.round(120*p.losses/pMax));
     return `<tr class="${isCur?'cur':''}">
@@ -10067,7 +10074,7 @@ function wcRenderOverview(){
     <div class="wc-panel" style="margin-bottom:0">
       <div class="wc-panel-head">
         <div><h2>Policy period summary</h2><div class="wc-panel-sub">Claims and incurred losses by year</div></div>
-        <button class="rec-exp" onclick="wcExport('periods')"><i class="ti ti-file-spreadsheet"></i> CSV</button>
+        <button class="rec-exp" onclick="wcExport('periods','csv')"><i class="ti ti-file-spreadsheet"></i> CSV</button> <button class="rec-exp" onclick="wcExport('periods','pdf')"><i class="ti ti-file-type-pdf"></i> PDF</button>
       </div>
       <div class="wc-tbl-wrap"><table class="wc-tbl">
         <thead><tr><th>Policy period</th><th class="num">Claims</th><th class="num">Open</th><th class="num">Incurred</th><th></th></tr></thead>
@@ -10112,7 +10119,7 @@ function wcRenderLog(){
   });
   // group by period (desc)
   const byP={}; rows.forEach(c=>{ (byP[c.pp]=byP[c.pp]||[]).push(c); });
-  const periodsDesc=WC_PERIODS.filter(p=>byP[p]).reverse();
+  const periodsDesc=wcPeriods().filter(p=>byP[p]).reverse();
   const filteredTotal=rows.reduce((a,c)=>a+(+c.amount||0),0);
 
   let body='';
@@ -10163,7 +10170,7 @@ function wcRenderLog(){
       <div class="wc-panel-head" style="padding:16px 18px 4px;margin-bottom:0">
         <div><h2>Claims log</h2><div class="wc-panel-sub">Every recorded claim, grouped by policy period${editable?' · edit any field inline':''}</div></div>
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-          <button class="rec-exp" onclick="wcExport('claims')"><i class="ti ti-file-spreadsheet"></i> CSV</button>
+          <button class="rec-exp" onclick="wcExport('claims','csv')"><i class="ti ti-file-spreadsheet"></i> CSV</button> <button class="rec-exp" onclick="wcExport('claims','pdf')"><i class="ti ti-file-type-pdf"></i> PDF</button>
           ${editable?`<button class="rec-add sm" onclick="wcHistAdd()"><i class="ti ti-plus"></i> Add claim</button>`:`<span class="wc-readonly-note"><i class="ti ti-eye"></i> View only</span>`}
         </div>
       </div>
@@ -10200,7 +10207,7 @@ function wcHistField(id,f,v){
 }
 function wcHistAdd(){
   if(!wcCanEdit()) return;
-  WC_HISTORY.push({id:wcUid('h'),pp:WC_PERIODS[WC_PERIODS.length-2],name:'',loc:'CA',type:'',amount:0,open:false});
+  WC_HISTORY.push({id:wcUid('h'),pp:(wcPeriods().slice(-2)[0]||wcPeriods().slice(-1)[0]),name:'',loc:'CA',type:'',amount:0,open:false});
   wcSaveHist(); wcRenderLog(); wcRenderOverview(); wcRenderSeg();
   setTimeout(()=>{ const rows=document.querySelectorAll('#wc-sub-log tr[data-id]'); const last=rows[rows.length-1]; if(last){ const inp=last.querySelector('input'); if(inp) inp.focus(); last.scrollIntoView({block:'center'}); } },30);
 }
@@ -10228,7 +10235,7 @@ function wcRenderActive(){
 
   let body='';
   if(!list.length){
-    body=`<tr><td colspan="${editable?9:8}"><div class="wc-empty"><i class="ti ti-clipboard-plus"></i><div class="t">No active claims yet</div><div class="s">${editable?'Add a claim as soon as one is reported — it rolls into the trend automatically.':'Nothing logged for the current period.'}</div></div></td></tr>`;
+    body=`<tr><td colspan="${editable?10:9}"><div class="wc-empty"><i class="ti ti-clipboard-plus"></i><div class="t">No active claims yet</div><div class="s">${editable?'Add a claim as soon as one is reported — it rolls into the trend automatically.':'Nothing logged for the current period.'}</div></div></td></tr>`;
   } else if(editable){
     list.forEach(a=>{
       body+=`<tr data-id="${a.id}">
@@ -10239,6 +10246,7 @@ function wcRenderActive(){
         <td><input class="rec-in wide" data-f="description" value="${wcEsc(a.description)}" placeholder="What happened"></td>
         <td><input class="rec-in" data-f="bodyPart" value="${wcEsc(a.bodyPart)}" placeholder="Body part"></td>
         <td><select class="rec-in" data-f="status"><option ${a.status==='Open'?'selected':''}>Open</option><option ${a.status==='Closed'?'selected':''}>Closed</option><option ${a.status==='Denied'?'selected':''}>Denied</option></select></td>
+        <td><input class="rec-in wc-money" data-f="incurred" inputmode="decimal" value="${(+a.incurred||0).toFixed(2)}" title="Incurred / paid to date"></td>
         <td><textarea class="rec-in rec-note-ta" data-f="notes" rows="1" placeholder="Notes" onfocus="if(typeof recGrowNote==='function')recGrowNote(this)" oninput="if(typeof recGrowNote==='function')recGrowNote(this)" onblur="if(typeof recCollapseNote==='function')recCollapseNote(this)">${wcEsc(a.notes)}</textarea></td>
         <td><button class="wc-del" title="Delete claim" onclick="wcActDel('${a.id}')"><i class="ti ti-trash"></i></button></td>
       </tr>`;
@@ -10253,6 +10261,7 @@ function wcRenderActive(){
         <td>${wcEsc(a.description)}</td>
         <td>${wcEsc(a.bodyPart)}</td>
         <td>${wcStatusBadge(a.status)}</td>
+        <td class="num">${wcFmt2(a.incurred)}</td>
         <td class="rec-notes-cell">${wcEsc(a.notes)}</td>
       </tr>`;
     });
@@ -10266,15 +10275,15 @@ function wcRenderActive(){
     </div>
     <div class="wc-panel" style="padding:0;overflow:hidden">
       <div class="wc-panel-head" style="padding:16px 18px 4px;margin-bottom:0">
-        <div><h2>Active claims — ${WC_CUR_PERIOD}</h2><div class="wc-panel-sub">Current policy period · these feed the trend on the Overview tab</div></div>
+        <div><h2>Active claims — ${wcCurrentPeriod()}</h2><div class="wc-panel-sub">Current policy period · these feed the trend on the Overview tab</div></div>
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-          <button class="rec-exp" onclick="wcExport('active')"><i class="ti ti-file-spreadsheet"></i> CSV</button>
+          <button class="rec-exp" onclick="wcExport('active','csv')"><i class="ti ti-file-spreadsheet"></i> CSV</button> <button class="rec-exp" onclick="wcExport('active','pdf')"><i class="ti ti-file-type-pdf"></i> PDF</button>
           ${editable?`<button class="rec-add sm" onclick="wcActAdd()"><i class="ti ti-plus"></i> Add claim</button>`:`<span class="wc-readonly-note"><i class="ti ti-eye"></i> View only</span>`}
         </div>
       </div>
       <div class="rec-tbl-wrap" style="box-shadow:none;border:none;border-radius:0;margin-bottom:0">
-        <table class="rec-tbl" style="min-width:1040px"><thead><tr>
-          <th>Date</th><th>Employee</th><th>Loc</th><th>Dept</th><th>Injury</th><th>Body part</th><th>Status</th><th>Notes</th>${editable?'<th></th>':''}
+        <table class="rec-tbl" style="min-width:1140px"><thead><tr>
+          <th>Date</th><th>Employee</th><th>Loc</th><th>Dept</th><th>Injury</th><th>Body part</th><th>Status</th><th style="text-align:right">Incurred</th><th>Notes</th>${editable?'<th></th>':''}
         </tr></thead><tbody>${body}</tbody></table>
       </div>
     </div>`;
@@ -10288,8 +10297,12 @@ function wcRenderActive(){
     });
   }
 }
-function wcActField(id,f,v){ const a=WC_ACTIVE.find(x=>x.id===id); if(!a) return; a[f]=v; wcSaveAct();
-  if(f==='status'){ wcRenderActive(); wcRenderOverview(); wcDashRender(); wcRenderSeg(); } }
+function wcActField(id,f,v){ const a=WC_ACTIVE.find(x=>x.id===id); if(!a) return;
+  if(f==='incurred'){ a.incurred=parseFloat(String(v).replace(/[^0-9.\-]/g,''))||0; }
+  else a[f]=v;
+  wcSaveAct();
+  if(f==='status'){ wcRenderActive(); wcRenderOverview(); wcDashRender(); wcRenderSeg(); }
+  else if(f==='incurred'){ wcRenderOverview(); wcDashRender(); } }
 function wcActAdd(){
   if(!wcCanEdit()) return;
   const today=new Date().toISOString().slice(0,10);
@@ -10343,7 +10356,7 @@ function wcRenderNear(){
       <div class="wc-panel-head" style="padding:16px 18px 4px;margin-bottom:0">
         <div><h2>Near misses</h2><div class="wc-panel-sub">Close calls that didn't become claims — the leading indicator that we're getting safer</div></div>
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-          <button class="rec-exp" onclick="wcExport('near')"><i class="ti ti-file-spreadsheet"></i> CSV</button>
+          <button class="rec-exp" onclick="wcExport('near','csv')"><i class="ti ti-file-spreadsheet"></i> CSV</button> <button class="rec-exp" onclick="wcExport('near','pdf')"><i class="ti ti-file-type-pdf"></i> PDF</button>
           ${editable?`<button class="rec-add sm" onclick="wcNearAdd()"><i class="ti ti-plus"></i> Log near miss</button>`:`<span class="wc-readonly-note"><i class="ti ti-eye"></i> View only</span>`}
         </div>
       </div>
@@ -10380,6 +10393,7 @@ function wcNearDel(id){
 function wcDashRender(){
   const host=document.getElementById('dash-wc-card'); if(!host) return;
   if(!WC_HISTORY.length && !WC_ACTIVE.length){ try{ wcInit(); }catch(e){} }
+  else if(typeof wcRollover==='function'){ try{ wcRollover(); }catch(e){} }
   const s=wcStats();
   const prev=s.latest;                 // last completed plan year (e.g. 24–25)
   const cur=s.cur;                     // current period (e.g. 25–26, in progress)
@@ -10396,7 +10410,7 @@ function wcDashRender(){
   const recent=s.per.slice(-6);
   const bMax=Math.max(1,...recent.map(p=>p.losses));
   const bars=recent.map(p=>{
-    const isCur=p.pp===WC_CUR_PERIOD;
+    const isCur=p.pp===wcCurrentPeriod();
     const w=p.losses>0?Math.max(3,Math.round(100*p.losses/bMax)):0;
     const tier=wcLossTier(p.losses,bMax,isCur);
     return `<div class="wc-bar-row ${isCur?'cur':''}" data-pp="${p.pp}">
@@ -10455,33 +10469,30 @@ function wcDashRender(){
 }
 
 /* ── CSV export ── */
-function wcExport(which){
-  let head=[], rows=[], name='workers-comp';
+function wcExport(which, fmt){
+  fmt=fmt||'csv';
+  let head=[], rows=[], name='workers-comp', title='WS Display — Workers\u2019 Comp';
   if(which==='claims'){
     head=['Policy Period','Employee','Location','Injury Type','Incurred','Status'];
     rows=WC_HISTORY.slice().sort((a,b)=>String(a.pp).localeCompare(String(b.pp))).map(c=>[c.pp,c.name,c.loc,c.type,(+c.amount||0).toFixed(2),c.open?'Open':'Closed']);
-    name='wc-claims-log';
+    name='wc-claims-log'; title='WS Display — Workers\u2019 Comp Claims Log';
   } else if(which==='periods'){
     head=['Policy Period','Claims','Open','Incurred Losses'];
     rows=wcPeriodAgg().map(p=>[p.pp,p.claims,p.open,p.losses.toFixed(2)]);
-    name='wc-period-summary';
+    name='wc-period-summary'; title='WS Display — Workers\u2019 Comp Period Summary';
   } else if(which==='active'){
     head=['Date','Employee','Location','Department','Injury','Body Part','Status','Claim Type','Provider','Notes'];
     rows=WC_ACTIVE.map(a=>[a.date,a.name,a.loc,a.dept,a.description,a.bodyPart,a.status,a.claimType,a.provider,a.notes]);
-    name='wc-active-claims';
+    name='wc-active-claims'; title='WS Display — Workers\u2019 Comp Active Claims ('+wcCurrentPeriod()+')';
   } else if(which==='near'){
     head=['Date','Location','Dept/Area','What Almost Happened','Corrective Action','Reported By'];
     rows=WC_NEAR.map(n=>[n.date,n.loc,n.dept,n.description,n.corrective,n.reportedBy]);
-    name='wc-near-misses';
+    name='wc-near-misses'; title='WS Display — Workers\u2019 Comp Near Misses';
   }
-  const esc=v=>{ v=String(v==null?'':v); return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; };
-  const csv=[head.map(esc).join(','),...rows.map(r=>r.map(esc).join(','))].join('\n');
-  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
-  const url=URL.createObjectURL(blob); const a=document.createElement('a');
-  a.href=url; a.download=name+'-'+new Date().toISOString().slice(0,10)+'.csv';
-  document.body.appendChild(a); a.click(); document.body.removeChild(a);
-  setTimeout(()=>URL.revokeObjectURL(url),1000);
+  if(fmt==='pdf'){ hubExportPDF(head, rows, title, name); }
+  else { hubExportCSV(head, rows, name); }
 }
+
 </script>
 
 </body>
