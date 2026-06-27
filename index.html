@@ -9071,6 +9071,50 @@ spawnWaves(document.getElementById('hero-waves'), {
     var p=buildRoster(); if(p) lrcPush('roster', p);
   };
 
+  /* Workers' Comp scorecard — broadcast a small, pre-computed snapshot the LRC
+     renders read-only for managers. Aggregate only: no employee names leave the
+     Hub. The LRC needs no WC business logic — everything it draws is in here.
+     Pushed under the yearless key "workers_comp" since the metric is cumulative
+     (policy years since 2018), so it keeps working with no edits each new year. */
+  function buildWC(){
+    if(typeof wcStats!=='function') return null;            // WC module not present
+    try{
+      var noHist = !(Array.isArray(WC_HISTORY) && WC_HISTORY.length);
+      var noAct  = !(Array.isArray(WC_ACTIVE)  && WC_ACTIVE.length);
+      if(noHist && noAct){ if(typeof wcInit==='function') wcInit(); }
+      else if(typeof wcRollover==='function'){ try{ wcRollover(); }catch(e){} }
+    }catch(e){}
+    var s; try{ s=wcStats(); }catch(e){ return null; }
+    if(!s || !Array.isArray(s.per) || !s.per.length) return null;   // nothing to show
+    var curPP = (typeof wcCurrentPeriod==='function') ? wcCurrentPeriod() : (s.cur && s.cur.pp) || '';
+    // last 6 policy years for the bar chart, each with its injury-type breakdown
+    var periods = s.per.slice(-6).map(function(p){
+      var d = (typeof wcPeriodDetail==='function') ? wcPeriodDetail(p.pp) : { types:[] };
+      return {
+        pp:p.pp, losses:p.losses, claims:p.claims, open:p.open,
+        types:(d.types||[]).map(function(t){ return { type:t.type, n:t.n, loss:t.loss, open:t.open }; })
+      };
+    });
+    var byLoc = (typeof wcLocAgg==='function')
+      ? wcLocAgg().map(function(l){ return { loc:l.loc, claims:l.claims, losses:l.losses }; })
+      : [];
+    return {
+      currentPP: curPP,
+      prev: { pp:s.latest.pp||'', losses:s.latest.losses||0, claims:s.latest.claims||0, open:s.latest.open||0 },
+      cur:  { pp:(s.cur && s.cur.pp) || curPP, losses:(s.cur&&s.cur.losses)||0, claims:(s.cur&&s.cur.claims)||0, open:(s.cur&&s.cur.open)||0 },
+      periods: periods,
+      byLoc: byLoc,
+      totalLosses: s.totalLosses||0,
+      totalClaims: s.totalClaims||0,
+      topType: { type:(s.topType&&s.topType.type)||'\u2014', claims:(s.topType&&s.topType.claims)||0 }
+    };
+  }
+  window.hubPushWC = function(){
+    var ok = (typeof can==='function' && can('editWC')) || (typeof isAdmin==='function' && isAdmin());
+    if(!ok) return;                                          // matches who can edit WC in the Hub
+    var p=buildWC(); if(p) lrcPush('workers_comp', p);
+  };
+
   /* ── pull (read-back) from the cloud, used by the Hub's "Restore from cloud" ── */
   function lrcPull(key){
     if(!LRC_SB_URL || !LRC_SB_ANON) return Promise.resolve(null);
@@ -9102,6 +9146,7 @@ spawnWaves(document.getElementById('hero-waves'), {
     try{ window.hubPushRecruiting(); }catch(e){}
     try{ window.hubPushUpdates(); }catch(e){}
     try{ window.hubPushRoster(); }catch(e){}
+    try{ window.hubPushWC(); }catch(e){}
   }
   if(document.readyState==='loading'){
     document.addEventListener('DOMContentLoaded', function(){ setTimeout(lrcSyncAll, 1800); });
@@ -9908,8 +9953,8 @@ function wcRollover(){
   }catch(e){}
   return moved.length;
 }
-function wcSaveHist(){ try{ localStorage.setItem(WC_HIST_KEY, JSON.stringify(WC_HISTORY)); }catch(e){} }
-function wcSaveAct(){ try{ localStorage.setItem(WC_ACT_KEY, JSON.stringify(WC_ACTIVE)); }catch(e){} }
+function wcSaveHist(){ try{ localStorage.setItem(WC_HIST_KEY, JSON.stringify(WC_HISTORY)); }catch(e){} if(typeof hubPushWC==='function'){ try{ hubPushWC(); }catch(e){} } }
+function wcSaveAct(){ try{ localStorage.setItem(WC_ACT_KEY, JSON.stringify(WC_ACTIVE)); }catch(e){} if(typeof hubPushWC==='function'){ try{ hubPushWC(); }catch(e){} } }
 function wcSaveNear(){ try{ localStorage.setItem(WC_NEAR_KEY, JSON.stringify(WC_NEAR)); }catch(e){} }
 
 /* ── aggregation ── */
