@@ -1696,11 +1696,12 @@ select.rec-in{appearance:auto;cursor:pointer}
 .wc-loc-fill.pa{background:linear-gradient(90deg,#27C7B4,#16A695)}
 .wc-loc-meta{font-size:12px;color:var(--gray-600);min-width:118px;text-align:right}
 .wc-loc-meta b{color:var(--gray-900);font-weight:800}
-.wc-seg{display:inline-flex;flex-wrap:wrap;background:var(--gray-100);border-radius:24px;padding:3px;margin-bottom:20px;gap:2px}
-.wc-seg-btn{border:none;background:none;font-family:inherit;font-size:13px;font-weight:600;color:var(--gray-600);padding:8px 16px;border-radius:20px;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:6px}
-.wc-seg-btn i{font-size:15px}
-.wc-seg-btn.active{background:#fff;color:var(--wc-red);box-shadow:0 1px 4px rgba(16,40,80,.12)}
-.wc-seg-btn .wc-seg-count{font-size:11px;font-weight:700;background:var(--gray-200);color:var(--gray-600);border-radius:10px;padding:1px 7px}
+.wc-seg{display:inline-flex;flex-wrap:wrap;background:#E7EDF4;border:1px solid #D2DCE8;border-radius:24px;padding:4px;margin-bottom:20px;gap:3px;box-shadow:inset 0 1px 2px rgba(16,40,80,.06)}
+.wc-seg-btn{border:none;background:none;font-family:inherit;font-size:13.5px;font-weight:700;color:var(--gray-700);padding:9px 17px;border-radius:20px;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:7px}
+.wc-seg-btn:hover{color:var(--wc-red);background:rgba(255,255,255,.65)}
+.wc-seg-btn i{font-size:16px}
+.wc-seg-btn.active{background:#fff;color:var(--wc-red);box-shadow:0 2px 8px rgba(16,40,80,.16),0 0 0 1px rgba(192,57,43,.20)}
+.wc-seg-btn .wc-seg-count{font-size:11px;font-weight:800;background:#CFDAE7;color:var(--gray-700);border-radius:10px;padding:1px 7px}
 .wc-seg-btn.active .wc-seg-count{background:var(--wc-red-soft);color:var(--wc-red)}
 .wc-sub{display:none}.wc-sub.active{display:block}
 .wc-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
@@ -1761,6 +1762,9 @@ select.rec-in{appearance:auto;cursor:pointer}
 .wc-badge.closed{background:var(--gray-100);color:var(--gray-600)}
 .wc-badge.denied{background:var(--wc-red-soft);color:var(--wc-red)}
 .wc-badge.duty{background:var(--wc-green-soft);color:var(--wc-green)}
+.wc-badge.active{background:var(--wc-green-soft);color:var(--wc-green)}
+.wc-badge.permanent{background:#EAF0FB;color:#2960C8}
+.wc-badge.ended{background:var(--gray-100);color:var(--gray-500)}
 .wc-loc-tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:6px;background:#EEF3FB;color:var(--blue-800)}
 .wc-loc-tag.pa{background:#E6F4F1;color:#0E8C7F}
 .wc-toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:#fff;border:var(--border);border-radius:var(--radius-lg);padding:12px 16px;box-shadow:var(--shadow);margin-bottom:16px}
@@ -2364,6 +2368,8 @@ select.rec-in{appearance:auto;cursor:pointer}
         <div class="wc-sub" id="wc-sub-active"></div>
         <!-- NEAR MISSES -->
         <div class="wc-sub" id="wc-sub-near"></div>
+        <!-- RESTRICTIONS -->
+        <div class="wc-sub" id="wc-sub-restrictions"></div>
       </div>
 
       <!-- PTO TRACKER -->
@@ -9717,7 +9723,7 @@ function gcRafDelete(id){
    current-period active tracker, and near-miss log.
    All three datasets live under hrhub_wc_* and auto-sync to Supabase.
    ══════════════════════════════════════════════════════════════════════════ */
-const WC_HIST_KEY='hrhub_wc_history', WC_ACT_KEY='hrhub_wc_active', WC_NEAR_KEY='hrhub_wc_near';
+const WC_HIST_KEY='hrhub_wc_history', WC_ACT_KEY='hrhub_wc_active', WC_NEAR_KEY='hrhub_wc_near', WC_REST_KEY='hrhub_wc_restrictions';
 const WC_FIRST_PERIOD_START=2018;          // first policy year on record (2018-2019)
 const WC_PERIOD_START_MONTH=6;             // policy year runs Jul 1 (month index 6) → Jun 30
 // Which policy period a calendar date falls in, e.g. 2026-05-04 → '2025-2026', 2026-08-01 → '2026-2027'.
@@ -9827,8 +9833,9 @@ const WC_ACTIVE_SEED=[
   {name:'Lupe Solorio',loc:'CA',dept:'Finishing',date:'2026-05-11',status:'Denied',claimType:'Medical Only',provider:'CNA',description:'Fainted on the production floor',bodyPart:'N/A',notes:'Denied — not a work-related injury.',incurred:0}
 ];
 
-let WC_HISTORY=[], WC_ACTIVE=[], WC_NEAR=[];
+let WC_HISTORY=[], WC_ACTIVE=[], WC_NEAR=[], WC_REST=null;
 let wcTab='overview';
+let wcRestFilter={q:'',loc:'all',status:'all'};
 let wcLogFilter={q:'',loc:'all',type:'all'};
 
 function wcUid(p){ return (p||'wc')+'_'+Date.now().toString(36)+Math.floor(Math.random()*1e4).toString(36); }
@@ -9908,6 +9915,7 @@ function wcInit(){
   if(!Array.isArray(WC_ACTIVE)){ WC_ACTIVE=WC_ACTIVE_SEED.map(c=>Object.assign({id:wcUid('a')},c)); wcSaveAct(); }
   try{ WC_NEAR=JSON.parse(localStorage.getItem(WC_NEAR_KEY)||'null'); }catch(e){ WC_NEAR=null; }
   if(!Array.isArray(WC_NEAR)){ WC_NEAR=[]; wcSaveNear(); }
+  wcRestInit();
   wcRollover();   // close out any policy period that has ended → its claims move to the Claims Log
 }
 /* ── policy-period rollover ────────────────────────────────────────────
@@ -10007,18 +10015,20 @@ function totalCompletedLosses(c){ return c.reduce((a,p)=>a+p.losses,0); }
 function wcRender(){
   if(!WC_HISTORY.length && !WC_ACTIVE.length) wcInit();
   else if(typeof wcRollover==='function') wcRollover();
+  if(!Array.isArray(WC_REST)) wcRestInit();
   wcRenderSeg();
-  wcRenderOverview(); wcRenderLog(); wcRenderActive(); wcRenderNear();
+  wcRenderOverview(); wcRenderLog(); wcRenderActive(); wcRenderNear(); wcRenderRestrictions();
   wcShowTab(wcTab);
 }
 function wcRenderSeg(){
   const host=document.getElementById('wc-seg'); if(!host) return;
-  const counts={ overview:'', log:WC_HISTORY.length, active:WC_ACTIVE.length, near:WC_NEAR.length };
+  const counts={ overview:'', log:WC_HISTORY.length, active:WC_ACTIVE.length, near:WC_NEAR.length, restrictions:(WC_REST?WC_REST.length:0) };
   const tabs=[
     {id:'overview',ic:'ti-chart-histogram',lbl:'Overview'},
     {id:'log',ic:'ti-list-details',lbl:'Claims Log'},
     {id:'active',ic:'ti-activity-heartbeat',lbl:'Active Claims'},
-    {id:'near',ic:'ti-alert-triangle',lbl:'Near Misses'}
+    {id:'near',ic:'ti-alert-triangle',lbl:'Near Misses'},
+    {id:'restrictions',ic:'ti-clipboard-list',lbl:'Restrictions'}
   ];
   host.innerHTML=tabs.map(t=>`<button class="wc-seg-btn ${wcTab===t.id?'active':''}" onclick="wcShowTab('${t.id}')">
     <i class="ti ${t.ic}"></i><span class="lbl">${t.lbl}</span>${counts[t.id]!==''?`<span class="wc-seg-count">${counts[t.id]}</span>`:''}</button>`).join('');
@@ -10037,7 +10047,7 @@ function wcRenderOverview(){
   const s=wcStats();
   const improving=s.latest.losses<s.peak.losses;
   const banner=`
-    <div class="wc-improve ${improving?'':'flat'}">
+    <div class="wc-improve ${improving?'':'flat'}" style="margin-top:22px;margin-bottom:0">
       <div class="wc-improve-ico"><i class="ti ti-${improving?'trending-down':'trending-up'}"></i></div>
       <div class="wc-improve-main">
         <div class="wc-improve-eyebrow">Trend · 2018–${wcCurrentPeriod().split('-')[1]}</div>
@@ -10147,7 +10157,7 @@ function wcRenderOverview(){
       <div class="wc-loc-split">${locBody}</div>
     </div>`;
 
-  host.innerHTML=banner+kpis+trend+`<div class="wc-grid2">${injCard}${tableCard}</div>`+locCard;
+  host.innerHTML=kpis+trend+`<div class="wc-grid2">${injCard}${tableCard}</div>`+locCard+banner;
 }
 
 /* ── CLAIMS LOG (historical, editable) ── */
@@ -10342,23 +10352,40 @@ function wcRenderActive(){
     });
   }
 }
+/* Pull whatever is currently typed in the Active-claims rows back into WC_ACTIVE
+   before any re-render. Text fields only fire 'change' on blur, so a value the
+   user just typed isn't saved yet when something (Add claim, Delete, a status
+   change) rebuilds the table — without this, that in-progress entry is wiped. */
+function wcActCommitDOM(){
+  document.querySelectorAll('#wc-sub-active tr[data-id]').forEach(function(tr){
+    const a=WC_ACTIVE.find(function(x){ return x.id===tr.getAttribute('data-id'); }); if(!a) return;
+    tr.querySelectorAll('[data-f]').forEach(function(inp){
+      const f=inp.getAttribute('data-f');
+      if(f==='incurred') a.incurred=parseFloat(String(inp.value).replace(/[^0-9.\-]/g,''))||0;
+      else a[f]=inp.value;
+    });
+  });
+}
 function wcActField(id,f,v){ const a=WC_ACTIVE.find(x=>x.id===id); if(!a) return;
   if(f==='incurred'){ a.incurred=parseFloat(String(v).replace(/[^0-9.\-]/g,''))||0; }
   else a[f]=v;
   wcSaveAct();
-  if(f==='status'){ wcRenderActive(); wcRenderOverview(); wcDashRender(); wcRenderSeg(); }
+  if(f==='status'){ wcActCommitDOM(); wcRenderActive(); wcRenderOverview(); wcDashRender(); wcRenderSeg(); }
   else if(f==='incurred'){ wcRenderOverview(); wcDashRender(); } }
 function wcActAdd(){
   if(!wcCanEdit()) return;
+  wcActCommitDOM();   // keep any half-typed claim before the table rebuilds
   const today=new Date().toISOString().slice(0,10);
-  WC_ACTIVE.push({id:wcUid('a'),name:'',loc:'CA',dept:'',date:today,status:'Open',claimType:'Medical Only',provider:'CNA',description:'',bodyPart:'',notes:'',incurred:0});
+  const nid=wcUid('a');
+  WC_ACTIVE.push({id:nid,name:'',loc:'CA',dept:'',date:today,status:'Open',claimType:'Medical Only',provider:'CNA',description:'',bodyPart:'',notes:'',incurred:0});
   wcSaveAct(); wcRenderActive(); wcRenderOverview(); wcDashRender(); wcRenderSeg();
-  setTimeout(()=>{ const rows=document.querySelectorAll('#wc-sub-active tr[data-id]'); const first=rows[0]; if(first){ const i=first.querySelector('input[data-f=name]'); if(i) i.focus(); } },30);
+  setTimeout(()=>{ const tr=document.querySelector('#wc-sub-active tr[data-id="'+nid+'"]'); if(tr){ const i=tr.querySelector('input[data-f=name]'); if(i) i.focus(); tr.scrollIntoView({block:'center'}); } },30);
 }
 function wcActDel(id){
   if(!wcCanEdit()) return;
   const a=WC_ACTIVE.find(x=>x.id===id);
   if(!confirm('Delete this claim'+(a&&a.name?' for '+a.name:'')+'?')) return;
+  wcActCommitDOM();   // preserve unsaved edits in the other rows
   WC_ACTIVE=WC_ACTIVE.filter(x=>x.id!==id);
   wcSaveAct(); wcRenderActive(); wcRenderOverview(); wcDashRender(); wcRenderSeg();
 }
@@ -10432,6 +10459,217 @@ function wcNearDel(id){
   if(!confirm('Delete this near-miss entry?')) return;
   WC_NEAR=WC_NEAR.filter(x=>x.id!==id);
   wcSaveNear(); wcRenderNear(); wcRenderSeg();
+}
+
+/* ── RESTRICTIONS (employees on modified / restricted duty) ──
+   Mirrors the "Employees with Restrictions Log" spreadsheets (CA + PA).
+   Active = currently restricted · Permanent = ongoing P&S restriction ·
+   Ended = released from care / restriction lifted. Fully editable: add new,
+   edit current, and keep previous (ended) entries all in one place. Saved to
+   this browser under hrhub_wc_restrictions. */
+const WC_REST_SEED=[
+  // California
+  {name:'Guadalupe Solorio',loc:'CA',dept:'Finishing',begin:'2020-08-24',end:'',status:'Active',
+   description:'P&S Future Medical — no heavy lifting with left upper extremity.',
+   physNote:'',modDuty:'WC Claim 06860140 — Signed Modified Job Description',
+   notes:'Permanent restrictions were given by primary care physician prior to WC claim.'},
+  // Pennsylvania
+  {name:'Grace Cruz',loc:'PA',dept:'PA Production',begin:'2024-03-19',end:'2025-07-11',status:'Ended',
+   description:'Indefinite — may work more than 8 hours a day as tolerated. 10 lb weight limit.',
+   physNote:'',modDuty:'',
+   notes:'Updated 7/11/2025 — no longer has weight or hour(s) restrictions.'},
+  {name:'Grace Cruz',loc:'PA',dept:'PA Production',begin:'2023-08-16',end:'',status:'Permanent',
+   description:'Requires to operate machinery while seated; medically cannot operate machinery while standing. Permanent condition effective 08/16/2023.',
+   physNote:'',modDuty:'',
+   notes:'Permanent restriction regarding being seated while operating machinery. Last updated 7/14/2025.'},
+  {name:'Norma Bazan-Palacios',loc:'PA',dept:'PA Production',begin:'2023-11-07',end:'2024-02-06',status:'Ended',
+   description:'Limited sitting to 4 hours/day.',
+   physNote:'',modDuty:'',
+   notes:'Restrictions / modified job duty as of 04/25/2024.'},
+  {name:'Deisy Galicia',loc:'PA',dept:'PA Production',begin:'2024-03-24',end:'2025-06-05',status:'Ended',
+   description:'No lifting (floor to waist, waist to shoulder, or carry) over 10 lbs. No pushing/pulling over 25 lbs.',
+   physNote:'',modDuty:'',
+   notes:'As of 6/5/2025 Deisy released from care with no restrictions.'},
+  {name:'Gopal Gautam',loc:'PA',dept:'PA Production',begin:'2024-10-28',end:'2024-10-30',status:'Ended',
+   description:'May lift/push/pull up to 20 lbs (constantly) & should be sitting 50% of the time.',
+   physNote:'',modDuty:'',
+   notes:'Seen 10/28 and given restrictions; did not return to work until after follow-up appointment 10/30, restrictions were lifted.'},
+  {name:'Prem Pariyar',loc:'PA',dept:'PA Production',begin:'2025-02-07',end:'2025-05-07',status:'Ended',
+   description:'No prolonged standing.',
+   physNote:'',modDuty:'',
+   notes:'Restriction from 2/7/2025–5/7/2025. Not WC related.'},
+  {name:'Jason Smiley',loc:'PA',dept:'PA Production',begin:'2025-04-02',end:'',status:'Permanent',
+   description:'Indefinite — to work no longer than 10-hour days and 6-day work weeks.',
+   physNote:'',modDuty:'',
+   notes:'Indefinite unless changed by physician. Not WC related.'},
+  {name:'Kyle Hinton',loc:'PA',dept:'PA Printing',begin:'2025-04-08',end:'2025-04-21',status:'Ended',
+   description:'No current restrictions — 4/11/2025 visit.',
+   physNote:'',modDuty:'',
+   notes:'Released from care 4/21/2025.'},
+  {name:'Aida Rivera',loc:'PA',dept:'PA Production',begin:'2025-07-18',end:'2026-07-18',status:'Active',
+   description:'10 lb or less weight limit — 7/17/2025 visit.',
+   physNote:'',modDuty:'',
+   notes:'For 1 year (until 07/18/2026): 10 lb or less weight restriction.'},
+  {name:'Grace Cruz',loc:'PA',dept:'PA Production',begin:'2025-07-23',end:'',status:'Permanent',
+   description:'1) No working more than 8 hours per day (can work 5 days/week). 2) No reaching overhead with left arm. 3) No jumping/bending/climbing/squatting. 4) No walking over 30 minutes per day.',
+   physNote:'',modDuty:'',
+   notes:'Permanent restriction began 7/23/2025; left work 7/24/2025 after conversation with Anahi and pending updated restrictions (no push/pull cannot work).'}
+];
+
+function wcRestInit(){
+  try{ WC_REST=JSON.parse(localStorage.getItem(WC_REST_KEY)||'null'); }catch(e){ WC_REST=null; }
+  if(!Array.isArray(WC_REST)){ WC_REST=WC_REST_SEED.map(r=>Object.assign({id:wcUid('r')},r)); wcSaveRest(); }
+}
+function wcSaveRest(){ try{ localStorage.setItem(WC_REST_KEY, JSON.stringify(WC_REST)); }catch(e){} }
+
+function wcRestStatusBadge(st){
+  const k=(st||'').toLowerCase();
+  if(k==='active')    return '<span class="wc-badge active"><i class="ti ti-player-play"></i> Active</span>';
+  if(k==='permanent') return '<span class="wc-badge permanent"><i class="ti ti-infinity"></i> Permanent</span>';
+  if(k==='ended')     return '<span class="wc-badge ended"><i class="ti ti-check"></i> Ended</span>';
+  return '<span class="wc-badge closed">'+wcEsc(st||'—')+'</span>';
+}
+function wcRestDate(d){ return d?new Date(d+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'<span style="color:var(--gray-400)">N/A</span>'; }
+/* a plain label, or — if a URL is pasted in — a clickable link (the source sheet used hyperlinks) */
+function wcRestLink(v){
+  v=String(v||'').trim();
+  if(!v) return '<span style="color:var(--gray-300)">—</span>';
+  if(/^https?:\/\//i.test(v)) return '<a href="'+wcEsc(v)+'" target="_blank" rel="noopener" style="color:var(--blue-600);text-decoration:none"><i class="ti ti-link"></i> Open</a>';
+  return wcEsc(v);
+}
+/* pull any unsaved typing back into WC_REST before a rebuild (text fields fire change only on blur) */
+function wcRestCommitDOM(){
+  document.querySelectorAll('#wc-sub-restrictions tr[data-id]').forEach(function(tr){
+    const r=(WC_REST||[]).find(function(x){ return x.id===tr.getAttribute('data-id'); }); if(!r) return;
+    tr.querySelectorAll('[data-f]').forEach(function(inp){ r[inp.getAttribute('data-f')]=inp.value; });
+  });
+}
+function wcRenderRestrictions(){
+  const host=document.getElementById('wc-sub-restrictions'); if(!host) return;
+  if(!Array.isArray(WC_REST)) wcRestInit();
+  const editable=wcCanEdit();
+  const q=wcRestFilter.q.toLowerCase();
+  let list=(WC_REST||[]).filter(r=>{
+    if(wcRestFilter.loc!=='all' && r.loc!==wcRestFilter.loc) return false;
+    if(wcRestFilter.status!=='all' && (r.status||'').toLowerCase()!==wcRestFilter.status) return false;
+    if(q && !((r.name||'').toLowerCase().includes(q)||(r.description||'').toLowerCase().includes(q)||(r.dept||'').toLowerCase().includes(q)||(r.notes||'').toLowerCase().includes(q))) return false;
+    return true;
+  });
+  // current restrictions (Active, then Permanent) first; within a group, most recent begin date first
+  const rank=s=>{ s=(s||'').toLowerCase(); return s==='active'?0:(s==='permanent'?1:2); };
+  list=list.slice().sort((a,b)=> rank(a.status)-rank(b.status) || String(b.begin||'').localeCompare(String(a.begin||'')));
+
+  const activeN=(WC_REST||[]).filter(r=>(r.status||'').toLowerCase()==='active').length;
+  const permN  =(WC_REST||[]).filter(r=>(r.status||'').toLowerCase()==='permanent').length;
+  const endedN =(WC_REST||[]).filter(r=>(r.status||'').toLowerCase()==='ended').length;
+
+  let body='';
+  if(!list.length){
+    body=`<tr><td colspan="${editable?11:10}"><div class="wc-empty"><i class="ti ti-clipboard-list"></i><div class="t">No restrictions match these filters</div><div class="s">${editable?'Add an entry when an employee is placed on restricted or modified duty.':'Nothing logged.'}</div></div></td></tr>`;
+  } else if(editable){
+    list.forEach(r=>{
+      body+=`<tr data-id="${r.id}">
+        <td><input class="rec-in wide" data-f="name" value="${wcEsc(r.name)}" placeholder="Employee"></td>
+        <td><select class="rec-in" data-f="loc"><option ${r.loc==='CA'?'selected':''}>CA</option><option ${r.loc==='PA'?'selected':''}>PA</option><option ${r.loc==='MX'?'selected':''}>MX</option></select></td>
+        <td><input class="rec-in" data-f="dept" value="${wcEsc(r.dept)}" placeholder="Department"></td>
+        <td><input class="rec-in date" type="date" data-f="begin" value="${wcEsc(r.begin)}"></td>
+        <td><input class="rec-in date" type="date" data-f="end" value="${wcEsc(r.end)}" title="Leave blank if N/A / ongoing"></td>
+        <td><select class="rec-in" data-f="status"><option ${r.status==='Active'?'selected':''}>Active</option><option ${r.status==='Permanent'?'selected':''}>Permanent</option><option ${r.status==='Ended'?'selected':''}>Ended</option></select></td>
+        <td><textarea class="rec-in rec-note-ta" data-f="description" rows="1" placeholder="Restriction / description" onfocus="if(typeof recGrowNote==='function')recGrowNote(this)" oninput="if(typeof recGrowNote==='function')recGrowNote(this)" onblur="if(typeof recCollapseNote==='function')recCollapseNote(this)">${wcEsc(r.description)}</textarea></td>
+        <td><input class="rec-in" data-f="physNote" value="${wcEsc(r.physNote)}" placeholder="Note / link"></td>
+        <td><input class="rec-in" data-f="modDuty" value="${wcEsc(r.modDuty)}" placeholder="Duty / link"></td>
+        <td><textarea class="rec-in rec-note-ta" data-f="notes" rows="1" placeholder="Notes" onfocus="if(typeof recGrowNote==='function')recGrowNote(this)" oninput="if(typeof recGrowNote==='function')recGrowNote(this)" onblur="if(typeof recCollapseNote==='function')recCollapseNote(this)">${wcEsc(r.notes)}</textarea></td>
+        <td><button class="wc-del" title="Delete entry" onclick="wcRestDel('${r.id}')"><i class="ti ti-trash"></i></button></td>
+      </tr>`;
+    });
+  } else {
+    list.forEach(r=>{
+      body+=`<tr>
+        <td style="font-weight:600">${wcEsc(r.name)}</td>
+        <td><span class="wc-loc-tag ${r.loc==='PA'?'pa':''}">${wcEsc(r.loc)}</span></td>
+        <td>${wcEsc(r.dept)}</td>
+        <td>${wcRestDate(r.begin)}</td>
+        <td>${wcRestDate(r.end)}</td>
+        <td>${wcRestStatusBadge(r.status)}</td>
+        <td style="white-space:normal;min-width:240px">${wcEsc(r.description)}</td>
+        <td>${wcRestLink(r.physNote)}</td>
+        <td>${wcRestLink(r.modDuty)}</td>
+        <td class="rec-notes-cell">${wcEsc(r.notes)}</td>
+      </tr>`;
+    });
+  }
+
+  host.innerHTML=`
+    <div class="wc-kpis" style="grid-template-columns:repeat(3,1fr)">
+      <div class="wc-kpi green"><div class="wc-kpi-lab"><i class="ti ti-player-play"></i> Active</div><div class="wc-kpi-val">${activeN}</div><div class="wc-kpi-sub">currently on restriction</div></div>
+      <div class="wc-kpi slate"><div class="wc-kpi-lab"><i class="ti ti-infinity"></i> Permanent</div><div class="wc-kpi-val">${permN}</div><div class="wc-kpi-sub">ongoing P&amp;S restrictions</div></div>
+      <div class="wc-kpi amber"><div class="wc-kpi-lab"><i class="ti ti-check"></i> Ended</div><div class="wc-kpi-val">${endedN}</div><div class="wc-kpi-sub">released / lifted</div></div>
+    </div>
+    <div class="wc-toolbar">
+      <div class="wc-search"><i class="ti ti-search"></i><input id="wc-rest-q" placeholder="Search name, department, restriction…" value="${wcEsc(wcRestFilter.q)}" oninput="wcRestSearch(this.value)"></div>
+      <select class="wc-filter" onchange="wcRestSetLoc(this.value)">
+        <option value="all" ${wcRestFilter.loc==='all'?'selected':''}>All locations</option>
+        <option value="CA" ${wcRestFilter.loc==='CA'?'selected':''}>California</option>
+        <option value="PA" ${wcRestFilter.loc==='PA'?'selected':''}>Pennsylvania</option>
+        <option value="MX" ${wcRestFilter.loc==='MX'?'selected':''}>Mexico</option>
+      </select>
+      <select class="wc-filter" onchange="wcRestSetStatus(this.value)">
+        <option value="all" ${wcRestFilter.status==='all'?'selected':''}>All statuses</option>
+        <option value="active" ${wcRestFilter.status==='active'?'selected':''}>Active</option>
+        <option value="permanent" ${wcRestFilter.status==='permanent'?'selected':''}>Permanent</option>
+        <option value="ended" ${wcRestFilter.status==='ended'?'selected':''}>Ended</option>
+      </select>
+      <span style="font-size:12px;color:var(--gray-500);font-weight:600">${list.length} shown</span>
+    </div>
+    <div class="wc-panel" style="padding:0;overflow:hidden">
+      <div class="wc-panel-head" style="padding:16px 18px 4px;margin-bottom:0">
+        <div><h2>Employees with restrictions</h2><div class="wc-panel-sub">Modified &amp; restricted duty log${editable?' · edit any field inline':''}</div></div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <button class="rec-exp" onclick="wcExport('restrictions','csv')"><i class="ti ti-file-spreadsheet"></i> CSV</button> <button class="rec-exp" onclick="wcExport('restrictions','pdf')"><i class="ti ti-file-type-pdf"></i> PDF</button>
+          ${editable?`<button class="rec-add sm" onclick="wcRestAdd()"><i class="ti ti-plus"></i> Add restriction</button>`:`<span class="wc-readonly-note"><i class="ti ti-eye"></i> View only</span>`}
+        </div>
+      </div>
+      <div class="rec-tbl-wrap" style="box-shadow:none;border:none;border-radius:0;margin-bottom:0">
+        <table class="rec-tbl" style="min-width:1320px"><thead><tr>
+          <th>Employee</th><th>Loc</th><th>Department</th><th>Begin</th><th>End</th><th>Status</th><th>Description</th><th>Physician's note</th><th>Modified duty</th><th>Notes</th>${editable?'<th></th>':''}
+        </tr></thead><tbody>${body}</tbody></table>
+      </div>
+    </div>`;
+
+  if(editable){
+    host.querySelectorAll('tr[data-id]').forEach(tr=>{
+      const id=tr.getAttribute('data-id');
+      tr.querySelectorAll('[data-f]').forEach(inp=>{ inp.addEventListener('change',()=>wcRestField(id, inp.getAttribute('data-f'), inp.value)); });
+    });
+  }
+}
+function wcRestField(id,f,v){
+  const r=(WC_REST||[]).find(x=>x.id===id); if(!r) return;
+  r[f]=v; wcSaveRest();
+  // a status/loc change reorders or re-filters the list, so rebuild (keeping other unsaved edits)
+  if(f==='status'||f==='loc'){ wcRestCommitDOM(); wcRenderRestrictions(); wcRenderSeg(); }
+}
+function wcRestSearch(v){ wcRestFilter.q=v; wcRenderRestrictions(); const i=document.getElementById('wc-rest-q'); if(i){ i.focus(); i.setSelectionRange(i.value.length,i.value.length); } }
+function wcRestSetLoc(v){ wcRestCommitDOM(); wcRestFilter.loc=v; wcRenderRestrictions(); }
+function wcRestSetStatus(v){ wcRestCommitDOM(); wcRestFilter.status=v; wcRenderRestrictions(); }
+function wcRestAdd(){
+  if(!wcCanEdit()) return;
+  wcRestCommitDOM();   // keep any half-typed row before the table rebuilds
+  const today=new Date().toISOString().slice(0,10);
+  const nid=wcUid('r');
+  (WC_REST=WC_REST||[]).unshift({id:nid,name:'',loc:'PA',dept:'',begin:today,end:'',status:'Active',description:'',physNote:'',modDuty:'',notes:''});
+  // make the new row visible even if a status filter is on
+  if(wcRestFilter.status!=='all' && wcRestFilter.status!=='active') wcRestFilter.status='all';
+  wcSaveRest(); wcRenderRestrictions(); wcRenderSeg();
+  setTimeout(()=>{ const tr=document.querySelector('#wc-sub-restrictions tr[data-id="'+nid+'"]'); if(tr){ const i=tr.querySelector('input[data-f=name]'); if(i) i.focus(); tr.scrollIntoView({block:'center'}); } },30);
+}
+function wcRestDel(id){
+  if(!wcCanEdit()) return;
+  const r=(WC_REST||[]).find(x=>x.id===id);
+  if(!confirm('Delete this restriction'+(r&&r.name?' for '+r.name:'')+'?')) return;
+  wcRestCommitDOM();   // preserve unsaved edits in the other rows
+  WC_REST=(WC_REST||[]).filter(x=>x.id!==id);
+  wcSaveRest(); wcRenderRestrictions(); wcRenderSeg();
 }
 
 /* ── dashboard scorecard ── */
@@ -10533,6 +10771,10 @@ function wcExport(which, fmt){
     head=['Date','Location','Dept/Area','What Almost Happened','Corrective Action','Reported By'];
     rows=WC_NEAR.map(n=>[n.date,n.loc,n.dept,n.description,n.corrective,n.reportedBy]);
     name='wc-near-misses'; title='WS Display — Workers\u2019 Comp Near Misses';
+  } else if(which==='restrictions'){
+    head=['Employee','Location','Department','Begin Date','End Date','Status','Description','Physician\u2019s Note','Modified Duty','Notes'];
+    rows=(WC_REST||[]).map(r=>[r.name,r.loc,r.dept,(r.begin||''),(r.end||'N/A'),r.status,r.description,r.physNote,r.modDuty,r.notes]);
+    name='wc-restrictions'; title='WS Display — Workers\u2019 Comp Restrictions Log';
   }
   if(fmt==='pdf'){ hubExportPDF(head, rows, title, name); }
   else { hubExportCSV(head, rows, name); }
