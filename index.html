@@ -1667,6 +1667,15 @@ select.rec-in{appearance:auto;cursor:pointer}
 .wc-bar-row.cur .wc-bar-fill,.wc-bar-fill.cur{background:linear-gradient(90deg,#F0A02A,#D9822B)}
 .wc-bar-val{font-size:11px;font-weight:800;color:var(--gray-800);text-align:right}
 .wc-bar-row.cur .wc-bar-val{color:#B4690E}
+/* large variant — the full-width "Losses by policy period" chart on the Overview tab */
+.wc-bars.lg{gap:8px;margin-top:4px}
+.wc-bars-head.lg,.wc-bars.lg .wc-bar-row{grid-template-columns:62px 1fr 82px}
+.wc-bars.lg .wc-bar-row{padding:5px 6px;margin:0 -6px;border-radius:9px}
+.wc-bars.lg .wc-bar-track{height:22px;border-radius:9px}
+.wc-bars.lg .wc-bar-fill{border-radius:9px}
+.wc-bars.lg .wc-bar-lab{font-size:13px}
+.wc-bars.lg .wc-bar-val{font-size:13.5px}
+.wc-bars-head.lg .h{font-size:9.5px}
 .wc-bars-legend{display:flex;flex-wrap:wrap;gap:5px 12px;margin-top:9px}
 .wc-bars-legend .k{display:inline-flex;align-items:center;gap:5px;font-size:9.5px;font-weight:600;color:var(--gray-500)}
 .wc-bars-legend .sw{width:9px;height:9px;border-radius:3px;flex-shrink:0}
@@ -10085,15 +10094,35 @@ function wcRenderOverview(){
       </div>
     </div>`;
 
-  // trend chart (losses per period)
-  const trendData=s.per.map(p=>({ label:wcShortPP(p.pp), value:p.losses,
-    display:p.losses>0?wcCompact(p.losses):'—', highlight:p.pp===wcCurrentPeriod() }));
+  // trend chart — horizontal bars by period, colour-coded by loss size (same language as the dashboard scorecard)
+  const tMax=Math.max(1,...s.per.map(p=>p.losses));
+  const trendBars=s.per.map(p=>{
+    const isCur=p.pp===wcCurrentPeriod();
+    const w=p.losses>0?Math.max(2,Math.round(100*p.losses/tMax)):0;
+    const tier=wcLossTier(p.losses,tMax,isCur);
+    return `<div class="wc-bar-row ${isCur?'cur':''}" data-pp="${p.pp}">
+      <div class="wc-bar-lab">${wcShortPP(p.pp)}</div>
+      <div class="wc-bar-track"><div class="wc-bar-fill ${tier}" style="width:${w}%"></div></div>
+      <div class="wc-bar-val">${p.losses>0?wcCompact(p.losses):'—'}</div></div>`;
+  }).join('');
   const trend=`
-    <div class="tr-chart-card">
-      <div class="tr-chart-head">
-        <div><h2>Losses by policy period</h2><div class="tr-chart-sub">Incurred losses for each policy year · current period highlighted</div></div>
+    <div class="wc-panel" style="margin-bottom:22px">
+      <div class="wc-panel-head" style="margin-bottom:14px">
+        <div><h2>Losses by policy period</h2><div class="wc-panel-sub">Incurred losses for each policy year · colour shows loss size · current period highlighted</div></div>
       </div>
-      <div>${(typeof barChartSVG==='function')?barChartSVG(trendData,{maxBarW:46,ariaLabel:'Workers compensation losses by policy period'}):''}</div>
+      <div class="wc-bars-head lg">
+        <div class="h">Policy year</div>
+        <div class="h">Incurred losses <span class="hint">— hover or tap a year for the claim breakdown</span></div>
+        <div class="h r">Total</div>
+      </div>
+      <div class="wc-bars lg">${trendBars}</div>
+      <div class="wc-bars-legend">
+        <span class="k"><span class="sw" style="background:linear-gradient(90deg,#37B49A,#1E8E76)"></span>Lower</span>
+        <span class="k"><span class="sw" style="background:linear-gradient(90deg,#F0B53C,#D98A1E)"></span>Moderate</span>
+        <span class="k"><span class="sw" style="background:linear-gradient(90deg,#EC7A4E,#D1542B)"></span>High</span>
+        <span class="k"><span class="sw" style="background:linear-gradient(90deg,#D5453B,#9B271B)"></span>Peak</span>
+        <span class="k"><span class="sw" style="background:linear-gradient(90deg,#F0A02A,#D9822B)"></span>In progress</span>
+      </div>
     </div>`;
 
   // injury breakdown (top types) + period table side by side
@@ -10158,6 +10187,7 @@ function wcRenderOverview(){
     </div>`;
 
   host.innerHTML=kpis+trend+`<div class="wc-grid2">${injCard}${tableCard}</div>`+locCard+banner;
+  if(typeof wcBindBarTips==='function') wcBindBarTips(host);
 }
 
 /* ── CLAIMS LOG (historical, editable) ── */
