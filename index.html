@@ -9097,7 +9097,10 @@ spawnWaves(document.getElementById('hero-waves'), {
       var noHist = !(Array.isArray(WC_HISTORY) && WC_HISTORY.length);
       var noAct  = !(Array.isArray(WC_ACTIVE)  && WC_ACTIVE.length);
       if(noHist && noAct){ if(typeof wcInit==='function') wcInit(); }
-      else if(typeof wcRollover==='function'){ try{ wcRollover(); }catch(e){} }
+      // NOTE: do NOT run wcRollover() here. buildWC() is a read/snapshot path that
+      // fires on every save (wcSaveAct -> hubPushWC), and rollover mutates the data.
+      // Rollover already runs once on load in wcInit(); running it on each save was
+      // pulling freshly-logged active claims into the Claims Log.
     }catch(e){}
     var s; try{ s=wcStats(); }catch(e){ return null; }
     if(!s || !Array.isArray(s.per) || !s.per.length) return null;   // nothing to show
@@ -9925,7 +9928,46 @@ function wcInit(){
   try{ WC_NEAR=JSON.parse(localStorage.getItem(WC_NEAR_KEY)||'null'); }catch(e){ WC_NEAR=null; }
   if(!Array.isArray(WC_NEAR)){ WC_NEAR=[]; wcSaveNear(); }
   wcRestInit();
+  wcActStampPeriods();   // ensure every active claim is tagged with the period it was logged under
+  wcRecoverMisfiled();   // one-time: pull back claims the old date-based rollover wrongly moved to the Log
   wcRollover();   // close out any policy period that has ended → its claims move to the Claims Log
+}
+/* Every active claim carries the policy period it was LOGGED under (activePP),
+   so it stays in the Active tab for the whole current policy year regardless of
+   when the injury actually happened. Backfill any legacy claim that predates
+   this field by stamping it with the current period — so nothing already in the
+   Active tab gets swept out the next time rollover runs. */
+function wcActStampPeriods(){
+  if(!Array.isArray(WC_ACTIVE)) return;
+  let changed=false;
+  WC_ACTIVE.forEach(a=>{ if(a && !a.activePP){ a.activePP=wcCurrentPeriod(); changed=true; } });
+  if(changed) wcSaveAct();
+}
+/* One-time recovery for claims the previous (incident-date) rollover relocated
+   to the Claims Log by mistake. The current policy period (2025-26) has not yet
+   ended, so any history record flagged rolledFromActive was moved in error —
+   pull each one back into the Active tab and re-stamp it to the current period. */
+function wcRecoverMisfiled(){
+  try{ if(localStorage.getItem('hrhub_wc_recover_v1')) return; }catch(e){}
+  if(!Array.isArray(WC_HISTORY) || !Array.isArray(WC_ACTIVE)){ try{ localStorage.setItem('hrhub_wc_recover_v1','1'); }catch(e){} return; }
+  const back=WC_HISTORY.filter(c=>c && c.rolledFromActive===true);
+  if(back.length){
+    back.forEach(c=>{
+      // type was stored as (description || claimType); if it equals claimType the description was blank
+      const ct=c.claimType||'Medical Only';
+      const desc=(c.type && c.type!==ct) ? c.type : '';
+      WC_ACTIVE.push({
+        id:wcUid('a'), activePP:wcCurrentPeriod(),
+        name:c.name||'', loc:c.loc||'CA', dept:c.dept||'', date:c.date||'',
+        status:(c.open?'Open':'Closed'), claimType:ct, provider:c.provider||'CNA',
+        description:desc, bodyPart:c.bodyPart||'', notes:c.notes||'', incurred:(+c.amount||0)
+      });
+    });
+    WC_HISTORY=WC_HISTORY.filter(c=>!(c && c.rolledFromActive===true));
+    wcSaveHist(); wcSaveAct();
+    setTimeout(()=>{ try{ alert('Workers\u2019 Comp: restored '+back.length+' claim'+(back.length===1?'':'s')+' to the Active Claims tab that had been moved to the Claims Log in error. They\u2019ll now stay put for the current policy period.'); }catch(e){} },700);
+  }
+  try{ localStorage.setItem('hrhub_wc_recover_v1','1'); }catch(e){}
 }
 /* ── policy-period rollover ────────────────────────────────────────────
    The policy year runs Jul 1 – Jun 30. When a period ends, the claims that
@@ -9940,21 +9982,24 @@ function wcRollover(){
   const cur=wcCurrentPeriod();
   const stay=[], moved=[];
   WC_ACTIVE.forEach(a=>{
-    const pp=wcPeriodForDate(a.date);
-    if(pp!==cur && wcPeriodStartYear(pp)<wcPeriodStartYear(cur)){ moved.push(a); }
+    // A claim leaves the Active tab only when the policy period it was LOGGED
+    // under (activePP) is now behind us — never because of its injury date.
+    const pp=a.activePP||cur;
+    if(wcPeriodStartYear(pp)<wcPeriodStartYear(cur)){ moved.push(a); }
     else stay.push(a);
   });
   if(!moved.length) return 0;
   moved.forEach(a=>{
     WC_HISTORY.push({
-      id:wcUid('h'), pp:wcPeriodForDate(a.date),
+      id:wcUid('h'), pp:(a.activePP||wcPeriodForDate(a.date)),
       name:a.name||'', loc:a.loc||'CA',
       type:(a.description||a.claimType||'Claim'),
       amount:(+a.incurred||0),
       open:(String(a.status||'').toLowerCase()==='open'),
       // keep the richer detail so nothing is lost in the move / CSV / PDF
       date:a.date||'', dept:a.dept||'', bodyPart:a.bodyPart||'',
-      provider:a.provider||'', claimType:a.claimType||'', notes:a.notes||'', rolledFromActive:true
+      provider:a.provider||'', claimType:a.claimType||'', status:a.status||'',
+      description:a.description||'', notes:a.notes||'', rolledFromActive:true
     });
   });
   WC_ACTIVE=stay;
@@ -9964,7 +10009,7 @@ function wcRollover(){
     const flag='hrhub_wc_rolled_'+cur;
     if(!localStorage.getItem(flag)){
       localStorage.setItem(flag,'1');
-      const periods=[...new Set(moved.map(a=>wcPeriodForDate(a.date)))].sort().join(', ');
+      const periods=[...new Set(moved.map(a=>(a.activePP||wcPeriodForDate(a.date))))].sort().join(', ');
       setTimeout(()=>{ try{ alert('Workers\u2019 Comp: the '+periods+' policy period has ended. Its '+moved.length+' claim'+(moved.length===1?'':'s')+' moved to the Claims Log (still editable there). The Active Claims tab is now tracking '+cur+'.'); }catch(e){} },600);
     }
   }catch(e){}
@@ -10407,7 +10452,7 @@ function wcActAdd(){
   wcActCommitDOM();   // keep any half-typed claim before the table rebuilds
   const today=new Date().toISOString().slice(0,10);
   const nid=wcUid('a');
-  WC_ACTIVE.push({id:nid,name:'',loc:'CA',dept:'',date:today,status:'Open',claimType:'Medical Only',provider:'CNA',description:'',bodyPart:'',notes:'',incurred:0});
+  WC_ACTIVE.push({id:nid,activePP:wcCurrentPeriod(),name:'',loc:'CA',dept:'',date:today,status:'Open',claimType:'Medical Only',provider:'CNA',description:'',bodyPart:'',notes:'',incurred:0});
   wcSaveAct(); wcRenderActive(); wcRenderOverview(); wcDashRender(); wcRenderSeg();
   setTimeout(()=>{ const tr=document.querySelector('#wc-sub-active tr[data-id="'+nid+'"]'); if(tr){ const i=tr.querySelector('input[data-f=name]'); if(i) i.focus(); tr.scrollIntoView({block:'center'}); } },30);
 }
