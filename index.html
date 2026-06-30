@@ -6544,7 +6544,10 @@ async function recCallModel(system,user){
   const key=sessionStorage.getItem(REC_KEY_SS);
   let resp;
   if(proxy){
-    resp=await fetch(proxy,{method:'POST',headers:{'Content-Type':'application/json'},
+    let token=CLOUD_ANON;
+    try{ const sb=await cloudInit(); if(sb){ const { data }=await sb.auth.getSession(); if(data&&data.session&&data.session.access_token) token=data.session.access_token; } }catch(e){}
+    resp=await fetch(proxy,{method:'POST',
+      headers:{'Content-Type':'application/json','apikey':CLOUD_ANON,'Authorization':'Bearer '+token},
       body:JSON.stringify({role:(document.getElementById('rec-role')||{}).value||'', system, user, ...body})});
   } else if(key){
     resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
