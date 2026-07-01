@@ -914,7 +914,7 @@ select.rec-in{appearance:auto;cursor:pointer}
 .lrc-sr-item i{color:var(--cyan);font-size:17px}
 .lrc-sr-item .sr-grp{margin-left:auto;font-size:10.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--gray-400)}
 .lrc-sr-empty{padding:13px 16px;color:var(--gray-500);font-size:13px}
-.lrc-hero-side{position:relative;z-index:1;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:16px 16px 8px;display:flex;flex-direction:column;min-height:0}
+.lrc-hero-side{position:relative;z-index:1;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:13px 13px 8px;display:flex;flex-direction:column;min-height:0}
 .lrc-side-head{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;color:#fff;margin-bottom:10px}
 .lrc-side-head i{color:var(--cyan-bright);font-size:17px}
 .lrc-hero-side .dn-count{background:var(--cyan);margin-left:2px}
@@ -1061,6 +1061,13 @@ select.rec-in{appearance:auto;cursor:pointer}
 .sf-foot{display:flex;justify-content:space-between;align-items:center;margin-top:13px;padding-top:11px;
   border-top:1px solid #EEF2F6;font-size:11.5px;font-weight:600;color:var(--gray-400)}
 .sf-foot b{color:var(--gray-600)}
+/* Two-month layout: previous + current month, each labeled */
+.sf-month-next{margin-top:15px;padding-top:14px;border-top:1px dashed #E3E9F1}
+.sf-monthhead{display:flex;align-items:center;justify-content:space-between;margin:1px 0 13px}
+.sf-monthhead .sf-sec{margin:0}
+.sf-monthavg{font-size:12px;font-weight:800;color:var(--gray-700)}
+.sf-monthavg.muted{color:#B8C0CA;font-weight:700}
+.sf-empty{font-size:12.5px;font-weight:600;color:var(--gray-400);background:#F7F9FC;border:1px dashed #E3E9F1;border-radius:10px;padding:12px 14px;text-align:center}
 @media(max-width:520px){.sf-lane{grid-template-columns:auto 1fr auto auto;gap:9px}.sf-lane-name{font-size:12px}}
 
 /* ── Overtime mini-card bars ── */
@@ -1154,6 +1161,26 @@ select.rec-in{appearance:auto;cursor:pointer}
 .notif-trigger .dn-count{margin-left:1px;background:var(--cyan)}
 .notif-trigger .nt-arrow{margin-left:auto;font-size:17px;color:rgba(255,255,255,.72);display:flex}
 .nt-hint{font-size:12px;color:rgba(255,255,255,.6);margin:9px 2px 2px}
+/* rich notifications preview card (dashboard hero) — mirrors the LRC card look */
+.notif-card{width:100%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:13px;padding:11px 13px;cursor:pointer;color:#fff;transition:all .15s;text-align:left}
+.notif-card:hover{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.34)}
+.notif-card:focus-visible{outline:2px solid var(--cyan-bright);outline-offset:2px}
+.nc-head{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.nc-bell{font-size:16px;color:var(--cyan-bright);display:flex}
+.nc-title{font-size:13px;font-weight:700;letter-spacing:.2px}
+.nc-count{margin-left:auto;background:var(--cyan);color:#fff;font-size:10.5px;font-weight:700;min-width:18px;height:18px;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;padding:0 5px}
+.nc-list{display:flex;flex-direction:column;gap:7px}
+.nc-row{display:flex;align-items:flex-start;gap:8px}
+.nc-ic{flex:0 0 auto;width:20px;height:20px;border-radius:6px;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;color:#fff;margin-top:1px}
+.nc-ic .ti{font-size:12px}
+.nc-ic.emoji{background:transparent;font-size:14px}
+.nc-txt{min-width:0;flex:1}
+.nc-name{font-size:12.5px;font-weight:700;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nc-meta{font-size:11px;color:rgba(255,255,255,.66);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nc-foot{margin-top:9px;font-size:11.5px;font-weight:600;color:var(--cyan-bright);display:flex;align-items:center;gap:5px}
+.nc-foot .ti{font-size:13px}
+.nc-empty{display:flex;align-items:center;gap:9px;font-size:12.5px;color:rgba(255,255,255,.72)}
+.nc-empty .ti{font-size:17px;color:var(--cyan-bright)}
 .nm-head .dn-toggle{margin-left:auto;margin-right:8px}
 /* per-item dismiss (x) */
 .nm-del{flex-shrink:0;border:none;background:var(--gray-100);color:var(--gray-500);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;font-family:inherit;transition:all .15s}
@@ -1956,6 +1983,7 @@ select.rec-in{appearance:auto;cursor:pointer}
     <div class="nav-group">
       <div class="nav-label">HR Apps</div>
       <div class="nav-item nav-ext-link" onclick="window.open('https://joseh-ctrl.github.io/safety-inspector/','_blank','noopener');closeSidebar()"><i class="ti ti-shield-check"></i>Safety Inspector<i class="ti ti-external-link nav-ext"></i></div>
+      <div class="nav-item nav-ext-link" onclick="window.open('https://joseh-ctrl.github.io/Vehicle-Inspection/','_blank','noopener');closeSidebar()"><i class="ti ti-car"></i>Vehicle Inspections<i class="ti ti-external-link nav-ext"></i></div>
       <div class="nav-item nav-ext-link" onclick="window.open('https://joseh-ctrl.github.io/leadership-portal/','_blank','noopener');closeSidebar()"><i class="ti ti-users-group"></i>Leadership Resource Center<i class="ti ti-external-link nav-ext"></i></div>
       <div class="nav-item nav-ext-link" onclick="window.open('https://docs.google.com/spreadsheets/d/1SQiPD0YaQCDCuHx7ej8Hm2g1Q_H4irzqCJ6GM4ic3y8/edit?usp=drivesdk','_blank','noopener');closeSidebar()"><i class="ti ti-school"></i>Department Training Log<i class="ti ti-external-link nav-ext"></i></div>
       <div class="nav-item nav-ext-link" onclick="window.open('https://docs.google.com/spreadsheets/d/11Q1E1xukYoBA-3t4gY7k-ilp8CpzAGVGSz19gybq-sQ/edit?usp=drivesdk','_blank','noopener');closeSidebar()"><i class="ti ti-messages"></i>One-on-One Log<i class="ti ti-external-link nav-ext"></i></div>
@@ -2092,13 +2120,11 @@ select.rec-in{appearance:auto;cursor:pointer}
             </div>
           </div>
           <div class="lrc-hero-side">
-            <button class="notif-trigger" id="notif-trigger" onclick="openNotifModal()" aria-label="Open notifications">
-              <span class="nt-bell"><i class="ti ti-bell"></i></span>
-              <span class="nt-label">Notifications</span>
-              <span class="dn-count" id="dn-count">0</span>
-              <span class="nt-arrow"><i class="ti ti-chevron-right"></i></span>
-            </button>
-            <div class="nt-hint" id="nt-hint">You're all caught up.</div>
+            <div class="notif-card" id="notif-card" onclick="openNotifModal()" role="button" tabindex="0"
+                 onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openNotifModal();}"
+                 aria-label="Open notifications">
+              <!-- filled by renderNotifications() -->
+            </div>
             <div id="dash-notifs" style="display:none"></div>
           </div>
         </div>
@@ -3424,39 +3450,62 @@ const SAFETY = {
   }
 };
 
-/* Seed snapshot — matches your screenshot. Shown instantly, then replaced by live Supabase data. */
+/* Seed snapshot — shown instantly, then replaced by live Supabase data.
+   Two-month shape: previous month keeps showing while the current month is still blank. */
 let safetyData = {
-  period: '2026-06',
-  lanes: [
-    { state:'CA', label:'CA – Warehouse',  done:7, required:7 },
-    { state:'CA', label:'CA – Printing',   done:0, required:3 },
-    { state:'PA', label:'PA – Production', done:0, required:1 },
-    { state:'PA', label:'PA – Warehouse',  done:0, required:1 },
-    { state:'PA', label:'PA – Printing',   done:1, required:1 }
+  period: '2026-07',
+  months: [
+    { ym:'2026-06', label:'June 2026', lanes:[
+      { state:'CA', label:'CA – Warehouse',  done:7, required:7 },
+      { state:'CA', label:'CA – Printing',   done:3, required:3 },
+      { state:'PA', label:'PA – Production', done:1, required:1 },
+      { state:'PA', label:'PA – Warehouse',  done:1, required:1 },
+      { state:'PA', label:'PA – Printing',   done:1, required:1 }
+    ]},
+    { ym:'2026-07', label:'July 2026', lanes:[] }
   ],
-  ytdAvg: 81.1,
-  states: [ {code:'CA',pct:83}, {code:'PA',pct:33}, {code:'MX',pct:87} ],
+  ytdAvg: 86.8,
+  states: [ {code:'CA',pct:91}, {code:'PA',pct:33}, {code:'MX',pct:87} ],
   tasks: 53
 };
 
 function safetyPct(l){ return (l && l.required>0) ? Math.round((l.done/l.required)*100) : 0; }
+function safetyLaneHtml(l){
+  const pct=safetyPct(l);
+  const col=SAFETY.laneColor[l.state]||SAFETY.laneColor.CA;
+  return `<div class="sf-lane">
+    <span class="sf-lane-name">${recEsc(l.label)}</span>
+    <span class="sf-lane-track"><span class="sf-lane-fill" style="width:${pct}%;background:${pct>0?col:'transparent'}"></span></span>
+    <span class="sf-lane-pct">${pct}%</span>
+    <span class="sf-lane-count">${l.done}/${l.required}</span>
+  </div>`;
+}
+function safetyMonthAvg(lanes){
+  const d=(lanes||[]).reduce((a,l)=>a+(+l.done||0),0);
+  const r=(lanes||[]).reduce((a,l)=>a+(+l.required||0),0);
+  return r>0?Math.round(d/r*100):0;
+}
 
 function renderSafetyDash(){
   const host=document.getElementById('dash-safety-card'); if(!host) return;
   const d=safetyData;
-  const lanes=(d.lanes||[]).map(l=>{
-    const pct=safetyPct(l);
-    const col=SAFETY.laneColor[l.state]||SAFETY.laneColor.CA;
-    return `<div class="sf-lane">
-      <span class="sf-lane-name">${recEsc(l.label)}</span>
-      <span class="sf-lane-track"><span class="sf-lane-fill" style="width:${pct}%;background:${pct>0?col:'transparent'}"></span></span>
-      <span class="sf-lane-pct">${pct}%</span>
-      <span class="sf-lane-count">${l.done}/${l.required}</span>
-    </div>`;
+  // Two labeled months. Back-compat: an old single-month snapshot is wrapped as one month.
+  const months = Array.isArray(d.months) ? d.months
+    : [{ ym:d.period, label:d.period, lanes:d.lanes||[] }];
+  const monthsHtml = months.map((m,i)=>{
+    const has=(m.lanes||[]).length>0;
+    const avg=safetyMonthAvg(m.lanes);
+    const body = has
+      ? `<div class="sf-lanes">${m.lanes.map(safetyLaneHtml).join('')}</div>`
+      : `<div class="sf-empty">No inspections logged yet</div>`;
+    return `<div class="sf-month${i>0?' sf-month-next':''}">
+       <div class="sf-monthhead">
+         <span class="sf-sec">${recEsc(m.label)}</span>
+         <span class="sf-monthavg${has?'':' muted'}">${has?avg+'%':'—'}</span>
+       </div>
+       ${body}
+     </div>`;
   }).join('');
-  const totDone=(d.lanes||[]).reduce((a,l)=>a+(+l.done||0),0);
-  const totReq=(d.lanes||[]).reduce((a,l)=>a+(+l.required||0),0);
-  const monthAvg=totReq>0?Math.round((totDone/totReq)*100):0;
   const pills=[
     ...(d.states||[]).map(s=>`<span class="sf-pill"><b>${recEsc(s.code)}</b> ${Math.round(s.pct)}%</span>`),
     `<span class="sf-pill"><b>Tasks</b> ${d.tasks}</span>`
@@ -3473,13 +3522,11 @@ function renderSafetyDash(){
        </div>
      </div>
      <div class="stat-body">
-       <div class="sf-sec">This Month</div>
-       <div class="sf-lanes">${lanes}</div>
+       ${monthsHtml}
        <div class="sf-ytd">
          <div class="sf-ytd-main"><span class="sf-ytd-label">YTD Average</span><span class="sf-ytd-val">${(+d.ytdAvg).toFixed(1)}%</span></div>
          <div class="sf-pills">${pills}</div>
        </div>
-       <div class="sf-foot"><span>Month avg: <b>${monthAvg}%</b></span><span>${recEsc(d.period)}</span></div>
      </div>`;
 }
 
@@ -3487,27 +3534,38 @@ function renderSafetyDash(){
    completion = completed / total. "This Month" lanes group the current month's tasks by department;
    YTD pills are per-state completion across all loaded tasks; Tasks = total task count. */
 function safetyDeptLabel(id){ return String(id||'').replace('-',' – '); }
+function safetyYM(y,mIdx){ return y+'-'+String(mIdx+1).padStart(2,'0'); }
+function safetyMonthLabel(dt){ return dt.toLocaleDateString('en-US',{month:'long',year:'numeric'}); }
 function safetyAggregate(rows){
   if(!Array.isArray(rows)) return safetyData;
   const now=new Date();
-  const ym=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');   // 'YYYY-MM'
-  const laneMap={}, byState={}; let totDone=0, totAll=0;
+  const currYM = safetyYM(now.getFullYear(), now.getMonth());
+  const prevD  = new Date(now.getFullYear(), now.getMonth()-1, 1);
+  const prevYM = safetyYM(prevD.getFullYear(), prevD.getMonth());
+  const monthMaps = { [prevYM]:{}, [currYM]:{} };   // dept-keyed lane maps, one per shown month
+  const byState={}; let totDone=0, totAll=0;
   rows.forEach(r=>{
     const dept=r.dept||'', state=dept.split('-')[0], done=(r.status==='completed');
     // YTD (all loaded tasks)
     if(!byState[state]) byState[state]={done:0,all:0};
     byState[state].all++; totAll++; if(done){ byState[state].done++; totDone++; }
-    // This month (group by department, by log date)
-    if((r.date||'').slice(0,7)===ym){
-      if(!laneMap[dept]) laneMap[dept]={state, label:safetyDeptLabel(dept), done:0, required:0};
-      laneMap[dept].required++; if(done) laneMap[dept].done++;
+    // Bucket into the previous or current month by log date
+    const mk=(r.date||'').slice(0,7);
+    if(monthMaps[mk]){
+      const lm=monthMaps[mk];
+      if(!lm[dept]) lm[dept]={state, label:safetyDeptLabel(dept), done:0, required:0};
+      lm[dept].required++; if(done) lm[dept].done++;
     }
   });
   const ord=SAFETY.stateOrder;
-  const lanes=Object.values(laneMap).sort((a,b)=>
+  const buildLanes = map => Object.values(map).sort((a,b)=>
     (ord.indexOf(a.state)-ord.indexOf(b.state)) || (b.required-a.required) || a.label.localeCompare(b.label));
+  const months = [
+    { ym:prevYM, label:safetyMonthLabel(prevD), lanes:buildLanes(monthMaps[prevYM]) },
+    { ym:currYM, label:safetyMonthLabel(now),   lanes:buildLanes(monthMaps[currYM]) }
+  ];
   const states=ord.filter(s=>byState[s]).map(s=>({code:s, pct: byState[s].all?Math.round(byState[s].done/byState[s].all*100):0}));
-  return { period:ym, lanes, ytdAvg: totAll?+(totDone/totAll*100).toFixed(1):0, states, tasks: rows.length };
+  return { period:currYM, months, ytdAvg: totAll?+(totDone/totAll*100).toFixed(1):0, states, tasks: rows.length };
 }
 async function safetyLoadLive(){
   if(!SAFETY.anonKey || !SAFETY.table) return;            // not wired yet — using seed snapshot
@@ -4189,25 +4247,78 @@ function notifCollect(mode){
   const dismissed=notifDismissedSet();
   return items.filter(it=>!dismissed.has(it.dkey));
 }
+/* Flatten the top notifications across every source into a simple {icon|emoji, title, meta}
+   list for the dashboard preview card. Order mirrors the modal so the preview shows the
+   same "top" items the modal opens to. Count of this list == the badge total. */
+function notifPreviewItems(){
+  const out=[];
+  const esc = s => (s==null?'':String(s));
+  const gcItems = (typeof gcNotifCollect==='function') ? gcNotifCollect() : [];
+  gcItems.forEach(it=>{ const n=it.people?it.people.length:0;
+    out.push({icon:'ti-gift', title:'Send gift cards', meta:n+(n===1?' birthday':' birthdays')+' this week'}); });
+  const benItems = (typeof benNotifCollect==='function') ? benNotifCollect() : [];
+  benItems.forEach(it=>{ const when=it.days===1?'tomorrow':'in '+it.days+' days';
+    out.push({icon:'ti-stethoscope', title:'Email '+esc(it.name)+' about benefits', meta:'Medical-eligible '+when}); });
+  const oshaItems = (typeof oshaNotifCollect==='function') ? oshaNotifCollect() : [];
+  oshaItems.forEach(it=> out.push({icon:it.kind==='post'?'ti-pin':'ti-clipboard-x', title:esc(it.title)||'OSHA Form 300A', meta:esc(it.meta)}));
+  const huItems = (typeof huNotifCollect==='function') ? huNotifCollect() : [];
+  huItems.forEach(it=>{ const parts=[]; if(it.categoryLabel)parts.push(esc(it.categoryLabel));
+    if(it.date&&typeof huFmtDate==='function')parts.push(huFmtDate(it.date));
+    out.push({icon:'ti-speakerphone', title:esc(it.title)||'HR update', meta:parts.join(' \u00b7 ')}); });
+  const tkItems = (typeof tkNotifCollect==='function') ? tkNotifCollect(notifMode) : [];
+  tkItems.forEach(it=>{ const due=it.due==='overdue'?'Overdue':it.due==='duesoon'?'Due soon':(it.deadline&&typeof tkFmtDate==='function'?'Due '+tkFmtDate(it.deadline):'No deadline');
+    out.push({icon:'ti-clipboard-check', title:esc(it.title)||'Task', meta:due}); });
+  const celebs = (typeof celebCollect==='function') ? celebCollect() : [];
+  celebs.forEach(c=> out.push({emoji:c.emoji||'\uD83C\uDF89', title:esc(c.name), meta:esc(c.label)+' \u00b7 '+esc(c.when)}));
+  const holItems = (typeof holNotifCollect==='function') ? holNotifCollect() : [];
+  holItems.forEach(h=> out.push({icon:'ti-calendar-star', title:esc(h.name), meta:esc(h.when)+' \u00b7 Company closed'}));
+  const items = notifCollect(notifMode);
+  items.forEach(it=> out.push({icon:it.everyone?'ti-users':'ti-clipboard-text', title:esc(it.name), meta:esc(it.cat)+' \u00b7 '+(it.status==='failed'?'Failed':'Pending')}));
+  return out;
+}
+
 function renderNotifications(){
   if(!CURRENT) return;
   const toggle = document.getElementById('dn-toggle');
   if(toggle) toggle.style.display = can('settings') ? 'inline-flex' : 'none';
   if(!can('settings')) notifMode='mine';
-  const items = notifCollect(notifMode);
-  const celebs = (typeof celebCollect==='function') ? celebCollect() : [];
-  const tkItems = (typeof tkNotifCollect==='function') ? tkNotifCollect(notifMode) : [];
-  const huItems = (typeof huNotifCollect==='function') ? huNotifCollect() : [];
-  const holItems = (typeof holNotifCollect==='function') ? holNotifCollect() : [];
-  const gcItems = (typeof gcNotifCollect==='function') ? gcNotifCollect() : [];
-  const benItems = (typeof benNotifCollect==='function') ? benNotifCollect() : [];
-  const oshaItems = (typeof oshaNotifCollect==='function') ? oshaNotifCollect() : [];
-  const total = items.length + celebs.length + tkItems.length + huItems.length + holItems.length + gcItems.length + benItems.length + oshaItems.length;
-  const cnt = document.getElementById('dn-count'); if(cnt) cnt.textContent = total;
-  const hint = document.getElementById('nt-hint');
-  if(hint) hint.textContent = total ? `${total} update${total===1?'':'s'} · tap to view` : "You're all caught up.";
-  const host = document.getElementById('dash-notifs'); // hidden, kept for compatibility
-  if(host) host.innerHTML = '';
+  const host = document.getElementById('dash-notifs'); if(host) host.innerHTML=''; // legacy hidden node
+  const card = document.getElementById('notif-card'); if(!card) return;
+  const preview = notifPreviewItems();
+  const total = preview.length;
+  if(!total){
+    card.innerHTML =
+      `<div class="nc-head">
+         <span class="nc-bell"><i class="ti ti-bell"></i></span>
+         <span class="nc-title">Notifications</span>
+       </div>
+       <div class="nc-empty"><i class="ti ti-circle-check"></i> You\u2019re all caught up.</div>`;
+    return;
+  }
+  const SHOWN = 3;
+  const rows = preview.slice(0, SHOWN).map(it=>{
+    const ic = it.emoji
+      ? `<span class="nc-ic emoji">${it.emoji}</span>`
+      : `<span class="nc-ic"><i class="ti ${it.icon||'ti-bell'}"></i></span>`;
+    return `<div class="nc-row">${ic}
+      <div class="nc-txt">
+        <div class="nc-name">${ytEsc(it.title)}</div>
+        ${it.meta?`<div class="nc-meta">${ytEsc(it.meta)}</div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+  const more = total - Math.min(total, SHOWN);
+  const foot = more>0
+    ? `<div class="nc-foot"><i class="ti ti-dots"></i> +${more} more \u00b7 tap to view all</div>`
+    : `<div class="nc-foot"><i class="ti ti-arrow-right"></i> Tap to view details</div>`;
+  card.innerHTML =
+    `<div class="nc-head">
+       <span class="nc-bell"><i class="ti ti-bell"></i></span>
+       <span class="nc-title">Notifications</span>
+       <span class="nc-count">${total}</span>
+     </div>
+     <div class="nc-list">${rows}</div>
+     ${foot}`;
 }
 function dnSetMode(m){ notifMode=m; document.querySelectorAll('.dn-tab').forEach(b=>b.classList.toggle('active', b.dataset.m===m)); renderNotifications(); if(document.getElementById('notif-modal').classList.contains('open')) renderNotifModal(); }
 
