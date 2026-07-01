@@ -2375,10 +2375,10 @@ select.rec-in{appearance:auto;cursor:pointer}
           <div class="ot-dz-icon"><i class="ti ti-cloud-upload"></i></div>
           <div class="ot-dz-main">
             <div class="ot-dz-title">Drop a monthly overtime report here</div>
-            <div class="ot-dz-sub">PDF or CSV · the month is detected from the file. You can drop several at once.</div>
+            <div class="ot-dz-sub">PDF, CSV, or Excel · the month is detected from the file. You can drop several at once.</div>
           </div>
           <label class="ot-dz-btn"><i class="ti ti-upload"></i> Choose file(s)
-            <input type="file" accept=".pdf,.csv" multiple onchange="otPick(this)">
+            <input type="file" accept=".pdf,.csv,.xlsx,.xls,.xlsm" multiple onchange="otPick(this)">
           </label>
         </div>
         <div class="ot-status" id="ot-status"></div>
@@ -7013,9 +7013,33 @@ document.addEventListener('click', function(e){
 });
 
 /* ---- file reading ---- */
+/* Load SheetJS on demand for Excel reports. Tries cdnjs first, then the SheetJS CDN. */
+async function otLoadXlsx(){
+  if(window.XLSX) return;
+  const sources=[
+    'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js',
+    'https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js'
+  ];
+  for(const src of sources){
+    try{ await recLoadScript(src); if(window.XLSX) return; }catch(e){ /* try next source */ }
+  }
+  if(!window.XLSX) throw new Error('xlsx_load_failed');
+}
+
 async function otReadText(file){
   const name=(file.name||'').toLowerCase();
   if(name.endsWith('.csv')||name.endsWith('.txt')||file.type==='text/csv'||file.type==='text/plain'){ return {text:await file.text(), kind:'csv'}; }
+  if(name.endsWith('.xlsx')||name.endsWith('.xls')||name.endsWith('.xlsm')
+     ||file.type==='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+     ||file.type==='application/vnd.ms-excel'){
+    await otLoadXlsx();
+    const buf=await file.arrayBuffer();
+    const wb=window.XLSX.read(buf,{type:'array'});
+    // Flatten every sheet to CSV text; reuse the existing CSV parsing path.
+    let t='';
+    (wb.SheetNames||[]).forEach(sn=>{ try{ t += window.XLSX.utils.sheet_to_csv(wb.Sheets[sn]) + '\n'; }catch(e){} });
+    return {text:t, kind:'csv'};
+  }
   if(name.endsWith('.pdf')||file.type==='application/pdf'){
     await recLoadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');
     window.pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
@@ -7242,7 +7266,7 @@ function otRender(){
   if(!data.length){
     let blank;
     if(otYear===2026 && !otData.length){
-      blank='<div class="ot-yearblank"><i class="ti ti-chart-bar-off"></i><b>No overtime data yet</b>Drop a monthly PDF or CSV above and the location &amp; department totals will appear here.'+
+      blank='<div class="ot-yearblank"><i class="ti ti-chart-bar-off"></i><b>No overtime data yet</b>Drop a monthly PDF, CSV, or Excel file above and the location &amp; department totals will appear here.'+
         (isAdmin()?'<div style="margin-top:14px"><button class="ot-clear" style="margin:0" onclick="otReseed()"><i class="ti ti-database-import"></i> Load built-in 2026 data</button></div>':'')+'</div>';
     } else {
       blank='<div class="ot-yearblank"><i class="ti ti-calendar-plus"></i><b>No reports loaded for '+otYear+' yet</b>Drop '+otYear+'\u2019s monthly overtime exports in the box above and they\u2019ll appear here. Your other years stay saved.</div>';
