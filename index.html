@@ -1732,6 +1732,33 @@ select.rec-in{appearance:auto;cursor:pointer}
 .wc-loc-fill.pa{background:linear-gradient(90deg,#27C7B4,#16A695)}
 .wc-loc-meta{font-size:12px;color:var(--gray-600);min-width:118px;text-align:right}
 .wc-loc-meta b{color:var(--gray-900);font-weight:800}
+/* scorecard: days since last injury, by location */
+.wc-streak{margin-top:14px;padding-top:13px;border-top:1px dashed var(--gray-200)}
+.wc-streak-head{font-size:8.5px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--gray-400);display:flex;align-items:center;gap:6px;margin-bottom:9px}
+.wc-streak-head i{font-size:13px;color:var(--wc-green)}
+.wc-streak-hint{font-weight:600;letter-spacing:0;text-transform:none;color:var(--gray-300)}
+.wc-streak-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.wc-streak-cell{position:relative;background:var(--gray-50);border:1px solid #EEF2F6;border-radius:11px;padding:9px 11px;overflow:hidden}
+.wc-streak-cell::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gray-200)}
+.wc-streak-cell.good::before{background:linear-gradient(180deg,#34D08A,#15924F)}
+.wc-streak-cell.ok::before{background:linear-gradient(180deg,#F0B53C,#D98A1E)}
+.wc-streak-cell.fresh::before{background:linear-gradient(180deg,#E8635C,#C0392B)}
+.wc-streak-cell.clear::before{background:linear-gradient(180deg,#34D08A,#15924F)}
+.wc-streak-loc{font-size:9.5px;font-weight:800;letter-spacing:.5px;color:var(--gray-500)}
+.wc-streak-num{font-size:22px;font-weight:800;line-height:1.05;color:var(--gray-900);margin-top:3px}
+.wc-streak-num .u{font-size:11px;font-weight:700;color:var(--gray-400)}
+.wc-streak-num .none{font-size:16px;font-weight:800;color:var(--wc-green)}
+.wc-streak-sub{font-size:10px;color:var(--gray-500);margin-top:2px;line-height:1.35}
+.wc-streak-name{font-size:10.5px;font-weight:700;color:var(--gray-700);margin-top:5px;display:flex;align-items:center;gap:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wc-streak-name i{font-size:12px;color:var(--gray-400);flex-shrink:0}
+.wc-streak.ov{margin-top:0;padding-top:0;border-top:none}
+.wc-streak.ov .wc-streak-head{font-size:9.5px;margin-bottom:11px}
+.wc-streak.ov .wc-streak-cell{padding:12px 14px}
+.wc-streak.ov .wc-streak-num{font-size:26px}
+.wc-streak.ov .wc-streak-num .none{font-size:18px}
+.wc-streak.ov .wc-streak-sub{font-size:11px}
+.wc-streak.ov .wc-streak-name{font-size:12px;margin-top:6px}
+@media(max-width:480px){.wc-streak-grid{grid-template-columns:1fr !important}}
 .wc-seg{display:inline-flex;flex-wrap:wrap;background:#E7EDF4;border:1px solid #D2DCE8;border-radius:24px;padding:4px;margin-bottom:20px;gap:3px;box-shadow:inset 0 1px 2px rgba(16,40,80,.06)}
 .wc-seg-btn{border:none;background:none;font-family:inherit;font-size:13.5px;font-weight:700;color:var(--gray-700);padding:9px 17px;border-radius:20px;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:7px}
 .wc-seg-btn:hover{color:var(--wc-red);background:rgba(255,255,255,.65)}
@@ -10069,6 +10096,18 @@ function wcInit(){
   wcActStampPeriods();   // ensure every active claim is tagged with the period it was logged under
   wcRecoverMisfiled();   // one-time: pull back claims the old date-based rollover wrongly moved to the Log
   wcRollover();   // close out any policy period that has ended → its claims move to the Claims Log
+  // keep the "days since last injury" counters honest if a screen is left open
+  // across midnight — re-render the affected views when the local day rolls over.
+  if(!window.__wcDayTicker){
+    window.__wcDayTicker=(new Date()).toDateString();
+    setInterval(function(){
+      var t=(new Date()).toDateString();
+      if(t===window.__wcDayTicker) return;
+      window.__wcDayTicker=t;
+      try{ if(typeof wcDashRender==='function' && document.getElementById('dash-wc-card')) wcDashRender(); }catch(e){}
+      try{ if(typeof wcRenderOverview==='function' && document.getElementById('wc-sub-overview')) wcRenderOverview(); }catch(e){}
+    }, 60000);
+  }
 }
 /* Every active claim carries the policy period it was LOGGED under (activePP),
    so it stays in the Active tab for the whole current policy year regardless of
@@ -10181,6 +10220,67 @@ function wcLocAgg(){
   const m={};
   wcAllClaims().forEach(c=>{ const l=(c.loc||'—').toUpperCase(); if(!m[l]) m[l]={loc:l,claims:0,losses:0}; m[l].claims++; m[l].losses+=(+c.amount||0); });
   return Object.values(m).sort((a,b)=>b.losses-a.losses);
+}
+/* ── days since last injury, by location ──
+   "Last injury" = the most recent claim that carries a real calendar date.
+   Active claims are dated (a.date); Claims-Log history is only tagged with a
+   policy period, so it can't drive a precise day-count — but if a history entry
+   ever gains a date it's picked up automatically. A location with no dated
+   injury on record surfaces as a clean streak ("No injury on record").
+   Recomputed on every render (and by a midnight ticker), so counts advance on
+   their own each day. */
+function wcLocOrder(){ return ['CA','PA']; }   // MX excluded — no cost/injury data feed for it
+function wcParseDay(str){
+  if(!str) return null;
+  const m=String(str).match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+  if(m) return new Date(+m[1], +m[2]-1, +m[3]);   // local midnight — avoids UTC off-by-one
+  const d=new Date(str); return isNaN(d)?null:d;
+}
+function wcDaysSince(str){
+  const d=wcParseDay(str); if(!d) return null;
+  const t=new Date(), today=new Date(t.getFullYear(),t.getMonth(),t.getDate());
+  const diff=Math.floor((today-d)/86400000);
+  return diff<0?0:diff;
+}
+function wcStreakFmtDate(str){
+  const d=wcParseDay(str); if(!d) return '';
+  return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+}
+function wcLastInjuryByLoc(){
+  const dated=[];
+  (WC_ACTIVE||[]).forEach(a=>{ if(a && a.date) dated.push({loc:(a.loc||'').toUpperCase(), date:a.date, name:a.name}); });
+  (WC_HISTORY||[]).forEach(c=>{ if(c && c.date) dated.push({loc:(c.loc||'').toUpperCase(), date:c.date, name:c.name}); });
+  const best={};
+  dated.forEach(r=>{ if(!r.loc) return; const cur=best[r.loc]; if(!cur || String(r.date)>String(cur.date)) best[r.loc]=r; });
+  return wcLocOrder().map(loc=>{ const r=best[loc]; return { loc, date:r?r.date:null, name:r?r.name:'', days:r?wcDaysSince(r.date):null }; });
+}
+function wcStreakTier(days){
+  if(days==null) return 'clear';          // no injury on record
+  if(days>=90) return 'good';
+  if(days>=30) return 'ok';
+  return 'fresh';                          // < 30 days — a recent injury
+}
+function wcStreakHTML(variant){
+  const rows=wcLastInjuryByLoc();
+  const cells=rows.map(r=>{
+    const tier=wcStreakTier(r.days);
+    let num, sub, name='';
+    if(r.days==null){
+      num=`<span class="none">None</span>`;
+      sub='No injury on record';
+    } else {
+      num=`${r.days} <span class="u">${r.days===1?'day':'days'}</span>`;
+      sub=(variant==='ov' && r.date) ? `since last injury · ${wcStreakFmtDate(r.date)}` : 'since last injury';
+      if(r.name) name=`<div class="wc-streak-name"><i class="ti ti-user"></i>${wcEsc(r.name)}</div>`;
+    }
+    return `<div class="wc-streak-cell ${tier}">
+      <div class="wc-streak-loc">${r.loc}</div>
+      <div class="wc-streak-num">${num}</div>
+      <div class="wc-streak-sub">${sub}</div>${name}</div>`;
+  }).join('');
+  return `<div class="wc-streak ${variant==='ov'?'ov':''}">
+    <div class="wc-streak-head"><i class="ti ti-shield-check"></i> Days since last injury <span class="wc-streak-hint">by location · updates daily</span></div>
+    <div class="wc-streak-grid" style="grid-template-columns:repeat(${rows.length},1fr)">${cells}</div></div>`;
 }
 function wcStats(){
   const per=wcPeriodAgg();
@@ -10364,6 +10464,10 @@ function wcRenderOverview(){
       <div class="wc-loc-meta"><b>${wcFmt0(l.losses)}</b> · ${l.claims} claims · ${share}%</div></div>`;
   }).join('');
   const locCard=`
+    <div class="wc-panel" style="margin-top:18px;margin-bottom:0">
+      <div class="wc-panel-head"><div><h2>Days since last injury</h2><div class="wc-panel-sub">Time since the most recent dated injury at each site · counts up on its own each day</div></div></div>
+      ${wcStreakHTML('ov')}
+    </div>
     <div class="wc-panel" style="margin-top:18px;margin-bottom:0">
       <div class="wc-panel-head"><div><h2>By location</h2><div class="wc-panel-sub">Incurred losses split by site, all years</div></div></div>
       <div class="wc-loc-split">${locBody}</div>
@@ -10942,6 +11046,7 @@ function wcDashRender(){
           <div class="wc-cmp-sub">${cur.claims} claim${cur.claims===1?'':'s'} · ${cur.open} open</div>
         </div>
       </div>
+      ${wcStreakHTML('dash')}
       <div class="wc-bars-head">
         <div class="h">Policy year</div>
         <div class="h">Incurred losses <span class="hint">— hover or tap a year for detail</span></div>
