@@ -7724,8 +7724,16 @@ function ptoLoad(){
   if(!Array.isArray(PTO.employees)) PTO.employees = [];
   // first run (or stale-empty roster): load the 2026 active-employee seed once, then never again
   if(!PTO.employees.length && !seeded && typeof PTO_SEED!=='undefined'){
-    PTO.employees = PTO_SEED.map(x=>Object.assign({}, x));
-    try{ localStorage.setItem(PTO_KEY+'_seeded','1'); }catch(e){}
+    // GUARD: PTO_SEED was scrubbed of birthDates for security (they are PII and
+    // must not live in a public repo). The live cloud roster in hrhub_store is
+    // now the system of record for birthDates. If the seed carries no birthDates,
+    // it is a scrubbed seed -- do NOT let it overwrite the cloud roster with
+    // blanks on a fresh browser. Wait for cloud hydration instead.
+    const seedHasBirthdays = PTO_SEED.some(x => x && x.birthDate);
+    if(seedHasBirthdays){
+      PTO.employees = PTO_SEED.map(x=>Object.assign({}, x));
+      try{ localStorage.setItem(PTO_KEY+'_seeded','1'); }catch(e){}
+    }
   }
   ptoFixPartTime();    // one-time: mark known part-timers PTO-ineligible (also corrects already-loaded rosters)
   ptoFixRehires();     // one-time: set rehire bridge dates so anniversaries reflect prior service
