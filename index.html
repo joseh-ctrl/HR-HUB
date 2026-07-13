@@ -3697,13 +3697,33 @@ function safetyAggregate(rows){
 async function safetyLoadLive(){
   if(!SAFETY.anonKey || !SAFETY.table) return;            // not wired yet — using seed snapshot
   try{
-    const res = await fetch(`${SAFETY.url}/rest/v1/${SAFETY.table}?select=dept,status,date`,
-      { headers:{ apikey:SAFETY.anonKey, Authorization:'Bearer '+SAFETY.anonKey } });
-    if(!res.ok) return;
+    // `tasks` is authenticated-only (is_wsdisplay()) — anon is denied by design.
+    // The publishable key is NOT a JWT, so sending it as `Bearer` returns 401 and
+    // the seed snapshot below would silently stand in for real data forever.
+    // Read as the signed-in HR user instead; apikey identifies the project.
+    let token = null;
+    try{
+      if(typeof cloudInit==='function'){
+        const sb = await cloudInit();
+        if(sb){
+          const s = await sb.auth.getSession();
+          if(s && s.data && s.data.session) token = s.data.session.access_token;
+        }
+      }
+    }catch(e){}
+    if(!token){ console.warn('[safety] no session yet — skipping live load'); return; }
+
+    const headers = { apikey:SAFETY.anonKey, Authorization:'Bearer '+token };
+    const res = await fetch(`${SAFETY.url}/rest/v1/${SAFETY.table}?select=dept,status,date&limit=5000`, { headers });
+    if(!res.ok){
+      console.warn('[safety] live load failed', res.status, await res.text().catch(()=>''));
+      return;
+    }
     const rows = await res.json();
     const next = safetyAggregate(rows);
     if(next){ safetyData = next; renderSafetyDash(); }
-  }catch(e){ /* keep the seed snapshot on any error */ }
+    else console.warn('[safety] aggregate returned nothing — keeping seed');
+  }catch(e){ console.warn('[safety] live load error — keeping seed', e && e.message); }
 }
 
 /* ══════════════ ONE-ON-ONE COMPLETION SCORECARD (live from the One-on-One Log) ══════════════
@@ -9387,8 +9407,11 @@ spawnWaves(document.getElementById('hero-waves'), {
             'Prefer': 'resolution=merge-duplicates,return=minimal'
           },
           body: JSON.stringify({ key:key, payload:payload, updated_at:new Date().toISOString() })
-        }).catch(function(){});
-      }catch(e){}
+        }).then(function(r){
+          if(r.ok){ console.log('[LRC] pushed', key, r.status); }
+          else { r.text().then(function(t){ console.warn('[LRC] PUSH FAILED', key, r.status, t); }); }
+        }).catch(function(e){ console.warn('[LRC] PUSH NETWORK ERROR', key, e && e.message); });
+      }catch(e){ console.warn('[LRC] push threw', key, e && e.message); }
     })();
   }
 
