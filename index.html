@@ -2705,7 +2705,7 @@ const SESSION_KEY = 'hrhub_session';
    Per-device/ephemeral keys are never synced.
    ══════════════════════════════════════════════════════════════════════════ */
 const CLOUD_URL  = 'https://zozpomjvvrhjgqbazmrd.supabase.co';
-const CLOUD_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpvenBvbWp2dnJoamdxYmF6bXJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5MDE0NDgsImV4cCI6MjA5NTQ3NzQ0OH0.TJmx6C3VfnXlMNS6Ss-5iYwgtkhc2ryoaLggOmV_At8';
+const CLOUD_ANON = 'sb_publishable_sKcs24iSLfda4g7gvXJcAw_HlmuLsdf';
 const CLOUD_TABLE = 'hrhub_store';
 const CLOUD_SYNC_EXCLUDE = new Set(['hrhub_session','hrhub_rec_key','hrhub_notif_dismissed']);
 let cloudReady = false;                  // true only after a successful sign-in + hydrate
@@ -9359,7 +9359,7 @@ spawnWaves(document.getElementById('hero-waves'), {
    ════════════════════════════════════════════════════════════════════════ */
 (function(){
   const LRC_SB_URL  = 'https://zozpomjvvrhjgqbazmrd.supabase.co';
-  const LRC_SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpvenBvbWp2dnJoamdxYmF6bXJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5MDE0NDgsImV4cCI6MjA5NTQ3NzQ0OH0.TJmx6C3VfnXlMNS6Ss-5iYwgtkhc2ryoaLggOmV_At8';
+  const LRC_SB_ANON = 'sb_publishable_sKcs24iSLfda4g7gvXJcAw_HlmuLsdf';
   const LRC_TABLE   = 'lrc_dashboard';
 
   function lrcYear(){ return new Date().getFullYear(); }   // always the real current year — keeps LRC keys advancing past 2027 with no edits
