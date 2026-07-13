@@ -2762,7 +2762,22 @@ async function cloudHydrate(){
     }
   }catch(e){}
   if(toSeed.length){ try{ await sb.from(CLOUD_TABLE).upsert(toSeed,{ onConflict:'key' }); }catch(e){ console.warn('cloud seed failed', e); } }
+  hubInvalidateCaches();          // localStorage just changed under us — drop stale in-memory copies
   return true;
+}
+
+/* Modules that cache their blob in memory latch on first read. cloudHydrate()
+   rewrites localStorage underneath them, so anything already latched is now the
+   OLD (pre-hydrate) copy — that's the "Hub is showing cached numbers" bug. Drop
+   every latch here so the next render reads what the cloud actually says. */
+function hubInvalidateCaches(){
+  try{ if(typeof otRefresh==='function') otRefresh(); }catch(e){}
+  try{ if(typeof trLoad==='function' && typeof trYear!=='undefined') trLoad(); }catch(e){}
+  try{ if(typeof recLoadLog==='function' && typeof recYear!=='undefined') recLoadLog(); }catch(e){}
+  // Only re-run these if they were already loaded — otherwise enterApp()'s own
+  // ptoInit()/gcInit() will load them for the first time a moment from now.
+  try{ if(typeof PTO!=='undefined' && PTO && typeof ptoLoad==='function') ptoLoad(); }catch(e){}
+  try{ if(typeof GC !=='undefined' && GC  && typeof gcLoad ==='function') gcLoad();  }catch(e){}
 }
 
 /* Self-heal bridge: the older one-way LRC table (lrc_dashboard) still holds full
@@ -3034,6 +3049,13 @@ async function _tryRehydrate(){
     if(CURRENT){
       const fresh = findUserByEmail(CURRENT.email);
       if(fresh){ CURRENT = fresh; applyPermissions(); if(typeof recInit==='function') recInit(); if(can('settings') && typeof renderSettings==='function') renderSettings(); }
+      // cloudHydrate() already dropped the stale in-memory copies — now repaint the
+      // dashboard from the fresh data and re-feed the LRC.
+      try{ if(typeof renderDashTurnover==='function') renderDashTurnover(); }catch(e){}
+      try{ if(typeof otDashRender==='function') otDashRender(); }catch(e){}
+      try{ if(typeof dashRecRender==='function') dashRecRender(); }catch(e){}
+      try{ if(typeof wcDashRender==='function') wcDashRender(); }catch(e){}
+      try{ if(typeof hubSyncLRC==='function') hubSyncLRC(); }catch(e){}
     }
   }
   return ok;
@@ -3068,6 +3090,11 @@ function enterApp(user){
     if(typeof wcDashRender==='function') wcDashRender();
     if(typeof tkInitSync==='function') tkInitSync();
     if(typeof renderSafetyDash==='function'){ renderSafetyDash(); safetyLoadLive(); }
+    // Feed the Leadership Resource Center. This runs AFTER every module has loaded
+    // and CURRENT is set, so the role gates in hubPush* actually pass. Previously
+    // the sync fired before CURRENT existed, every push short-circuited on can(),
+    // and the LRC was never fed — hence its empty cards.
+    if(typeof hubSyncLRC==='function') hubSyncLRC();
   },0);
   if(can('settings')) renderSettings();
 }
@@ -7110,15 +7137,31 @@ const OT_YEARS_KEY = 'hrhub_ot_years';
 const OT_SEED = [{"key":"2026-01","month":"January","mon":"Jan","year":2026,"ca":{"hours":306.0,"pay":10584.35,"depts":[{"name":"CA - Finishing","hours":202.58,"pay":6923.74},{"name":"CA Warehouse","hours":47.09,"pay":1453.0},{"name":"CA Printing","hours":30.94,"pay":1104.64},{"name":"Graphics","hours":9.74,"pay":397.32},{"name":"Call Center","hours":6.12,"pay":224.85},{"name":"Inventory Control","hours":2.27,"pay":88.53},{"name":"IT","hours":2.25,"pay":94.5},{"name":"Business Development","hours":2.01,"pay":67.84},{"name":"Process Improvement","hours":1.65,"pay":53.21},{"name":"Account Management","hours":1.35,"pay":59.74},{"name":"Web","hours":0.0,"pay":116.98}]},"pa":{"hours":489.04,"pay":15911.83,"depts":[{"name":"PA - Finishing","hours":415.95,"pay":13533.95},{"name":"PA - Printing","hours":38.09,"pay":1225.89},{"name":"PA - Warehouse","hours":27.43,"pay":860.68},{"name":"Operations","hours":4.95,"pay":193.05},{"name":"MODCO","hours":2.32,"pay":87.0},{"name":"PA - HR","hours":0.3,"pay":11.26}]}},{"key":"2026-02","month":"February","mon":"Feb","year":2026,"ca":{"hours":147.39,"pay":5387.57,"depts":[{"name":"CA - Finishing","hours":58.16,"pay":1989.27},{"name":"CA Warehouse","hours":42.7,"pay":1353.21},{"name":"CA Printing","hours":22.89,"pay":884.68},{"name":"Graphics","hours":7.13,"pay":277.32},{"name":"IT","hours":6.28,"pay":263.76},{"name":"Call Center","hours":4.24,"pay":153.73},{"name":"Account Management","hours":3.0,"pay":132.76},{"name":"Business Development","hours":1.63,"pay":55.01},{"name":"Process Improvement","hours":1.36,"pay":43.87},{"name":"Web","hours":0.0,"pay":233.96}]},"pa":{"hours":321.03,"pay":10420.98,"depts":[{"name":"PA - Finishing","hours":238.22,"pay":7769.78},{"name":"PA - Printing","hours":57.6,"pay":1852.4},{"name":"PA - Warehouse","hours":23.78,"pay":746.67},{"name":"PA - HR","hours":0.6,"pay":22.5},{"name":"MODCO","hours":0.58,"pay":21.75},{"name":"Operations","hours":0.25,"pay":7.88}]}},{"key":"2026-03","month":"March","mon":"Mar","year":2026,"ca":{"hours":306.0,"pay":10584.35,"depts":[{"name":"CA - Finishing","hours":202.58,"pay":6923.74},{"name":"CA Warehouse","hours":47.09,"pay":1453.0},{"name":"CA Printing","hours":30.94,"pay":1104.64},{"name":"Graphics","hours":9.74,"pay":397.32},{"name":"Call Center","hours":6.12,"pay":224.85},{"name":"Inventory Control","hours":2.27,"pay":88.53},{"name":"IT","hours":2.25,"pay":94.5},{"name":"Business Development","hours":2.01,"pay":67.84},{"name":"Process Improvement","hours":1.65,"pay":53.21},{"name":"Account Management","hours":1.35,"pay":59.74},{"name":"Web","hours":0.0,"pay":116.98}]},"pa":{"hours":489.04,"pay":15911.83,"depts":[{"name":"PA - Finishing","hours":415.95,"pay":13533.95},{"name":"PA - Printing","hours":38.09,"pay":1225.89},{"name":"PA - Warehouse","hours":27.43,"pay":860.68},{"name":"Operations","hours":4.95,"pay":193.05},{"name":"MODCO","hours":2.32,"pay":87.0},{"name":"PA - HR","hours":0.3,"pay":11.26}]}},{"key":"2026-04","month":"April","mon":"Apr","year":2026,"ca":{"hours":830.19,"pay":28328.05,"depts":[{"name":"CA - Finishing","hours":483.62,"pay":16303.25},{"name":"CA Printing","hours":224.46,"pay":7902.08},{"name":"CA Warehouse","hours":66.4,"pay":2022.53},{"name":"Call Center","hours":15.94,"pay":570.67},{"name":"Graphics","hours":11.84,"pay":476.14},{"name":"Process Improvement","hours":10.4,"pay":335.29},{"name":"Account Management","hours":9.1,"pay":402.67},{"name":"IT","hours":2.83,"pay":118.86},{"name":"Inventory Control","hours":2.77,"pay":108.03},{"name":"Business Development","hours":1.5,"pay":50.62},{"name":"Operations","hours":1.33,"pay":37.91}]},"pa":{"hours":928.43,"pay":29570.36,"depts":[{"name":"PA - Finishing","hours":716.77,"pay":22750.54},{"name":"PA - Printing","hours":117.45,"pay":3722.26},{"name":"PA - Warehouse","hours":71.85,"pay":2231.05},{"name":"Operations","hours":18.67,"pay":728.13},{"name":"MODCO","hours":3.14,"pay":117.75},{"name":"PA - HR","hours":0.55,"pay":20.63}]}},{"key":"2026-05","month":"May","mon":"May","year":2026,"ca":{"hours":1701.57,"pay":56698.43,"depts":[{"name":"CA - Finishing","hours":1140.77,"pay":37400.27},{"name":"CA Printing","hours":278.55,"pay":9844.91},{"name":"CA Warehouse","hours":112.17,"pay":3492.04},{"name":"Call Center","hours":52.6,"pay":1820.29},{"name":"Graphics","hours":37.83,"pay":1408.08},{"name":"Process Improvement","hours":37.82,"pay":1219.31},{"name":"Inventory Control","hours":21.53,"pay":839.67},{"name":"Operations","hours":12.87,"pay":366.8},{"name":"Account Management","hours":4.3,"pay":190.28},{"name":"Business Development","hours":1.78,"pay":60.08},{"name":"IT","hours":1.35,"pay":56.7}]},"pa":{"hours":1394.18,"pay":43802.88,"depts":[{"name":"PA - Finishing","hours":1110.29,"pay":34854.11},{"name":"PA - Printing","hours":172.21,"pay":5457.34},{"name":"PA - Warehouse","hours":76.13,"pay":2362.9},{"name":"Process Improvement","hours":27.05,"pay":811.5},{"name":"PA - HR","hours":4.33,"pay":162.38},{"name":"MODCO","hours":3.97,"pay":146.85},{"name":"Operations","hours":0.2,"pay":7.8}]}}];
 let otData = null, otLoaded = false, otYear = null;
 
-function otLoad(){
-  if(otLoaded) return;
+/* Reads the OT blob from localStorage.
+   Two bugs lived here and both produced "wrong / stale numbers on the dashboard":
+   1) The `otLoaded` latch meant the FIRST read of the session won that session.
+      If anything read OT before cloudHydrate() landed the cloud copy (the old LRC
+      one-time sync did exactly that), the Hub rendered the pre-hydrate value and
+      never re-read it — the classic "showing the cached version" symptom.
+   2) On an empty read it wrote the built-in OT_SEED to localStorage *and* pushed
+      it (otSave -> hubPushOT), which could overwrite real cloud data with demo data.
+   Fix: never seed before cloudReady, and let callers force a re-read post-hydrate. */
+function otLoad(force){
+  if(otLoaded && !force) return;
   let raw = null;
   try{ raw = localStorage.getItem(OT_KEY); }catch(e){}
-  if(raw === null){ otData = JSON.parse(JSON.stringify(OT_SEED)); otSave(); }
+  if(raw === null){
+    const hydrated = (typeof cloudReady !== 'undefined') && cloudReady;
+    if(!hydrated){ otData = []; return; }   // stay unlatched — re-read after hydrate
+    otData = JSON.parse(JSON.stringify(OT_SEED));
+    otSave();                               // genuinely empty install → seed once
+  }
   else { try{ otData = JSON.parse(raw); }catch(e){ otData = []; } }
   if(!Array.isArray(otData)) otData = [];
   otLoaded = true;
 }
+/* Drop the in-memory copy so the next read comes from freshly-hydrated storage. */
+function otRefresh(){ otLoaded = false; otData = null; otLoad(true); }
 function otSave(){ try{ localStorage.setItem(OT_KEY, JSON.stringify(otData)); }catch(e){} if(typeof hubPushOT==='function') hubPushOT(); }
 
 /* formatting */
@@ -7134,7 +7177,9 @@ function otDashRender(){
   const host=document.getElementById('ot-dash-mini'); if(!host) return;
   const sub=document.getElementById('otm-sub'), pill=document.getElementById('otm-pill');
   otLoad();
-  let all=(otData&&otData.length?otData:OT_SEED).slice().sort((a,b)=>String(a.key).localeCompare(String(b.key)));
+  // Never fall back to OT_SEED for display — that made an empty/unhydrated state
+  // render demo numbers that looked real. Show the empty state instead.
+  let all=(Array.isArray(otData)?otData:[]).slice().sort((a,b)=>String(a.key).localeCompare(String(b.key)));
   if(!all.length){ host.innerHTML='<div class="drc-empty">No overtime data loaded yet.</div>'; if(sub)sub.textContent='—'; if(pill)pill.textContent='—'; return; }
   /* show the most recent year only, so the card stays a clean YTD view as years accumulate */
   const shownYear=all[all.length-1].year;
@@ -9524,16 +9569,25 @@ spawnWaves(document.getElementById('hero-waves'), {
     try{ window.hubPushRoster(); }catch(e){}
     try{ window.hubPushWC(); }catch(e){}
   }
-  // Wait until the HR session is actually restored before the one-time push —
-  // a fixed timer raced login and sent the push as anon (401). Poll getSession()
-  // every 500ms up to ~15s; run the moment a session appears, or give up quietly
-  // (signed out → no anon pushes, so no 401 noise).
+  /* Expose the full sync so enterApp() can fire it once the user is fully in. */
+  window.hubSyncLRC = lrcSyncAll;
+
+  /* Wait until the HR session is restored AND the app has actually entered.
+     BUG (fixed): the old loop fired the moment a Supabase session token existed.
+     That happens inside cloudInit()/getSession() — BEFORE cloudHydrate() lands the
+     cloud copy and BEFORE enterApp() sets CURRENT. Every hubPush* self-gates on
+     can()/isAdmin(), and both return false while CURRENT is null, so the one-time
+     sync silently no-op'd on every single load. The LRC therefore only ever saw
+     whatever happened to be pushed by a manual save — which is why its cards read
+     "no data yet". It also meant otLoad() ran pre-hydrate and could seed/push the
+     placeholder OT_SEED over real cloud data.
+     Now: require cloudReady (hydrate done) AND CURRENT (role known). */
   async function lrcSyncWhenReady(){
-    for(var tries=0; tries<30; tries++){
+    for(var tries=0; tries<60; tries++){          // ~30s, generous for a cold load
       try{
-        if(typeof cloudInit==='function'){
-          var sb = await cloudInit();
-          if(sb){ var s = await sb.auth.getSession(); if(s && s.data && s.data.session && s.data.session.access_token){ lrcSyncAll(); return; } }
+        if(typeof cloudReady!=='undefined' && cloudReady && typeof CURRENT!=='undefined' && CURRENT){
+          lrcSyncAll();
+          return;
         }
       }catch(e){}
       await new Promise(function(r){ setTimeout(r, 500); });
